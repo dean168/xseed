@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="org.learning.basic.shiro.service.support" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+    </context:component-scan>
+
+	<alias name="basic.shiroAccountService" alias="basic.accountService" />
+
+    <!-- Spring AOP auto-proxy creation (required to support Shiro annotations) -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiro.shiroRealm" />
+        <property name="cacheManager">
+        	<bean class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+        </property>
+        <property name="rememberMeManager">
+            <bean class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+                <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('${basic.shiro.cookie.rme.cipher.key}')}" />
+                <property name="cookie">
+                    <bean class="org.apache.shiro.web.servlet.SimpleCookie">
+                        <constructor-arg value="${basic.shiro.cookie.rme.name}"/>
+                        <property name="httpOnly" value="true" />
+                        <property name="maxAge" value="${basic.shiro.cookie.rme.maxAge}" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Post processor that automatically invokes init() and destroy() methods -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+</beans>

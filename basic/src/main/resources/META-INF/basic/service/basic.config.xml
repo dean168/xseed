@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:task="http://www.springframework.org/schema/task"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
+                default-lazy-init="true">
+
+<!-- 	<context:property-placeholder location="classpath*:/META-INF/*/*.properties,classpath*:*.properties,/WEB-INF/classes/*.properties" /> -->
+
+	<bean id="basic.propertyConfigure" class="org.learning.basic.core.support.CustomPropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8" />
+		<property name="locations">
+            <list>
+                <value>classpath*:/META-INF/*/*.properties</value>
+                <value>classpath*:*.properties</value>
+                <value>/WEB-INF/classes/*.properties</value>
+            </list>
+        </property>
+	</bean>
+
+</beans>

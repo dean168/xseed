@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="org.learning.basic.shiro.domain.ShiroPermission" table="T_PERMISSION" batch-size="30" dynamic-update="true">
+		<id name="id" column="ID" length="32">
+			<generator class="uuid.hex" />
+		</id>
+		<property name="code" column="CODE"  length="255" unique="true" />
+		<property name="desc" column="PERM_DESC"  length="600" />
+	</class>
+
+</hibernate-mapping>

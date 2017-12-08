@@ -1,0 +1,40 @@
+<div class="container">
+	<div class="row">
+		<div class="page-header text-center">
+			<h1>登录</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4"></div>
+		<div class="col-xs-4">
+			<form name="loginForm" ng-submit="login(user)" class="form-horizontal" role="form">
+				<div class="form-group has-feedback">
+					<div class="col-xs-12">
+						<input type="email" name="email" ng-model="user.email" ng-required="true" bc-focus="true" class="form-control" placeholder="请输入邮箱地址">
+						<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-ok' : loginForm.email.$valid, 'glyphicon-remove' : loginForm.email.$invalid }"></span>
+					</div>
+				</div>
+				<div class="form-group has-feedback">
+					<div class="col-xs-12">
+						<input type="password" name="password" ng-model="user.password" ng-required="true" class="form-control" placeholder="请输入密码">
+						<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-ok' : loginForm.password.$valid, 'glyphicon-remove' : loginForm.password.$invalid }"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-12">
+						<div class="checkbox">
+        					<label>
+                      			<input type="checkbox" ng-model="user.rme"> 记住我
+                      		</label>
+                   		</div>
+					</div>
+				</div>
+				<div class="row text-center">
+					<button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">登 录</button>
+					<a href="#/register" class="btn btn-primary">注册</a>
+				</div>
+				</form>
+		</div>
+		<div class="col-xs-4"></div>
+	</div>
+</div>

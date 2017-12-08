@@ -1,0 +1,32 @@
+# Java class files
+*.class
+.gradle/
+build/
+*/build/
+*/*/build/
+*/out/
+target/
+*/target/
+*/*/target/
+bin/
+*/bin/
+*/*/bin/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+*/.classpath
+*/.project
+*/.settings/
+
+*/*/.classpath
+*/*/.project
+*/*/.settings/
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea/

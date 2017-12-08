@@ -1,0 +1,44 @@
+.bc-header .bc-item {
+	float: left;
+	width: 160px;
+	height: 50px;
+	padding: 10px;
+	cursor: pointer;
+	font-size: 20px;
+}
+.bc-header .bc-item:hover {
+	border-bottom: 2px #3071a9 solid;
+}
+.bc-header .bc-item.active {
+	border-bottom: 2px #3071a9 solid;
+}
+.bc-header .bc-name, .bc-header .bc-logout {
+	float: right;
+	padding: 10px;
+	margin-bottom: 28px;
+}
+.bc-toolbar {
+}
+.bc-toolbar .bc-buts .btn {
+	float: right;
+	margin-left: 8px;
+	width: 120px;
+}
+.bc-list {
+	padding-top: 28px;
+}
+.bc-oprs .bc-opr {
+	color: #3071a9;
+	cursor: pointer;
+	font-size: 18px;
+	margin-left: 8px;
+}
+.bc-oprs .bc-opr:hover {
+	color: #4F8EF7
+}
+.panel .panel-heading .bc-opr {
+	float: right;
+}
+.date .ion-clock {
+	font-size: 18px;
+}

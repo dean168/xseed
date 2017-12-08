@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.learning.basic.shiro.domain.ShiroAccount" table="T_USER" batch-size="30" dynamic-update="true">
+		<id name="id" column="ID" length="32">
+			<generator class="uuid.hex" />
+		</id>
+		<discriminator column="type" type="string" length="20" />
+		<property name="email" column="EMAIL" length="100" not-null="true" />
+		<property name="password" column="PASSWD" length="128" not-null="true" />
+		<set name="roles" table="TR_USER_ROLE">
+	        <key column="USER_ID" />
+	        <many-to-many class="org.learning.basic.shiro.domain.ShiroRole" column="ROLE_ID" />
+        </set>
+        <!-- Staff -->
+		<subclass name="org.learning.portal.domain.Staff" extends="org.learning.basic.shiro.domain.ShiroAccount" discriminator-value="STAFF">
+			<property name="name" column="NAME" length="50" not-null="true" />
+			<!-- 
+			<property name="avatar" column="AVATAR" type="org.springframework.orm.hibernate3.support.BlobByteArrayType" />
+			 -->
+			<property name="avatar" column="AVATAR" length="255" />
+
+			<property name="createdAt" column="CREATED_AT" />
+			<property name="createdBy" column="CREATED_BY" />
+			<property name="updatedAt" column="UPDATED_AT" />
+			<property name="updatedBy" column="UPDATED_BY" />
+		</subclass>
+	</class>
+</hibernate-mapping>

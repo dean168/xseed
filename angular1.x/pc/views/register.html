@@ -1,0 +1,37 @@
+<div class="container">
+	<div class="row">
+		<div class="page-header text-center">
+			<h1>用户注册</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4"></div>
+		<div class="col-xs-4">
+			<form name="registerForm" ng-submit="store(user)" class="form-horizontal" role="form">
+				<div class="form-group has-feedback">
+					<div class="col-xs-12">
+						<input type="email" name="email" ng-model="user.email" class="form-control" ng-required="true" bc-focus="true" placeholder="请输入邮箱地址，作为登录帐号">
+						<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-ok' : registerForm.email.$valid, 'glyphicon-remove' : registerForm.email.$invalid }"></span>
+					</div>
+				</div>
+				<div class="form-group has-feedback">
+					<div class="col-xs-12">
+						<input type="password" name="password" ng-model="user.password" ng-required="true" class="form-control" placeholder="请输入密码">
+						<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-ok' : registerForm.password.$valid, 'glyphicon-remove' : registerForm.password.$invalid }"></span>
+					</div>
+				</div>
+				<div class="form-group has-feedback">
+					<div class="col-xs-12">
+						<input type="password" name="confirmPassword" ng-model="user.confirmPassword" ng-required="true" class="form-control" placeholder="请再输入一次密码">
+						<span class="glyphicon form-control-feedback" ng-class="{ 'glyphicon-ok' : registerForm.confirmPassword.$valid, 'glyphicon-remove' : registerForm.confirmPassword.$invalid }"></span>
+					</div>
+				</div>
+				<div class="row text-center">
+					<button type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid">注 册</button>
+					<a href="#/login" class="btn btn-primary">取 消</a>
+				</div>
+			</form>
+		</div>
+		<div class="col-xs-4"></div>
+	</div>
+</div>

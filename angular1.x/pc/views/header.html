@@ -1,0 +1,11 @@
+<div class="row bc-header">
+	<div class="col-xs-9">
+		<div class="bc-menu">
+			<div class="bc-item text-center" ng-click="transitionTo('portal.list')" ng-class="{ 'active' : (pathname.substr(0, '/portal'.length) == '/portal') }">门户管理</div>
+		</div>
+	</div>
+	<div class="col-xs-3 text-right">
+		<a class="bc-logout" href="#">退 出</a>
+		<div class="bc-name">{{session.name}}</div>
+	</div>
+</div>

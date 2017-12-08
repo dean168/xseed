@@ -1,0 +1,327 @@
+<div class="oa-person">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">基本信息</h3>
+        </div>
+        <div class="panel-body os-basic-info">
+            <div class="row">
+                <div class="col-xs-4">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">姓名:</label>
+                            <div class="col-xs-8">
+                                <input type="text" ng-model="person.name" bc-focus="true" class="form-control" placeholder="请输入姓名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">出生日期:</label>
+                            <div class="col-xs-8">
+                                <div bc-datetime-picker="{model: 'person.dateOfBirth', format: 'YYYY-MM-DD'}" class="input-group date">
+                                    <input type="text" class="form-control" placeholder="请选择出生日期">
+                                    <span class="input-group-addon"><span class="ion-clock"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">婚姻状况:</label>
+                            <div class="col-xs-8">
+                                <select ng-model="person.marital" ng-options="so.id as so.name for so in maritalOptions" class="form-control">
+                                    <option value="">选择婚姻状况</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">学位:</label>
+                            <div class="col-xs-8">
+                                <select ng-model="person.eduLevel" ng-options="so.name for so in eduLevelOptions track by so.id" class="form-control">
+                                    <option value="">选择学位</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">毕业时间:</label>
+                            <div class="col-xs-8">
+                                <div bc-datetime-picker="{model: 'person.graduateDate', format: 'YYYY-MM-DD'}" class="input-group date">
+                                    <input type="text" class="form-control" placeholder="请选择毕业时间">
+                                    <span class="input-group-addon"><span class="ion-clock"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">专业:</label>
+                            <div class="col-xs-8">
+                                <select ng-model="person.major" ng-options="so.name for so in majorOptions track by so.id" class="form-control">
+                                    <option value="">选择专业</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">移动电话:</label>
+                            <div class="col-xs-8">
+                                <input type="text" ng-model="person.phoneNumber" class="form-control" placeholder="请输入移动电话">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">期望工作性质:</label>
+                            <div class="col-xs-8">
+                                <input type="text" ng-model="person.workNatureExpectancy" class="form-control" placeholder="请输入期望工作性质">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-4">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">性别:</label>
+                            <div class="col-xs-8">
+                                <select ng-model="person.sex" ng-options="so.id as so.name for so in sexOptions" class="form-control">
+                                    <option value="">选择性别</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">国籍:</label>
+                            <div class="col-xs-8">
+                                <select ng-model="person.nationality" ng-options="so.name for so in nationalityOptions track by so.id" class="form-control">
+                                    <option value="">选择国籍</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">现居住地:</label>
+                            <div class="col-xs-8">
+                                <input type="text" ng-model="person.currentAddress" class="form-control" placeholder="请输入现居住地">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">学历:</label>
+                            <div class="col-xs-8">
+                                <select ng-model="person.eduBackground" ng-options="so.name for so in edubgOptions track by so.id" class="form-control">
+                                    <option value="">选择学历</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">毕业院校:</label>
+                            <div class="col-xs-8">
+                                <select ng-model="person.graduateSchool" ng-options="so.name for so in gsOptions track by so.id" class="form-control">
+                                    <option value="">选择毕业院校</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">工作年限:</label>
+                            <div class="col-xs-8">
+                                <input type="text" ng-model="person.workLonger" class="form-control" placeholder="请输入工作年限">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">电子邮箱:</label>
+                            <div class="col-xs-8">
+                                <input type="text" ng-model="person.email" class="form-control" placeholder="请输电子邮箱">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">期望工作地点:</label>
+                            <div class="col-xs-8">
+                                <input type="text" ng-model="person.workPlaceExpectancy" class="form-control" placeholder="请输入期望工作地点">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-4">
+                    <form class="form-horizontal">
+                        <div class="form-group bc-upload-pic oa-upload-pic" style="margin-right: 0px;">
+                            <div class="form-control bc-pic" ng-class="{ 'active': personAvatar }">
+                                <img ng-src="{{personAvatar}}" class="img-responsive" />
+                            </div>
+                            <input type="file" bc-image-upload="{ preview : 'personAvatar', model : 'person.avatar'}" class="form-control" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">简介</h3>
+        </div>
+        <div class="panel-body">
+            <textarea ng-model="person.introduction" class="form-control" rows="8"></textarea>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title oa-oprs">
+                工作经历
+                <!--<i ng-click="deleteJobTracks()" class="oa-opr ion-trash-a"></i>-->
+                <i ng-click="editJobTrack()" class="oa-opr ion-plus-circled"></i>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <!--<th width="30"></th>-->
+                        <th>入职时间</th>
+                        <th>离职时间</th>
+                        <th>公司</th>
+                        <th>职位</th>
+                        <th width="80" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-click="toggle(track)" ng-repeat="track in person.jobTracks">
+                        <!--<td class="text-nowrap">-->
+                            <!--<span class="glyphicon" ng-class="{ 'glyphicon-check' : track.checked, 'glyphicon-unchecked' :  !track.checked}"></span>-->
+                        <!--</td>-->
+                        <td>{{track.inpostDate}}</td>
+                        <td>{{track.outpostDate}}</td>
+                        <td>{{track.company.name}}</td>
+                        <td>{{track.post.name}}</td>
+                        <td class="text-center oa-oprs">
+                            <i ng-click="editJobTrack(track)" class="oa-opr ion-compose"></i>
+                            <i ng-click="splice(person.jobTracks, $index)" class="oa-opr ion-trash-a"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title oa-oprs">
+                项目经验
+                <i ng-click="editProjectTrack()" class="oa-opr ion-plus-circled"></i>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>项目名称</th>
+                        <th width="80" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-click="toggle(track)" ng-repeat="track in person.projectTracks">
+                        <td>{{track.startDate}}</td>
+                        <td>{{track.endDate}}</td>
+                        <td>{{track.name}}</td>
+                        <td class="text-center oa-oprs">
+                            <i ng-click="editProjectTrack(track)" class="oa-opr ion-compose"></i>
+                            <i ng-click="splice(person.projectTracks, $index)" class="oa-opr ion-trash-a"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title oa-oprs">
+                教育经历
+                <i ng-click="editEDUTrack()" class="oa-opr ion-plus-circled"></i>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>学校</th>
+                        <th>专业</th>
+                        <th>学位</th>
+                        <th>学历</th>
+                        <th width="80" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-click="toggle(track)" ng-repeat="track in person.eduTracks">
+                        <td>{{track.startDate}}</td>
+                        <td>{{track.endDate}}</td>
+                        <td>{{track.school.name}}</td>
+                        <td>{{track.major.name}}</td>
+                        <td>{{track.eduLevel.name}}</td>
+                        <td>{{track.eduBackground.name}}</td>
+                        <td class="text-center oa-oprs">
+                            <i ng-click="editEDUTrack(track)" class="oa-opr ion-compose"></i>
+                            <i ng-click="splice(person.eduTracks, $index)" class="oa-opr ion-trash-a"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title oa-oprs">
+                语言能力
+                <i ng-click="editLanguageSkills()" class="oa-opr ion-plus-circled"></i>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>语种</th>
+                        <th>听说能力</th>
+                        <th>读写能力</th>
+                        <th>证书</th>
+                        <th width="80" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-click="toggle(skills)" ng-repeat="skills in person.languageSkills">
+                        <td>{{skills.language}}</td>
+                        <td>{{skills.listeningAndSpeaking}}</td>
+                        <td>{{skills.readingAndWriting}}</td>
+                        <td>{{skills.certificate}}</td>
+                        <td class="text-center oa-oprs">
+                            <i ng-click="editLanguageSkills(skills)" class="oa-opr ion-compose"></i>
+                            <i ng-click="splice(person.languageSkills, $index)" class="oa-opr ion-trash-a"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title oa-oprs">
+                计算机能力
+                <i ng-click="editComputerSkills()" class="oa-opr ion-plus-circled"></i>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>技能类别</th>
+                        <th>使用时间</th>
+                        <th width="80" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-click="toggle(skills)" ng-repeat="skills in person.computerSkills">
+                        <td>{{skills.category}}</td>
+                        <td>{{skills.useTime}}</td>
+                        <td class="text-center oa-oprs">
+                            <i ng-click="editComputerSkills(skills)" class="oa-opr ion-compose"></i>
+                            <i ng-click="splice(person.computerSkills, $index)" class="oa-opr ion-trash-a"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-center oa-buts">
+            <button type="button" ng-click="store(person)" class="btn btn-primary">保 存</button>
+            <button type="button" ng-click="cancel()" class="btn btn-primary">取 消</button>
+        </div>
+    </div>
+</div>

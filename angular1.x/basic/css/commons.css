@@ -1,0 +1,100 @@
+.bc-upload-pic {
+    margin-bottom: 0px;
+}
+.bc-upload-pic .bc-pic {
+    background: #eee url("/basic/images/upload-pic.png") center center no-repeat;
+	border-radius: 20px;
+	padding: 0px;
+	box-shadow: none;
+}
+.bc-upload-pic .bc-pic.active {
+    border: 0px;
+    background: none;
+}
+.bc-upload-pic input[type=file] {
+	opacity: 0;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	z-index: 10;
+}
+.bc-pagination .pagination > li {
+    cursor: pointer;
+}
+.bc-pagination .pagination > .bc-cli > a {
+    padding: 0px;
+}
+.bc-pagination .pagination > .bc-cli .bc-cur {
+    border: 0px;
+    width: 40px;
+    height: 32px;
+}
+.bc-dict-select-group > .bc-popup1,
+.bc-dict-select-group > .bc-popup2 {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    background: #fff;
+    padding: 5px;
+    border-right: 1px solid #e1e1e8;
+    border-bottom: 1px solid #e1e1e8;
+    border-left: 1px solid #e1e1e8;
+}
+.bc-dict-select-group > .bc-popup1 > .bc-content > .bc-item {
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 5px;
+}
+.bc-dict-select-group > .bc-popup1 > .bc-content > .bc-item.active,
+.bc-dict-select-group > .bc-popup1 > .bc-content > .bc-item:hover {
+   background: #61b7c9;
+   color: #fff;
+}
+.bc-dict-select-group > .bc-popup2 > .ion-checkmark-circled {
+    position: absolute;
+    right: 10px;
+    font-size: 18px;
+    color: #7dc1e0;
+    cursor: pointer;
+}
+.bc-dict-select-group > .bc-popup2 > .ion-checkmark-circled:hover {
+    color: #448e9e;
+}
+.bc-dict-select-group > .bc-popup2 > .nav > .bc-tab > a {
+    cursor: pointer;
+    padding: 2px 15px;
+}
+.bc-dict-select-group > .bc-popup2 > .nav > .bc-tab.active > a {
+    background: #05849f;
+}
+.bc-dict-select-group > .bc-popup2 > .bc-contents .bc-content {
+    padding: 2px;
+}
+.bc-dict-select-group > .bc-popup2 > .bc-contents .bc-group {
+    padding: 5px 5px 0px 5px;
+}
+.bc-dict-select-group > .bc-popup2 > .bc-contents .bc-group > .bc-title {
+    padding-right: 0px;
+    padding-top: 2px;
+}
+.bc-dict-select-group > .bc-popup2 > .bc-contents .bc-group > .bc-content {
+    padding-left: 0px;
+}
+.bc-dict-select-group > .bc-popup2 > .bc-contents .bc-item {
+    float: left;
+    padding: 0px 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #337ab7;
+}
+.bc-dict-select-group > .bc-popup2 > .bc-contents .bc-item:hover,
+.bc-dict-select-group > .bc-popup2 > .bc-contents .bc-item.active {
+    background: #7dc1e0;
+    color: #fff;
+}
+.bc-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
