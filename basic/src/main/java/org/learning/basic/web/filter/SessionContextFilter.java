@@ -31,9 +31,9 @@ public class SessionContextFilter implements Filter {
 		SessionContext.set(null);
 
 		SessionContext context = new SessionContext();
-		context.currentRequest((HttpServletRequest) request);
-		context.currentResponse((HttpServletResponse) response);
-		context.currentLocale(request.getLocale().getLanguage());
+		context.request((HttpServletRequest) request);
+		context.response((HttpServletResponse) response);
+		context.locale(request.getLocale().getLanguage());
 		SessionContext.set(context);
 
 		return context;

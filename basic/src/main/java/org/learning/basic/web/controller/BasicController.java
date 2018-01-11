@@ -35,15 +35,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("basic")
 public class BasicController {
 
-	protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     @Qualifier(ITempService.SERVICE_ID)
-	protected ITempService tempService;
+    protected ITempService tempService;
 //	@Value("${basic.media.root}")
 //	protected String mediaRoot;
 
-    @RequestMapping(method = POST, value = "media", produces = { APPLICATION_JSON_UTF8_VALUE })
+    @RequestMapping(method = POST, value = "media", produces = {APPLICATION_JSON_UTF8_VALUE})
     public MediaStatus upload(@RequestParam(value = "multipartFile") MultipartFile multipartFile, HttpServletResponse response)
             throws IOException {
 
@@ -132,9 +132,9 @@ public class BasicController {
 
     @RequestMapping(method = GET, value = "media")
     public void media(@RequestParam(value = "id") String id,
-                         @RequestParam(value = "contentType", required = false) String contentType,
-                         @RequestParam(value = "attachmentName", required = false) String attachmentName,
-                         HttpServletResponse response)
+                      @RequestParam(value = "contentType", required = false) String contentType,
+                      @RequestParam(value = "attachmentName", required = false) String attachmentName,
+                      HttpServletResponse response)
             throws IOException {
 
         File media = null;
@@ -169,20 +169,21 @@ public class BasicController {
 
         OutputStream os = response.getOutputStream();
 
-		InputStream is = null;
-		try {
-			if (media.exists()) {
-				IOUtils.copy(is = new FileInputStream(media), os);
-			} else if (logger.isWarnEnabled()) {
-				logger.warn(media + " is not exist");
-			}
-		} finally {
-			IOUtils.closeQuietly(is);
-		}
+        InputStream is = null;
+        try {
+            if (media.exists()) {
+                IOUtils.copy(is = new FileInputStream(media), os);
+            } else if (logger.isWarnEnabled()) {
+                logger.warn(media + " is not exist");
+            }
+        } finally {
+            IOUtils.closeQuietly(is);
+        }
     }
 
     /**
      * 子类继承，根据 media 的 id 返回对应的路径
+     *
      * @param id
      * @return
      */
@@ -193,6 +194,7 @@ public class BasicController {
 
     /**
      * 子类继承，获取 media 的根目录
+     *
      * @return
      */
     protected String mediaRoot() {
@@ -229,7 +231,7 @@ public class BasicController {
 
     protected void render(Class<?> clazz, String name, Object root, String contentType) throws IOException, TemplateException {
         SessionContext context = SessionContext.get();
-        HttpServletResponse response = context.currentResponse();
+        HttpServletResponse response = context.response();
         response.setContentType(contentType);
         OutputStream os = response.getOutputStream();
         try {

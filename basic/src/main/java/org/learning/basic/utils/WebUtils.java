@@ -27,7 +27,7 @@ public abstract class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	public static String remoteAddr() {
-		return remoteAddr(SessionContext.get().currentRequest());
+		return remoteAddr(SessionContext.get().request());
 	}
 
 	public static String remoteAddr(HttpServletRequest request) {
@@ -53,7 +53,7 @@ public abstract class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	public static String headers() {
-		return headers(SessionContext.get().currentRequest());
+		return headers(SessionContext.get().request());
 	}
 
 	public static String headers(HttpServletRequest request) {
@@ -68,7 +68,7 @@ public abstract class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 
 	public static String params() {
-		return params(SessionContext.get().currentRequest());
+		return params(SessionContext.get().request());
 	}
 
 	public static String params(HttpServletRequest request) {
@@ -89,7 +89,7 @@ public abstract class WebUtils extends org.springframework.web.util.WebUtils {
 	}
 	
 	public static boolean hasParams(String... names) {
-		return hasParams(SessionContext.get().currentRequest(), names);
+		return hasParams(SessionContext.get().request(), names);
 	}
 
 	public static boolean hasParams(HttpServletRequest request, String... names) {

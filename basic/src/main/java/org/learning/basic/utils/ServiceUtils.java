@@ -1,44 +1,48 @@
 package org.learning.basic.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executor;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+
 public abstract class ServiceUtils {
 
-	private static ApplicationContext AC;
+    private static ApplicationContext AC;
 
-	public static Object get(String id) {
-		return AC.getBean(id);
-	}
+    public static Object get(String id) {
+        return AC.getBean(id);
+    }
 
-	public static <T> T get(String id, Class<T> clazz) {
-		return AC.getBean(id, clazz);
-	}
+    public static <T> T get(Class<T> clazz) {
+        return AC.getBean(clazz);
+    }
 
-	public static <T> Map<String, T> list(Class<T> clazz) {
-		return AC.getBeansOfType(clazz);
-	}
+    public static <T> T get(String id, Class<T> clazz) {
+        return AC.getBean(id, clazz);
+    }
 
-	public static ApplicationContext getApplicationContext() {
-		return AC;
-	}
+    public static <T> Map<String, T> list(Class<T> clazz) {
+        return AC.getBeansOfType(clazz);
+    }
 
-	public static final class Resolver implements ApplicationContextAware {
+    public static ApplicationContext getApplicationContext() {
+        return AC;
+    }
 
-	    @Override
-		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-			AC = applicationContext;
-		}
+    public static final class Resolver implements ApplicationContextAware {
 
-	}
+        @Override
+        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+            AC = applicationContext;
+        }
+
+    }
 
     public static final class Listener implements ApplicationListener<ContextRefreshedEvent> {
 
