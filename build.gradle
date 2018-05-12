@@ -76,7 +76,7 @@ project(':basic') {
 		compile("org.springframework:spring-tx:$springVersion")
 		compile("org.springframework:spring-web:$springVersion")
 		compile("org.springframework:spring-webmvc:$springVersion")
-		compile("org.hibernate:hibernate-core:5.2.8.Final")
+		compile("org.hibernate:hibernate-core:5.2.17.Final")
 		compile("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 		compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 		compile("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:$jacksonVersion")

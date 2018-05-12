@@ -30,3 +30,7 @@ bin/
 *.ipr
 *.iws
 .idea/
+
+*/node_modules/
+*/dist/
+*/package-lock.json

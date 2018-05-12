@@ -52,11 +52,9 @@ public class BasicController {
         if (logger.isDebugEnabled()) {
             logger.debug("upload media#" + multipartFile.getOriginalFilename() + " content-type#" + multipartFile.getContentType() + " temp#" + temp);
         }
-        InputStream is = null;
-        try {
-            FileUtils.copyToFile(is = multipartFile.getInputStream(), temp);
-        } finally {
-            IOUtils.closeQuietly(is);
+
+        try (InputStream is = multipartFile.getInputStream()) {
+            FileUtils.copyToFile(is, temp);
         }
 
         response.setContentType(APPLICATION_JSON_UTF8_VALUE);
