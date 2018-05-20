@@ -32,7 +32,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping("basic")
+//@RequestMapping("basic")
 public class BasicController {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());

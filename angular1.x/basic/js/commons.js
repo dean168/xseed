@@ -201,12 +201,12 @@ angular.module('basic.commons', []).directive('bcFocus', function($timeout, $com
 				callback && scope[callback](media, value);
 			};
 			// 上传方法
-			if (!options.uploader) { // 默认的上传
+			if (typeof options.uploader == 'string' && options.uploader != 'avuploader') { // 默认的上传
 				options.uploader = function(media) {
 					var data = new FormData();
 					data.append("multipartFile", media);
 					$commons.upload({
-						url: '/api/basic/media',
+						url: options.uploader.url,
 						data: data,
 						success: function(status) {
 						    status.errcode ? options.upcallback(media, status) : $commons.alert(status.message);
@@ -225,7 +225,9 @@ angular.module('basic.commons', []).directive('bcFocus', function($timeout, $com
 						$commons.alert('上传失败: ' + error.message);
 					});
 				};
-			}
+			} else {
+                throw 'bc-upload options.uploader undefined.';
+            }
 			element.bind('change', function (event) {
 				var media = event.currentTarget.files[0];
 				media && options.validator(media) && options.uploader(media);
