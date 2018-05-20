@@ -5,7 +5,10 @@ buildscript {
 		maven { url 'http://jcenter.bintray.com' }
 		maven { url 'http://repo.spring.io/plugins-release' }
 	}
-    dependencies { classpath 'org.akhikhl.gretty:gretty:+'; classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'; }
+    dependencies {
+		classpath 'org.akhikhl.gretty:gretty:2.0.0';
+		classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7';
+	}
 }
 
 // 所有工程的设置
