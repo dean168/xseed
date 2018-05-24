@@ -14,7 +14,9 @@
                 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
                 default-lazy-init="true">
 
-	<bean id="basic.defaultJdbcPasswordDecoder" class="org.learning.basic.dao.support.DefaultJdbcPasswordDecoderImpl" />
+	<bean id="basic.defaultJdbcPasswordDecoder" class="org.learning.basic.dao.support.DefaultJdbcPasswordDecoderImpl">
+        <property name="key" value="${basic.jdbc.password.cipher.key}" />
+    </bean>
 
     <bean id="basic.dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${basic.jdbc.driverClassName}" />

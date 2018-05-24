@@ -14,8 +14,9 @@ public class DefaultJdbcPasswordDecoderImplTest {
     @Test
     public void testEncode() throws NoSuchAlgorithmException {
         DefaultJdbcPasswordDecoderImpl decoder = new DefaultJdbcPasswordDecoderImpl();
+        decoder.setKey("org.learning.key");
         decoder.init();
-        assertEquals("xKCW3Zp4of/VGib6HTqAiQ==", decoder.encode("admin@qq.com"));
+        assertEquals("XArtGjXpKTfaDBBz0T1sgQ==", decoder.encode("admin@qq.com"));
         // 生成 basic.shiro.cookie.rme.cipher.key 配置
         KeyGenerator kg = KeyGenerator.getInstance("AES");
         // rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）
@@ -29,8 +30,9 @@ public class DefaultJdbcPasswordDecoderImplTest {
     @Test
     public void testDecode() {
         DefaultJdbcPasswordDecoderImpl decoder = new DefaultJdbcPasswordDecoderImpl();
+        decoder.setKey("org.learning.key");
         decoder.init();
-        assertEquals("admin@qq.com", decoder.decode("xKCW3Zp4of/VGib6HTqAiQ=="));
+        assertEquals("admin@qq.com", decoder.decode("XArtGjXpKTfaDBBz0T1sgQ=="));
     }
 
 }

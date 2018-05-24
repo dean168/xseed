@@ -13,32 +13,34 @@ import org.springframework.util.Assert;
 
 public class DefaultJdbcPasswordDecoderImpl implements IJdbcPasswordEncoder, IJdbcPasswordDecoder {
 
-	private AesCipherService cipherService;
+    private AesCipherService cipherService;
+    private byte[] key;
 
-	@PostConstruct
-	public void init() {
-		cipherService = new AesCipherService();
-		cipherService.setModeName("ECB");
-	}
+    @PostConstruct
+    public void init() {
+        Assert.isTrue(key != null && key.length > 0, "key must not be null.");
+        cipherService = new AesCipherService();
+        cipherService.setModeName("ECB");
+    }
 
-	@Override
+    @Override
     public String encode(String password) {
-	    if (StringUtils.isNotEmpty(password)) {
-	        password = ByteUtils.toString(Base64.encode(cipherService.encrypt(ByteUtils.getBytes(password), createSecretKey()).getBytes()));
-	    }
+        if (StringUtils.isNotEmpty(password)) {
+            password = ByteUtils.toString(Base64.encode(cipherService.encrypt(ByteUtils.getBytes(password), key).getBytes()));
+        }
         return password;
     }
 
     @Override
-	public String decode(String password) {
-		if (StringUtils.isNotEmpty(password)) {
-			password = ByteUtils.toString(cipherService.decrypt(Base64.decode(password), createSecretKey()).getBytes());
-			Assert.hasText(password, "decoded password must have text; it must not be null, empty, or blank");
-		}
-		return password;
-	}
+    public String decode(String password) {
+        if (StringUtils.isNotEmpty(password)) {
+            password = ByteUtils.toString(cipherService.decrypt(Base64.decode(password), key).getBytes());
+            Assert.hasText(password, "decoded password must have text; it must not be null, empty, or blank");
+        }
+        return password;
+    }
 
-	private byte[] createSecretKey() {
-		return (new byte[] { 104, 117, 97, 119, 101, 105, 95, 99, 100, 115, 102, 95, 112, 97, 115, 115 });
-	}
+    public void setKey(String key) {
+        this.key = ByteUtils.getBytes(key);
+    }
 }
