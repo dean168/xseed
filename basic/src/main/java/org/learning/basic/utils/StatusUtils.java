@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 public abstract class StatusUtils {
 
     protected void _writeStatus(OutputStream os, boolean status, String message) {
@@ -35,11 +37,11 @@ public abstract class StatusUtils {
 
     protected abstract JsonGenerator _createGenerator(OutputStream os) throws IOException;
 
-    @JsonAutoDetect(creatorVisibility = JsonAutoDetect.Visibility.NONE, fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE)
+    @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
     public static class Status {
 
         public static final int FALSE = 0;
-        public static final int TRUE= 1;
+        public static final int TRUE = 1;
 
         @JsonProperty("errcode")
         private int errcode;
@@ -103,7 +105,7 @@ public abstract class StatusUtils {
     }
 
 
-    @JsonAutoDetect(creatorVisibility = JsonAutoDetect.Visibility.NONE, fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE)
+    @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
     public static class MediaStatus extends Status {
 
         @JsonProperty("contentType")

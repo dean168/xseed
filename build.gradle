@@ -6,8 +6,8 @@ buildscript {
 		maven { url 'http://repo.spring.io/plugins-release' }
 	}
     dependencies {
-		classpath 'org.akhikhl.gretty:gretty:2.0.0';
-		classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7';
+		classpath 'org.akhikhl.gretty:gretty:2.0.0'
+		classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
 	}
 }
 
