@@ -1,7 +1,7 @@
 package org.learning.basic.core.support;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.learning.basic.core.BasicException;
 import org.learning.basic.core.IDictService;
 import org.learning.basic.core.domain.Dict;

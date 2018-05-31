@@ -2,7 +2,7 @@ package org.learning.basic.utils;
 
 import java.util.Locale;
 
-public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
+public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
 
 	/**
 	 * 表达式语言开始标记符号

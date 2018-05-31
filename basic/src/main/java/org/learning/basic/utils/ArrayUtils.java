@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import org.learning.basic.core.domain.BasicOrder;
 
-public abstract class ArrayUtils extends org.apache.commons.lang.ArrayUtils {
+public abstract class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T[] add(T[] array, T object, Class<T> type) {

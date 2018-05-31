@@ -1,6 +1,6 @@
 package org.learning.basic.dao.dialect;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.MappingException;
 import org.hibernate.dialect.Dialect;
 import org.springframework.beans.factory.InitializingBean;

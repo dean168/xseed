@@ -1,8 +1,8 @@
 package org.learning.basic.web.controller;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.learning.basic.core.IDictService;
 import org.learning.basic.core.domain.Dict;
 import org.learning.basic.utils.ByteUtils;

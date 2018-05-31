@@ -1,7 +1,7 @@
 package org.learning.basic.shiro.service.support;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.learning.basic.core.domain.Account;
 import org.learning.basic.core.domain.SessionContext;
