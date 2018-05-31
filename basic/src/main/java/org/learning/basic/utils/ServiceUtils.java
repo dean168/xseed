@@ -15,6 +15,14 @@ public abstract class ServiceUtils {
 
     private static ApplicationContext AC;
 
+    public static boolean has(String id) {
+        return AC.containsBean(id);
+    }
+
+    public static boolean has(String id, Class<?> clazz) {
+        return AC.isTypeMatch(id, clazz);
+    }
+
     public static Object get(String id) {
         return AC.getBean(id);
     }
