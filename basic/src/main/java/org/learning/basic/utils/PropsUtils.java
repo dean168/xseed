@@ -1,9 +1,13 @@
 package org.learning.basic.utils;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -12,6 +16,8 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.context.WebApplicationContext;
 
 public class PropsUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(PropsUtils.class);
 
 	private static Method MP = ReflectionUtils.findMethod(PropertiesLoaderSupport.class, "mergeProperties");
 
@@ -48,8 +54,15 @@ public class PropsUtils {
 				PROPS.putAll(props);
 			}
 			if (ac instanceof WebApplicationContext) {
-			    WebApplicationContext wac = (WebApplicationContext) ac;
-			    PROPS.put(WEB_APP_ROOT, wac.getServletContext().getRealPath(""));
+				WebApplicationContext wac = (WebApplicationContext) ac;
+				String webAppRoot = wac.getServletContext().getRealPath("");
+				if (!new File(webAppRoot, "WEB-INF").exists()) {
+					webAppRoot = FileUtils.getTempDirectoryPath();
+				}
+				if (logger.isInfoEnabled()) {
+					logger.info("using webAppRoot -> " + webAppRoot);
+				}
+			    PROPS.put(WEB_APP_ROOT, webAppRoot);
 			}
 		}
 	}
