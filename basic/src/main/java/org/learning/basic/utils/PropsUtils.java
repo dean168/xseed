@@ -45,6 +45,7 @@ public class PropsUtils {
 	}
 
 	public static final class Resolver implements ApplicationContextAware {
+
 		@Override
 		public void setApplicationContext(ApplicationContext ac) throws BeansException {
 			PROPS.clear();
@@ -53,17 +54,17 @@ public class PropsUtils {
 				Properties props = (Properties) ReflectionUtils.invokeMethod(MP, entry.getValue());
 				PROPS.putAll(props);
 			}
+			String webAppRoot = null;
 			if (ac instanceof WebApplicationContext) {
 				WebApplicationContext wac = (WebApplicationContext) ac;
-				String webAppRoot = wac.getServletContext().getRealPath("");
-				if (!new File(webAppRoot, "WEB-INF").exists()) {
-					webAppRoot = FileUtils.getTempDirectoryPath();
-				}
-				if (logger.isInfoEnabled()) {
-					logger.info("using webAppRoot -> " + webAppRoot);
-				}
-			    PROPS.put(WEB_APP_ROOT, webAppRoot);
+				webAppRoot = wac.getServletContext().getRealPath("");
+			} else {
+				webAppRoot = FileUtils.getTempDirectoryPath();
 			}
+			if (logger.isInfoEnabled()) {
+				logger.info("using webAppRoot -> " + webAppRoot);
+			}
+			PROPS.put(WEB_APP_ROOT, webAppRoot);
 		}
 	}
 }
