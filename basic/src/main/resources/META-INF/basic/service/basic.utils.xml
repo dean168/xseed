@@ -13,6 +13,7 @@
                 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
                 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
+        <bean class="org.learning.basic.utils.WebUtils.Resolver" />
 	<bean class="org.learning.basic.utils.PropsUtils.Resolver" />
 	<bean class="org.learning.basic.utils.ServiceUtils.Resolver" />
 	<bean class="org.learning.basic.utils.ServiceUtils.Listener">

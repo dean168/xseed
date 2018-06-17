@@ -1,29 +1,41 @@
 package org.learning.basic.utils;
 
-import java.util.Enumeration;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationContext;
+import org.learning.basic.core.domain.SessionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
-import org.learning.basic.core.domain.SessionContext;
+import javax.annotation.PreDestroy;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 public abstract class WebUtils extends org.springframework.web.util.WebUtils {
 
-    private static String WEB_ROOT;
+    private static final Logger logger = LoggerFactory.getLogger(WebUtils.class);
+
+    private static ConfigurableListableBeanFactory current;
+    private static String webAppRoot;
 
     public static String getWebRoot() {
-        if (WEB_ROOT == null) {
-            ApplicationContext ac = ServiceUtils.getApplicationContext();
-            Assert.isTrue(ac instanceof WebApplicationContext, ac + " not instanceof " + WebApplicationContext.class.getName());
-            WebApplicationContext wac = (WebApplicationContext) ac;
-            WEB_ROOT = wac.getServletContext().getRealPath("");
+        if (webAppRoot == null) {
+            Assert.notNull(current, "beanFactory must not be null");
+            if (current instanceof WebApplicationContext) {
+                WebApplicationContext wac = (WebApplicationContext) current;
+                webAppRoot = wac.getServletContext().getRealPath("");
+            } else {
+                webAppRoot = FileUtils.getTempDirectoryPath();
+            }
+            if (logger.isInfoEnabled()) {
+                logger.info("using webAppRoot -> " + webAppRoot);
+            }
         }
-        return WEB_ROOT;
+        return webAppRoot;
     }
 
     public static String remoteAddr() {
@@ -99,5 +111,23 @@ public abstract class WebUtils extends org.springframework.web.util.WebUtils {
             }
         }
         return true;
+    }
+
+    public static final class Resolver implements BeanFactoryPostProcessor {
+
+        @Override
+        public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+            if (logger.isInfoEnabled()) {
+                logger.info("using beanFactory -> " + beanFactory.getClass().getName());
+            }
+            current = beanFactory;
+            webAppRoot = null;
+        }
+
+        @PreDestroy
+        public void destroy() {
+            current = null;
+            webAppRoot = null;
+        }
     }
 }
