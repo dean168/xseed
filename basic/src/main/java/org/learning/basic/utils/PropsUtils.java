@@ -1,26 +1,15 @@
 package org.learning.basic.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.support.PropertiesLoaderSupport;
-import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
-import javax.annotation.PreDestroy;
 import java.lang.reflect.Method;
 import java.util.Map.Entry;
 import java.util.Properties;
 
 public class PropsUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(PropsUtils.class);
-
     private static final Method MP = ReflectionUtils.findMethod(PropertiesLoaderSupport.class, "mergeProperties");
-
-    private static ConfigurableListableBeanFactory current;
 
     private static Properties PROPS;
 
@@ -28,9 +17,8 @@ public class PropsUtils {
 
     public static void prepared() {
         if (PROPS == null) {
-            Assert.notNull(current, "beanFactory must not be null");
             PROPS = new Properties();
-            for (Entry<String, PropertiesLoaderSupport> entry : current.getBeansOfType(PropertiesLoaderSupport.class).entrySet()) {
+            for (Entry<String, PropertiesLoaderSupport> entry : ServiceUtils.list(PropertiesLoaderSupport.class).entrySet()) {
                 ReflectionUtils.makeAccessible(MP);
                 Properties props = (Properties) ReflectionUtils.invokeMethod(MP, entry.getValue());
                 PROPS.putAll(props);
@@ -62,23 +50,5 @@ public class PropsUtils {
             String value = get(key);
             return StringUtils.isEmpty(value) ? prefix + key + suffix : value;
         });
-    }
-
-    public static final class Resolver implements BeanFactoryPostProcessor {
-
-        @Override
-        public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-            if (logger.isInfoEnabled()) {
-                logger.info("using beanFactory -> " + beanFactory.getClass().getName());
-            }
-            current = beanFactory;
-            PROPS = null;
-        }
-
-        @PreDestroy
-        public void destroy() {
-            current = null;
-            PROPS = null;
-        }
     }
 }

@@ -5,13 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.learning.basic.core.domain.SessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.util.Assert;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
@@ -19,17 +16,24 @@ public abstract class WebUtils extends org.springframework.web.util.WebUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(WebUtils.class);
 
-    private static ConfigurableListableBeanFactory current;
     private static String webAppRoot;
 
     public static String getWebRoot() {
         if (webAppRoot == null) {
-            Assert.notNull(current, "beanFactory must not be null");
-            if (current instanceof WebApplicationContext) {
-                WebApplicationContext wac = (WebApplicationContext) current;
-                webAppRoot = wac.getServletContext().getRealPath("");
-            } else {
-                webAppRoot = FileUtils.getTempDirectoryPath();
+            BeanFactory currentToUse = ServiceUtils.get();
+            while (webAppRoot == null) {
+                if (currentToUse instanceof WebApplicationContext) {
+                    WebApplicationContext wac = (WebApplicationContext) currentToUse;
+                    webAppRoot = wac.getServletContext().getRealPath("");
+                } else if (currentToUse instanceof HierarchicalBeanFactory) {
+                    currentToUse = ((HierarchicalBeanFactory) currentToUse).getParentBeanFactory();
+                } else {
+                    String temp = FileUtils.getTempDirectoryPath();
+                    if (logger.isInfoEnabled()) {
+                        logger.info("webAppRoot not found, using -> " + temp);
+                    }
+                    return temp;
+                }
             }
             if (logger.isInfoEnabled()) {
                 logger.info("using webAppRoot -> " + webAppRoot);
@@ -111,23 +115,5 @@ public abstract class WebUtils extends org.springframework.web.util.WebUtils {
             }
         }
         return true;
-    }
-
-    public static final class Resolver implements BeanFactoryPostProcessor {
-
-        @Override
-        public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-            if (logger.isInfoEnabled()) {
-                logger.info("using beanFactory -> " + beanFactory.getClass().getName());
-            }
-            current = beanFactory;
-            webAppRoot = null;
-        }
-
-        @PreDestroy
-        public void destroy() {
-            current = null;
-            webAppRoot = null;
-        }
     }
 }

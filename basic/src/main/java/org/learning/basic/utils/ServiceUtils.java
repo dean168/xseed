@@ -1,10 +1,12 @@
 package org.learning.basic.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.util.Assert;
@@ -17,52 +19,49 @@ import java.util.concurrent.Executor;
 
 public abstract class ServiceUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServiceUtils.class);
+    private static BeanFactory current;
 
-    private static ConfigurableListableBeanFactory current;
-
-    public static void prepared() {
+    public static BeanFactory get() {
         Assert.notNull(current, "beanFactory must not be null");
+        return current;
     }
 
     public static boolean has(String id) {
-        prepared();
-        return current.containsBean(id);
+        return get().containsBean(id);
     }
 
     public static boolean has(String id, Class<?> clazz) {
-        prepared();
-        return current.isTypeMatch(id, clazz);
+        return get().isTypeMatch(id, clazz);
     }
 
     public static Object get(String id) {
-        prepared();
-        return current.getBean(id);
+        return get().getBean(id);
     }
 
     public static <T> T get(Class<T> clazz) {
-        prepared();
-        return current.getBean(clazz);
+        return get().getBean(clazz);
     }
 
     public static <T> T get(String id, Class<T> clazz) {
-        prepared();
-        return current.getBean(id, clazz);
+        return get().getBean(id, clazz);
     }
 
     public static <T> Map<String, T> list(Class<T> clazz) {
-        prepared();
-        return current.getBeansOfType(clazz);
+        return ((ListableBeanFactory) get()).getBeansOfType(clazz);
     }
 
-    public static final class Resolver implements BeanFactoryPostProcessor {
+    public static final class Resolver implements BeanFactoryPostProcessor, ApplicationContextAware {
 
         @Override
         public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-            if (logger.isInfoEnabled()) {
-                logger.info("using beanFactory -> " + beanFactory.getClass().getName());
+            if (current == null) {
+                current = beanFactory;
             }
-            current = beanFactory;
+        }
+
+        @Override
+        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+            current = applicationContext;
         }
 
         @PreDestroy
