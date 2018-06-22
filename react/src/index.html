@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <title>
+        <%=title %>
+    </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="css/antd.min.css"> -->
+    <% if (debug == false) { %>
+    <link type="text/css" rel="stylesheet" media="all" href="css/index.<%=version %>.css">
+    <% } %>
+</head>
+
+<body>
+    <div id="app"></div>
+    <!-- <script src="js/antd.min.js"></script> -->
+    <script src="js/index.<%=version %>.js"></script>
+</body>
+
+</html>
