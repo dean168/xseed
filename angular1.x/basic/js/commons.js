@@ -201,12 +201,13 @@ angular.module('basic.commons', []).directive('bcFocus', function($timeout, $com
 				callback && scope[callback](media, value);
 			};
 			// 上传方法
-			if (typeof options.uploader == 'string' && options.uploader != 'avuploader') { // 默认的上传
+            if (typeof options.uploader == 'string' && options.uploader != 'avuploader') { // 默认的上传
+                var url = options.uploader;
 				options.uploader = function(media) {
 					var data = new FormData();
 					data.append("multipartFile", media);
 					$commons.upload({
-						url: options.uploader.url,
+						url: url,
 						data: data,
 						success: function(status) {
 						    status.errcode ? options.upcallback(media, status) : $commons.alert(status.message);
