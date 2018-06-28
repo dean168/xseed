@@ -131,7 +131,7 @@ public abstract class HashUtils {
         }
 
         public static long hash(String key) {
-            return hash(ByteUtils.getBytes(key));
+            return hash(ByteUtils.bytes(key));
         }
     }
 }

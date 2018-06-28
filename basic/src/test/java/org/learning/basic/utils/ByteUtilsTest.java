@@ -17,7 +17,7 @@ public class ByteUtilsTest {
 		buffer.order(ByteOrder.BIG_ENDIAN);
 		buffer.putInt(1111);
 		buffer.flip();
-		assertEquals(1111, ByteUtils.getInt(content, 0));
+		assertEquals(1111, ByteUtils.ints(content, 0));
 	}
 
 	@Test
@@ -27,7 +27,7 @@ public class ByteUtilsTest {
 		buffer.order(ByteOrder.BIG_ENDIAN);
 		buffer.putLong(1111);
 		buffer.flip();
-		assertEquals(1111, ByteUtils.getLong(content, 0));
+		assertEquals(1111, ByteUtils.longs(content, 0));
 	}
 
 	@Test

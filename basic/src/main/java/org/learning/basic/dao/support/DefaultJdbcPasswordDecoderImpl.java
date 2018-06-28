@@ -26,7 +26,7 @@ public class DefaultJdbcPasswordDecoderImpl implements IJdbcPasswordEncoder, IJd
     @Override
     public String encode(String password) {
         if (StringUtils.isNotEmpty(password)) {
-            password = ByteUtils.toString(Base64.encode(cipherService.encrypt(ByteUtils.getBytes(password), key).getBytes()));
+            password = ByteUtils.strings(Base64.encode(cipherService.encrypt(ByteUtils.bytes(password), key).getBytes()));
         }
         return password;
     }
@@ -34,13 +34,13 @@ public class DefaultJdbcPasswordDecoderImpl implements IJdbcPasswordEncoder, IJd
     @Override
     public String decode(String password) {
         if (StringUtils.isNotEmpty(password)) {
-            password = ByteUtils.toString(cipherService.decrypt(Base64.decode(password), key).getBytes());
+            password = ByteUtils.strings(cipherService.decrypt(Base64.decode(password), key).getBytes());
             Assert.hasText(password, "decoded password must have text; it must not be null, empty, or blank");
         }
         return password;
     }
 
     public void setKey(String key) {
-        this.key = ByteUtils.getBytes(key);
+        this.key = ByteUtils.bytes(key);
     }
 }

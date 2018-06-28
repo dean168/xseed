@@ -22,8 +22,8 @@ public abstract class ByteUtils {
 	 * @param content
 	 * @return
 	 */
-	public static int getInt(byte[] content) {
-		return  getInt(content, 0);
+	public static int ints(byte[] content) {
+		return  ints(content, 0);
 	}
 
 	/**
@@ -34,7 +34,7 @@ public abstract class ByteUtils {
 	 * @param offset
 	 * @return
 	 */
-	public static int getInt(byte[] content, int offset) {
+	public static int ints(byte[] content, int offset) {
 		return ((content[offset + 0] & 0xff) << 24)
 				| ((content[offset + 1] & 0xff) << 16)
 				| ((content[offset + 2] & 0xff) << 8)
@@ -48,8 +48,8 @@ public abstract class ByteUtils {
 	 * @param content
 	 * @return
 	 */
-	public static long getLong(byte[] content) {
-		return getLong(content, 0);
+	public static long longs(byte[] content) {
+		return longs(content, 0);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public abstract class ByteUtils {
 	 * @param offset
 	 * @return
 	 */
-	public static long getLong(byte[] content, int offset) {
+	public static long longs(byte[] content, int offset) {
 		return (((long)content[offset + 0] & 0xff) << 56) |
 				(((long)content[offset + 1] & 0xff) << 48) |
 				(((long)content[offset + 2] & 0xff) << 40) |
@@ -71,7 +71,7 @@ public abstract class ByteUtils {
 				(((long)content[offset + 7] & 0xff) <<  0);
 	}
 
-	public static byte[] getBytes(String content) {
+	public static byte[] bytes(String content) {
 		if (StringUtils.isEmpty(content)) {
 			return ArrayUtils.EMPTY_BYTE_ARRAY;
 		}
@@ -116,17 +116,17 @@ public abstract class ByteUtils {
 		content[offset + 7] = (byte) (value >> 0);
 	}
 
-	public static InetSocketAddress getSocketAddress(ByteBuffer buffer) {
-		return new InetSocketAddress(getInet4Address(buffer), buffer.getInt());
+	public static InetSocketAddress socketAddress(ByteBuffer buffer) {
+		return new InetSocketAddress(inet4Address(buffer), buffer.getInt());
 	}
 
-	public static Inet4Address getInet4Address(ByteBuffer buffer) {
+	public static Inet4Address inet4Address(ByteBuffer buffer) {
 		byte[] address = new byte[4];
 		buffer.get(address);
-		return (Inet4Address) getInetAddress(address);
+		return (Inet4Address) inetAddress(address);
 	}
 
-	public static InetAddress getInetAddress(byte[] address) {
+	public static InetAddress inetAddress(byte[] address) {
 		try {
 			return InetAddress.getByAddress(address);
 		} catch (UnknownHostException e) {
@@ -134,11 +134,11 @@ public abstract class ByteUtils {
 		}
 	}
 
-	public static String toString(byte[] content) {
-		return toString(content, 0, ArrayUtils.getLength(content));
+	public static String strings(byte[] content) {
+		return strings(content, 0, ArrayUtils.getLength(content));
 	}
 
-	public static String toString(byte[] content, int offset, int length) {
+	public static String strings(byte[] content, int offset, int length) {
 		try {
 			return new String(content, offset, length, CHARSET_NAME);
 		} catch (UnsupportedEncodingException e) {
