@@ -35,6 +35,7 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
 		text = StringUtils.replace(text, " • ", "\n• ");
 		text = StringUtils.replace(text, " ＊ ", "\n＊ ");
 		text = StringUtils.replace(text, " ＊　", "\n＊　");
+		text = StringUtils.replace(text, " \uF0D8 ", "\n	");
 		for (int i = 2; i < 20; i++) {
 			text = StringUtils.replace(text, " " + i + "、", "\n" + i + "、");
 			text = StringUtils.replace(text, " " + i + ".", "\n" + i + ".");
