@@ -13,6 +13,37 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 */
 	public static final String EVAL_SUFFIX = "}";
 
+	public static int ints(String text) {
+		if (StringUtils.isNotEmpty(text)) {
+			StringBuilder textToUse = new StringBuilder(text.length());
+			for (int i = 0; i < text.length(); i++) {
+				char c = text.charAt(i);
+				if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c == '.') {
+					textToUse.append(c);
+				}
+			}
+			if (textToUse.length() == 0) {
+				return 0;
+			}
+			return Float.valueOf(textToUse.toString()).intValue();
+		}
+		return 0;
+	}
+
+	public static String lines(String text) {
+		text = StringUtils.replace(text, " * ", "\n* ");
+		text = StringUtils.replace(text, " • ", "\n• ");
+		text = StringUtils.replace(text, " ＊ ", "\n＊ ");
+		text = StringUtils.replace(text, " ＊　", "\n＊　");
+		for (int i = 2; i < 20; i++) {
+			text = StringUtils.replace(text, " " + i + "、", "\n" + i + "、");
+			text = StringUtils.replace(text, " " + i + ".", "\n" + i + ".");
+			text = StringUtils.replace(text, " " + i + "：", "\n" + i + "：");
+			text = StringUtils.replace(text, " " + i + ":", "\n" + i + ":");
+		}
+		return text;
+	}
+
 	/**
 	 * 取指定长度的前面字符串
 	 * @param src 字符串

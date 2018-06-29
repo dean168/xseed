@@ -8,6 +8,7 @@ import org.learning.basic.core.domain.Dict;
 import org.learning.basic.core.domain.Pagination;
 import org.learning.basic.dao.IHibernateOperations;
 import org.learning.basic.dao.support.SQLSupport.SQL;
+import org.learning.basic.utils.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 
@@ -23,6 +24,32 @@ public class DictServiceImpl implements IDictService {
 	@Override
 	public <D extends Dict> D get(Dict dict) {
 		return prepared(dict, (D) hibernateOperations.get(forName(dict.getType()), dict.getId()));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <D extends Dict> D name(Class<D> type, String name, String... suffixs) {
+		name = StringUtils.trim(name);
+		if (StringUtils.isEmpty(name)) {
+			return null;
+		}
+		D dict = BeanUtils.instantiate(type);
+		dict.setType(type.getName());
+		dict.setName(name);
+		Pagination<D> list = list(dict, 0, 1);
+		if (!list.getResult().isEmpty()) {
+			return list.getResult().get(0);
+		}
+		for (int i = 0; i < ArrayUtils.getLength(suffixs); i++) {
+			dict.setName(name + suffixs[i]);
+			list = list(dict, 0, 1);
+			if (!list.getResult().isEmpty()) {
+				return list.getResult().get(0);
+			}
+		}
+		dict.setName(name);
+		dict.setDesc(name);
+		return hibernateOperations.xmerge(dict);
 	}
 
 	@SuppressWarnings("unchecked")

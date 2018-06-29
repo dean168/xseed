@@ -8,19 +8,21 @@ import java.util.List;
 
 public interface IDictService {
 
-	String SERVICE_ID = "basic.dictService";
+    String SERVICE_ID = "basic.dictService";
 
-	<D extends Dict> D get(Dict dict);
+    <D extends Dict> D get(Dict dict);
 
-	<D extends Dict> Pagination<D> search(Dict dict, int offset, int limit);
+    <D extends Dict> D name(Class<D> type, String name, String... suffixs);
 
-	<D extends Dict> Pagination<D> list(Dict dict, int offset, int limit);
+    <D extends Dict> Pagination<D> search(Dict dict, int offset, int limit);
 
-	<D extends Dict> List<D> list(Class<D> clazz, String... ids);
+    <D extends Dict> Pagination<D> list(Dict dict, int offset, int limit);
 
-	<D extends Dict> D prepared(Dict dict, D target);
+    <D extends Dict> List<D> list(Class<D> clazz, String... ids);
 
-	<D extends Dict> D store(D dict);
+    <D extends Dict> D prepared(Dict dict, D target);
 
-	void delete(Class<?> clazz, Serializable... ids);
+    <D extends Dict> D store(D dict);
+
+    void delete(Class<?> clazz, Serializable... ids);
 }

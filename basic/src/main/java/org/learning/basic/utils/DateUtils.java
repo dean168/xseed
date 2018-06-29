@@ -1,9 +1,8 @@
 package org.learning.basic.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -15,6 +14,7 @@ public abstract class DateUtils {
 
     /**
      * 默认时区通过 -Duser.timezone=GMT+08 启动参数设置
+     *
      * @param pattern
      * @param source
      * @return
@@ -41,5 +41,16 @@ public abstract class DateUtils {
             return null;
         }
         return new SimpleDateFormat(pattern).format(source);
+    }
+
+    public static Date dateOfBirth(String text) {
+        if (StringUtils.isNotEmpty(text)) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_YEAR, 1);
+            cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - StringUtils.ints(text));
+            cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+            return cal.getTime();
+        }
+        return null;
     }
 }
