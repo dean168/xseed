@@ -15,7 +15,7 @@
                 default-lazy-init="true">
 
 	<bean id="basic.defaultJdbcPasswordDecoder" class="org.learning.basic.dao.support.DefaultJdbcPasswordDecoderImpl">
-        <property name="key" value="${basic.jdbc.password.cipher.key}" />
+        <property name="key" value="${basic.jdbc.cipher.key}" />
     </bean>
 
     <bean id="basic.dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
