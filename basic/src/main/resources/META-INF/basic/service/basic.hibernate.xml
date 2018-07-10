@@ -36,6 +36,7 @@
                 <prop key="hibernate.show_sql">${basic.hibernate.show_sql}</prop>
                 <prop key="hibernate.query.factory_class">${basic.hibernate.query.factory_class}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${basic.hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.jdbc.lob.non_contextual_creation">true</prop>
                 <!--<prop key="hibernate.search.default.directory_provider">${basic.hibernate.search.default.directory_provider}</prop>-->
                 <!--<prop key="hibernate.search.default.indexBase">${basic.hibernate.search.default.indexBase}</prop>-->
             </props>
