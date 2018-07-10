@@ -48,7 +48,9 @@
     </bean>
     <alias name="basic.sessionFactory" alias="sessionFactory" />
 
-	<bean id="basic.dialect" class="${basic.hibernate.dialect}" />
+	<bean id="basic.dialect" class="org.learning.basic.dao.dialect.DialectFactory">
+        <property name="dialect" value="${basic.hibernate.dialect}" />
+    </bean>
 	<bean id="basic.hibernateOperations" class="org.learning.basic.dao.support.HibernateTemplateSupport" p:sessionFactory-ref="basic.sessionFactory" p:dialect-ref="basic.dialect" />
 
 </beans>
