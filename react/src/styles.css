@@ -11,3 +11,10 @@
     border-radius: 8px;
     background-color: #bfc3c6;
 }
+
+.opacity0 {
+    opacity: 0;
+}
+.opacity1 {
+    opacity: 1;
+}

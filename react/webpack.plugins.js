@@ -11,6 +11,9 @@ var plugins = [
         from: path.join(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.min.css.map'),
         to: 'css/bootstrap.min.css.map'
     }, {
+        from: path.join(__dirname, 'node_modules/animate.css/animate.min.css'),
+        to: 'css/animate.min.css'
+    }, {
     //     from: path.join(__dirname, 'node_modules/antd/dist/antd.min.js'),
     //     to: 'js/antd.min.js'
     // }, {
