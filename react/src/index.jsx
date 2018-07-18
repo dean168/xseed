@@ -5,8 +5,9 @@ import './styles.css';
 import React, { Component } from 'react';
 import ReactDOM, { render } from 'react-dom';
 
+import Loading from './components/loading/loading.component';
 import { routes } from './routes';
-import { Loading } from './components/loading/loading.component';
+
 
 class App extends Component {
 
