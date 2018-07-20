@@ -17,10 +17,18 @@ export class SubjectProvider {
     }
 
     subject(name: string): Subject<any> {
-        return this.subjects[name] || (this.subjects[name] = new Subject<any>());
+        if (name) {
+            return this.subjects[name] || (this.subjects[name] = new Subject<any>());
+        } else {
+            throw 'subject name must not be null';
+        }
     }
 
     observable(name: string): Observable<any> {
-        return this.observables[name] || (this.observables[name] = this.subject(name).asObservable());
+        if (name) {
+            return this.observables[name] || (this.observables[name] = this.subject(name).asObservable());
+        } else {
+            throw 'observable name must not be null';
+        }
     }
 }

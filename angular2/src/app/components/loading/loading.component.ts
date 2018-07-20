@@ -26,7 +26,7 @@ export class LoadingComponent {
                 } else if (queue.type == 'pop') {
                     this.state.queues.pop();
                 } else {
-                    throw Error('undefined type: ' + queue.type);
+                    throw 'undefined type: ' + queue.type;
                 }
             }
         )
