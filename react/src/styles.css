@@ -18,3 +18,10 @@
 .opacity1 {
     opacity: 1;
 }
+
+.xs-block {
+    display: block;
+}
+.xs-hide {
+    display: none;
+}
