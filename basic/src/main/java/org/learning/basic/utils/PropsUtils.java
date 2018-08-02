@@ -23,7 +23,7 @@ public class PropsUtils {
         for (int i = 0; i < RESOLVERS.length; i++) {
             String value = RESOLVERS[i].getProperty(key);
             if (value != null) {
-                return WEB_TMP_ROOT.equals(key) && StringUtils.EMPTY.equals(value) ? FileUtils.getTempDirectoryPath() : value;
+                return WEB_TMP_ROOT.equals(key) && StringUtils.EMPTY.equals(value) ? StringUtils.removeEnd(StringUtils.cleanPath(FileUtils.getTempDirectoryPath()), "/") : value;
             }
         }
         return null;
