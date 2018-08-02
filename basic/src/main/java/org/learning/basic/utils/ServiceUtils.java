@@ -77,13 +77,11 @@ public abstract class ServiceUtils {
 
         @Override
         public void onApplicationEvent(ContextRefreshedEvent event) {
-            if (event.getApplicationContext().getParent() == null) {
-                synchronized (Listener.class) {
-                    while (QUEUES != null && !QUEUES.isEmpty()) {
-                        executor.execute(QUEUES.remove(0));
-                    }
-                    QUEUES = null;
+            synchronized (Listener.class) {
+                while (QUEUES != null && !QUEUES.isEmpty()) {
+                    executor.execute(QUEUES.remove(0));
                 }
+                QUEUES = null;
             }
         }
 
