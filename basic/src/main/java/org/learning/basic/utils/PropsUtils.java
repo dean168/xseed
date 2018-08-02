@@ -1,35 +1,32 @@
 package org.learning.basic.utils;
 
-import org.springframework.core.io.support.PropertiesLoaderSupport;
-import org.springframework.util.ReflectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.springframework.core.env.PropertyResolver;
 
-import java.lang.reflect.Method;
-import java.util.Map.Entry;
-import java.util.Properties;
+import java.util.Collection;
 
 public class PropsUtils {
 
-    private static final Method MP = ReflectionUtils.findMethod(PropertiesLoaderSupport.class, "mergeProperties");
-
-    private static Properties PROPS;
+    private static PropertyResolver[] RESOLVERS;
 
     public static final String WEB_APP_ROOT = "webAppRoot";
-
-    public static void prepared() {
-        if (PROPS == null) {
-            PROPS = new Properties();
-            for (Entry<String, PropertiesLoaderSupport> entry : ServiceUtils.list(PropertiesLoaderSupport.class).entrySet()) {
-                ReflectionUtils.makeAccessible(MP);
-                Properties props = (Properties) ReflectionUtils.invokeMethod(MP, entry.getValue());
-                PROPS.putAll(props);
-            }
-            PROPS.put(WEB_APP_ROOT, WebUtils.getWebRoot());
-        }
-    }
+    public static final String WEB_TMP_ROOT = "basic.temp.root";
 
     public static String get(String key) {
-        prepared();
-        return PROPS.getProperty(key);
+        if (WEB_APP_ROOT.equals(key)) {
+            return WebUtils.getWebRoot();
+        }
+        if (RESOLVERS == null) {
+            Collection<PropertyResolver> resolvers = ServiceUtils.list(PropertyResolver.class).values();
+            RESOLVERS = resolvers.toArray(new PropertyResolver[resolvers.size()]);
+        }
+        for (int i = 0; i < RESOLVERS.length; i++) {
+            String value = RESOLVERS[i].getProperty(key);
+            if (value != null) {
+                return WEB_TMP_ROOT.equals(key) && StringUtils.EMPTY.equals(value) ? FileUtils.getTempDirectoryPath() : value;
+            }
+        }
+        return null;
     }
 
     public static String get(String key, String defaultValue) {
