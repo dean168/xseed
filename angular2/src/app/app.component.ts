@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
 import { LANGUAGES, LANGUAGE_DEFAULT, LANGUAGE_STORAGE_KEY } from './app.config';
-import { ApiProvider } from './providers/api-provider';
+import { ApiProvider } from './providers/api.provider';
 
 import * as $ from 'jquery'
 

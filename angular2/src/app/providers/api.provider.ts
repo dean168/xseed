@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 
-import { SubjectProvider } from './subject-provider';
+import { SubjectProvider } from './subject.provider';
 
 import { apiURL } from '../app.config';
 
@@ -26,9 +26,9 @@ export class ApiProvider {
 
     options(options) {
         return new Promise((resolve, reject) => {
-            this.translate.get('commons.loading.content').subscribe(message => {
+            this.translate.get('commons.loading.message').subscribe(message => {
                 let animate = (options.animate == undefined || options.animate) ? this.subject.subject('app.components.loading.queues') : undefined;
-                animate && animate.next({ type: 'push', content: message });
+                animate && animate.next({ type: 'push', message: message });
                 options.url = apiURL(options.url);
                 options.headers = new HttpHeaders();
                 options.headers.append(this.csrf.name, this.csrf.token);

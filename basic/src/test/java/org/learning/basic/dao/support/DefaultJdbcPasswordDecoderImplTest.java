@@ -17,6 +17,7 @@ public class DefaultJdbcPasswordDecoderImplTest {
         decoder.setKey("org.learning.key");
         decoder.init();
         assertEquals("XArtGjXpKTfaDBBz0T1sgQ==", decoder.encode("admin@qq.com"));
+        assertEquals("TAkJZq2k4ry+zARXB1Vt7Q==", decoder.encode("learning"));
         // 生成 basic.shiro.cookie.rme.cipher.key 配置
         KeyGenerator kg = KeyGenerator.getInstance("AES");
         // rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）

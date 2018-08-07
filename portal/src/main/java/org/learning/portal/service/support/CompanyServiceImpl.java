@@ -1,6 +1,6 @@
 package org.learning.portal.service.support;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.learning.basic.core.domain.Pagination;
 import org.learning.basic.core.domain.SearchForm;
 import org.learning.basic.dao.IHibernateOperations;

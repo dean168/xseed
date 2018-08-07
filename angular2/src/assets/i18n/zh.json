@@ -1,7 +1,7 @@
 {
     "commons": {
         "loading": {
-            "content": "Loading..."
+            "message": "Loading..."
         }
     }
 }

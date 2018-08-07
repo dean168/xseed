@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { SubjectProvider } from '../../providers/subject-provider';
+import { SubjectProvider } from '../../providers/subject.provider';
 
 
 @Component({
