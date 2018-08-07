@@ -5,12 +5,6 @@ var cssBundle = path.join('css', util.format('[name].%s.css', pkg.version));
 
 var plugins = [
     new CopyWebpackPlugin([{
-        from: path.join(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.min.css'),
-        to: 'css/bootstrap.min.css'
-    }, {
-        from: path.join(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.min.css.map'),
-        to: 'css/bootstrap.min.css.map'
-    }, {
         from: path.join(__dirname, 'node_modules/animate.css/animate.min.css'),
         to: 'css/animate.min.css'
     }, {
@@ -25,9 +19,6 @@ var plugins = [
     // }, {
     //     from: path.join(__dirname, 'node_modules/antd/dist/antd.min.css.map'),
     //     to: 'css/antd.min.css.map'
-    // }, {
-    //     from: path.join(__dirname, 'node_modules/bootstrap/dist/fonts'),
-    //     to: 'fonts'
     // }, {
         from: 'assets/i18n',
         to: 'i18n'

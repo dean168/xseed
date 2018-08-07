@@ -25,8 +25,7 @@ var config = {
     devtool: DEBUG ? 'inline-source-map' : false,
     entry: entry,
     externals: {
-        // 'antd': 'antd',
-        'bootstrap': 'Bootstrap',
+        // 'antd': 'antd'
     },
     output: {
         path: path.resolve(pkg.config.buildDir),
@@ -36,10 +35,9 @@ var config = {
     },
     module: {
         rules: rules,
-        noParse: [
-            // path.join(__dirname, 'node_modules/antd'),
-            path.join(__dirname, 'node_modules/bootstrap')
-        ]
+        // noParse: [
+        //     path.join(__dirname, 'node_modules/antd')
+        // ]
     },
     plugins: plugins,
     resolve: {

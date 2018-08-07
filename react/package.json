@@ -15,7 +15,6 @@
     "dependencies": {
         "animate.css": "^3.6.1",
         "antd": "^3.5.3",
-        "bootstrap": "^4.1.1",
         "jquery": "^3.3.1",
         "react": "^16.4.0",
         "react-dom": "^16.4.0",
@@ -23,7 +22,7 @@
         "react-router-dom": "^4.3.1"
     },
     "devDependencies": {
-        "autoprefixer": "^8.5.0",
+        "autoprefixer": "^9.1.0",
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.3",
         "babel-loader": "^7.1.4",
@@ -50,7 +49,7 @@
         "postcss-loader": "^2.1.5",
         "react-hot-loader": "^4.2.0",
         "sass-loader": "^7.0.1",
-        "style-loader": "^0.21.0",
+        "style-loader": "^0.22.0",
         "template-html-loader": "^1.0.0",
         "webpack": "^4.8.3",
         "webpack-cli": "^3.0.8",
