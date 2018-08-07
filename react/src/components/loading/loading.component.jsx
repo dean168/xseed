@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Icon from 'antd/lib/icon';
 import 'antd/lib/icon/style/css';
 
-import * as setup from '../../setup';
+import * as config from '../../config';
 import { observable } from '../../providers/subject.provider';
 
 import './loading.component.scss';
@@ -32,7 +32,7 @@ export default class Loading extends Component {
     }
 
     render() {
-        let message = this.state.queues.length > 0 ? this.state.queues[this.state.queues.length - 1].message || setup.components.loading.message : setup.components.loading.message;
+        let message = this.state.queues.length > 0 ? this.state.queues[this.state.queues.length - 1].message || config.components.loading.message : config.components.loading.message;
         return (
             <div className={'xs-loading' + (this.state.queues.length > 0 ? ' xs-block' : ' xs-hide')}>
                 <div className="xs-icon">
