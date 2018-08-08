@@ -18,7 +18,7 @@
         <property name="key" value="${basic.jdbc.cipher.key}" />
     </bean>
 
-    <bean id="basic.dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <bean id="basic.dataSource" class="org.learning.basic.dao.support.DruidDataSourceImpl" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${basic.jdbc.driverClassName}" />
         <property name="url" value="${basic.jdbc.url}" />
         <property name="username" value="${basic.jdbc.username}" />
@@ -28,6 +28,7 @@
         		<property name="password" value="${basic.jdbc.password}" />
         	</bean>
         </property>
+        <property name="inits" value="${basic.druid.inits}" />
         <property name="validationQuery" value="SELECT 'x'" />
 <!--         <property name="initialSize" value="${basic.druid.initialSize}" /> -->
         <property name="maxActive" value="${basic.druid.maxActive}" />
