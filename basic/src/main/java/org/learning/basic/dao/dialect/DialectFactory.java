@@ -14,6 +14,7 @@ public class DialectFactory<D extends Dialect> implements FactoryBean<D> {
     private Class<D> dialectClass;
     private D dialectToUse;
 
+    @SuppressWarnings("unchecked")
     @PostConstruct
     public void init() throws ClassNotFoundException {
         Assert.hasText(dialect, "dialect must not be null");
