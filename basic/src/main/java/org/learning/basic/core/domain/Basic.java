@@ -3,12 +3,10 @@ package org.learning.basic.core.domain;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.learning.basic.utils.BeanUtils.Type;
 
 import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static org.learning.basic.utils.BeanUtils.Type.SAVE;
 
 @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
 public class Basic {
@@ -43,25 +41,6 @@ public class Basic {
 
     public void reset() {
         this.id = null;
-    }
-
-    public <T extends Basic> T copyTo(T basic, Type type) {
-        if (SAVE.equals(type)) {
-            SessionContext context = SessionContext.get();
-            String cu = context != null ? context.accountId() : null;
-            Date now = new Date();
-            basic.setCreatedAt(now);
-            basic.setCreatedBy(cu);
-            basic.setUpdatedAt(now);
-            basic.setUpdatedBy(cu);
-        } else {
-            basic.setId(getId());
-            basic.setCreatedAt(getCreatedAt());
-            basic.setCreatedBy(getCreatedBy());
-            basic.setUpdatedAt(getUpdatedAt());
-            basic.setUpdatedBy(getUpdatedBy());
-        }
-        return basic;
     }
 
     public void created(String createdBy, Date createdAt) {

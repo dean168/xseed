@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.learning.basic.core.domain.BasicOrder;
+import org.learning.basic.core.domain.Ordered;
 
 public abstract class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 
@@ -34,7 +34,7 @@ public abstract class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends BasicOrder> T[] sort(Collection<T> collection, Class<T> type) {
+	public static <T extends Ordered> T[] sort(Collection<T> collection, Class<T> type) {
 		if (collection != null) {
 			T[] array = (T[]) Array.newInstance(type, collection.size());
 			int index = 0;
@@ -48,7 +48,7 @@ public abstract class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends BasicOrder> T[] sort(T[] array, Class<T> clazz) {
+	public static <T extends Ordered> T[] sort(T[] array, Class<T> clazz) {
 		if (array != null) {
 			sort(array);
 		} else {
@@ -57,7 +57,7 @@ public abstract class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 		return array;
 	}
 
-	public static <T extends BasicOrder> T[] sort(T[] array) {
+	public static <T extends Ordered> T[] sort(T[] array) {
 		Arrays.sort(array, (T o1, T o2) -> o1 == null || o1.getOrder() == null || o2 == null || o2.getOrder() == null ? 0 : o1.getOrder().compareTo(o2.getOrder()));
 		return array;
 	}

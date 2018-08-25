@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
-public class Dict extends BasicOrder {
+public class Dict extends Ordered {
 
     @JsonProperty("type")
     private String type;
