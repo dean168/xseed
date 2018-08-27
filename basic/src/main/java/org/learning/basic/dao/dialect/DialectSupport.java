@@ -3,12 +3,11 @@ package org.learning.basic.dao.dialect;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.MappingException;
 import org.hibernate.dialect.Dialect;
+import org.learning.basic.dao.support.SQLSupport.SQL;
+import org.learning.basic.utils.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-
-import org.learning.basic.dao.support.SQLSupport.SQL;
-import org.learning.basic.utils.BeanUtils;
 
 public class DialectSupport implements InitializingBean {
     private Dialect dialect;
@@ -60,9 +59,9 @@ public class DialectSupport implements InitializingBean {
 
     @SuppressWarnings("deprecation")
     private int[] getLimitParams(int offset, int limit) {
-        int limitToUse = offset + limit;
+        int limitToUse = dialect.useMaxForLimit() ? offset + limit : limit;
         if (offset > 0 && dialect.supportsLimitOffset()) {
-            int[] limitParams = new int[]{offset, limit};
+            int[] limitParams = new int[]{offset, limitToUse};
             if (dialect.bindLimitParametersInReverseOrder()) {
                 ArrayUtils.reverse(limitParams);
             }
