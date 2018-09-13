@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import $ from 'jquery';
 
 
-export let topping = ComponsedComponent => class extends Component {
+export let topping = ComponsedComponent => class extends React.Component {
 
     componentDidMount = () => {
         $('body,html').scrollTop(0);

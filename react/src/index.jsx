@@ -20,16 +20,10 @@ class App extends Component {
 
     render() {
         return (
-            this.state.prepared ? (
-                <div>
-                    <Loading subject={config.components.loading.subject}  />
-                    {routes()}
-                </div>
-            ) : (
-                    <div>
-                        <Loading subject={config.components.loading.subject}  />
-                    </div>
-                )
+            <div>
+                { this.state.prepared ? routes() : undefined}
+                <Loading observable={config.components.loading.observable} />
+            </div>
         );
     }
 }

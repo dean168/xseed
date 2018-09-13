@@ -1,5 +1,8 @@
 import $ from 'jquery';
 
+import message from 'antd/lib/message';
+import 'antd/lib/message/style/css';
+
 import * as config from '../config';
 import { subject } from './subject.provider';
 
@@ -7,15 +10,15 @@ import { subject } from './subject.provider';
 export const exchange = (options) => {
     return new Promise((resolve, reject) => {
         fetch(options).then(
-            status => status.errcode ? resolve(status.data) : alert(status.message),
-            error => (options.errorText && alert(options.errorText)) || reject(error)
+            status => status.errcode ? resolve(status.data) : message.error(status.message),
+            error => (options.errorText && message.error(options.errorText)) || reject(error)
         );
     });
 }
 
 export const fetch = (options) => {
     let animate = _animate(options.animate);
-    animate = animate ? subject(animate.subject) : undefined;
+    animate = animate ? subject(animate.observable) : undefined;
     animate && animate.next({ type: 'push', content: animate.message });
     options = _options(options);
     return new Promise((resolve, reject) => {
@@ -25,12 +28,12 @@ export const fetch = (options) => {
 
 export const _animate = (animate) => {
     if (animate == undefined || (typeof animate == 'boolean' && animate)) {
-        animate = { subject: config.components.loading.subject, message: config.components.loading.message };
+        animate = { observable: config.components.loading.observable, message: config.components.loading.message };
     } else if (typeof animate == 'string') {
-        animate = { subject: animate, message: config.components.loading.message };
+        animate = { observable: animate, message: config.components.loading.message };
     }
-    animate && !animate.subject && (animate.subject = config.components.loading.subject);
-    animate && !animate.message && (animate.subject = config.components.loading.message);
+    animate && !animate.observable && (animate.observable = config.components.loading.observable);
+    animate && !animate.message && (animate.message = config.components.loading.message);
     return animate;
 }
 

@@ -17,3 +17,15 @@ export const observable = (name) => {
         throw 'observable name must not be null';
     }
 }
+
+export const next = (name, options) => {
+    if (name) {
+        if (typeof name == 'string') {
+            subject(name).next(options);
+        } else if (typeof name == 'function') {
+            name(options);
+        } else {
+            throw 'undefined on#' + name;
+        }
+    }
+}

@@ -5,7 +5,7 @@ export const apiURL = (url) => API_URL + '/' + url;
 
 export const components = {
     loading: {
-        subject: 'components.loading.subject',
+        observable: 'components.loading.observable',
         message: 'Loading...'
     }
 }

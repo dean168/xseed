@@ -12,16 +12,22 @@
     background-color: #bfc3c6;
 }
 
-.opacity0 {
+.bc-opacity0 {
     opacity: 0;
 }
-.opacity1 {
+.bc-opacity1 {
     opacity: 1;
 }
 
-.xs-block {
+.bc-block {
     display: block;
 }
-.xs-hide {
+.bc-hide {
     display: none;
+}
+
+.bc-text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

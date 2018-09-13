@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
 
 
-export default class Scrolling extends Component {
+export default class ScrollingComponent extends React.Component {
 
     static defaultProps = {
         component: 'div',
@@ -56,7 +56,7 @@ export default class Scrolling extends Component {
     }
 
     render() {
-        const className = 'animated' + (this.state.animated ? ' opacity1 ' + this.props.transitionName : ' opacity0') + (this.props.className ? ' ' + this.props.className : '');
+        const className = 'animated' + (this.state.animated ? ' bc-opacity1 ' + this.props.transitionName : ' bc-opacity0') + (this.props.className ? ' ' + this.props.className : '');
         return React.createElement(this.props.component, { className: className }, this.props.children);
     }
 }
