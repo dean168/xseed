@@ -9,19 +9,19 @@ public abstract class DaoUtils {
 
     public static String count(String sql) {
         String uql = StringUtils.upperCase(sql);
-        int index = uql.indexOf(FROM);
-        if (uql.indexOf(DISTINCT) > 0) {
-            String cql = "select count(" + sql.substring(SELECT.length(), index) + ") " + sql.substring(index);
-            if ((index = uql.indexOf(ORDER)) != -1) {
-                cql = cql.substring(0, index);
+        int di = uql.indexOf(DISTINCT), fi = uql.indexOf(FROM), oi = uql.indexOf(ORDER);
+        if (di != -1) {
+            if (oi != -1) {
+                return "select count(" + sql.substring(SELECT.length(), fi) + ") " + sql.substring(fi, oi);
+            } else {
+                return "select count(" + sql.substring(SELECT.length(), fi) + ") " + sql.substring(fi);
             }
-            return cql;
         } else {
-            sql = sql.substring(index + FROM.length());
-            if ((index = uql.indexOf(ORDER)) != -1) {
-                sql = sql.substring(0, index);
+            if (oi != -1) {
+                return "select count(1) from " + sql.substring(fi + FROM.length(), oi);
+            } else {
+                return "select count(1) from " + sql.substring(fi + FROM.length());
             }
-            return "select count(1) from " + sql;
         }
     }
 }
