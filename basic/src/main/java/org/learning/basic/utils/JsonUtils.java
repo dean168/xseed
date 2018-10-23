@@ -13,14 +13,18 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module.Feature;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.learning.basic.core.BasicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 
 public abstract class JsonUtils extends StatusUtils {
 
@@ -276,6 +280,28 @@ public abstract class JsonUtils extends StatusUtils {
             } else {
                 return json.getObject(xpath, clazz);
             }
+        }
+    }
+
+    public static final class Resolver {
+
+        private static final Logger logger = LoggerFactory.getLogger(Resolver.class);
+
+        @Value("${basic.default.locale}")
+        private String locale;
+        @Value("${basic.default.timezone}")
+        private String timezone;
+
+        @PostConstruct
+        public void init() {
+            if (logger.isInfoEnabled()) {
+                logger.info("using locale '" + locale + "'");
+            }
+            Jackson.OM.setLocale(org.springframework.util.StringUtils.parseLocale(locale));
+            if (logger.isInfoEnabled()) {
+                logger.info("using timezone '" + timezone + "'");
+            }
+            Jackson.OM.setTimeZone(TimeZone.getTimeZone(timezone));
         }
     }
 }

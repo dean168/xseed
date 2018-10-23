@@ -17,4 +17,5 @@
 	<bean class="org.learning.basic.utils.ServiceUtils.Listener">
 		<property name="executor" ref="basic.scheduler" />
 	</bean>
+	<bean class="org.learning.basic.utils.JsonUtils.Resolver" />
 </beans>
