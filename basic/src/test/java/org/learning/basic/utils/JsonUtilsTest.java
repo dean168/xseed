@@ -26,8 +26,12 @@ public class JsonUtilsTest {
         Status<Pagination<Account>> status = new Status<>(true, "500", pagination);
         String content = Jackson.writeValueAsString(status);
         System.out.println(content);
-        Object value = Jackson.OM.readValue(content, new TypeReference<Status<Pagination<Account>>>() {
+        Object value = Jackson.readValue(content, new TypeReference<Status<Pagination<Account>>>() {
         });
         System.out.println(value);
+//        IRestOperations restOperations = null;
+//        SearchForm form = new SearchForm();
+//        status = restOperations.postForObject("http://127.0.0.1:8080/api", form, new ParameterizedTypeReference<Status<Pagination<Account>>>() {
+//        });
     }
 }
