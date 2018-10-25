@@ -12,64 +12,71 @@ import java.util.List;
 
 public interface IHibernateOperations extends HibernateOperations {
 
-	String SERVICE_ID = "basic.hibernateOperations";
+    String SERVICE_ID = "basic.hibernateOperations";
 
-	Date currentTimestamp();
+    Date currentTimestamp();
 
-	void xtx(TransactionalCallback callback);
+    <T> T xtx(TransactionalExtractor<T> extractor);
 
-	List<?> findByPagination(String sql, int offset, int limit, Object... args);
+    void xtx(TransactionalHandler handler);
 
-	<T> Pagination<T> findForPagination(String sql, int offset, int limit, Object... args);
+    List<?> findByPagination(String sql, int offset, int limit, Object... args);
 
-	<T> T findOne(Class<T> type, String sql, Object... args);
+    <T> Pagination<T> findForPagination(String sql, int offset, int limit, Object... args);
 
-	void delete(Class<?> clazz, Serializable... ids);
+    <T> T findOne(Class<T> type, String sql, Object... args);
 
-	void xdelete(Class<?> clazz, Serializable... ids);
+    void delete(Class<?> clazz, Serializable... ids);
 
-	int count(String sql, Object... args);
+    void xdelete(Class<?> clazz, Serializable... ids);
 
-	int xbulkUpdate(String queryString, Object... values);
+    int count(String sql, Object... args);
 
-	void xdelete(Object entity, LockMode lockMode);
+    int xbulkUpdate(String queryString, Object... values);
 
-	void xdelete(Object entity);
+    void xdelete(Object entity, LockMode lockMode);
 
-	void xdelete(String entityName, Object entity, LockMode lockMode);
+    void xdelete(Object entity);
 
-	void xdelete(String entityName, Object entity);
+    void xdelete(String entityName, Object entity, LockMode lockMode);
 
-	void xdeleteAll(Collection<?> entities);
+    void xdelete(String entityName, Object entity);
 
-	<T> T xexecute(HibernateCallback<T> action);
+    void xdeleteAll(Collection<?> entities);
 
-	<T> T xmerge(String entityName, T entity);
+    <T> T xexecute(HibernateCallback<T> action);
 
-	<T> T xmerge(T entity);
+    <T> T xmerge(String entityName, T entity);
 
-	void xpersist(Object entity);
+    <T> T xmerge(T entity);
 
-	void xpersist(String entityName, Object entity);
+    void xpersist(Object entity);
 
-	Serializable xsave(Object entity);
+    void xpersist(String entityName, Object entity);
 
-	Serializable xsave(String entityName, Object entity);
+    Serializable xsave(Object entity);
 
-	void xsaveOrUpdate(Object entity);
+    Serializable xsave(String entityName, Object entity);
 
-	void xsaveOrUpdate(String entityName, Object entity);
+    void xsaveOrUpdate(Object entity);
 
-	void xupdate(Object entity, LockMode lockMode);
+    void xsaveOrUpdate(String entityName, Object entity);
 
-	void xupdate(Object entity);
+    void xupdate(Object entity, LockMode lockMode);
 
-	void xupdate(String entityName, Object entity, LockMode lockMode);
+    void xupdate(Object entity);
 
-	void xupdate(String entityName, Object entity);
+    void xupdate(String entityName, Object entity, LockMode lockMode);
 
-    interface TransactionalCallback {
+    void xupdate(String entityName, Object entity);
 
-        void doInTransactional() throws Exception;
+    interface TransactionalExtractor<T> {
+
+        T extract(IHibernateOperations hibernateOperations) throws Exception;
+    }
+
+    interface TransactionalHandler {
+
+        void process(IHibernateOperations hibernateOperations) throws Exception;
     }
 }

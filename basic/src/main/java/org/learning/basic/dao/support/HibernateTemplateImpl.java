@@ -43,9 +43,9 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
 	}
 
     @Transactional
-    public void xtx(TransactionalCallback callback) {
+    public <T> T xtx(TransactionalExtractor<T> extractor) {
         try {
-            callback.doInTransactional();
+            return extractor.extract(this);
         } catch (Exception e) {
             throw new DataAccessException(null, e) {
                 private static final long serialVersionUID = 1845491745123712093L;
@@ -53,7 +53,18 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         }
     }
 
-    public List<?> findByPagination(final String sql, final int offset, final int limit, final Object... args) {
+	@Override
+	public void xtx(TransactionalHandler handler) {
+		try {
+			handler.process(this);
+		} catch (Exception e) {
+			throw new DataAccessException(null, e) {
+				private static final long serialVersionUID = 1845491745123712093L;
+			};
+		}
+	}
+
+	public List<?> findByPagination(final String sql, final int offset, final int limit, final Object... args) {
 		return execute((Session session) -> {
 			Query<?> query = session.createQuery(sql);
 			for (int i = 0; args != null && i < args.length; i++) {
