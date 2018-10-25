@@ -16,9 +16,13 @@ public interface IHibernateOperations extends HibernateOperations {
 
     Date currentTimestamp();
 
-    <T> T xtx(TransactionalExtractor<T> extractor);
+    <T> T xtx(TransactionalExtractor1<T> extractor);
 
-    void xtx(TransactionalHandler handler);
+    <T> T xtx(TransactionalExtractor2<T> extractor);
+
+    void xtx(TransactionalHandler1 handler);
+
+    void xtx(TransactionalHandler2 handler);
 
     List<?> findByPagination(String sql, int offset, int limit, Object... args);
 
@@ -70,12 +74,22 @@ public interface IHibernateOperations extends HibernateOperations {
 
     void xupdate(String entityName, Object entity);
 
-    interface TransactionalExtractor<T> {
+    interface TransactionalExtractor1<T> {
+
+        T extract() throws Exception;
+    }
+
+    interface TransactionalExtractor2<T> {
 
         T extract(IHibernateOperations hibernateOperations) throws Exception;
     }
 
-    interface TransactionalHandler {
+    interface TransactionalHandler1 {
+
+        void process() throws Exception;
+    }
+
+    interface TransactionalHandler2 {
 
         void process(IHibernateOperations hibernateOperations) throws Exception;
     }

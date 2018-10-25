@@ -32,7 +32,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
     @PostConstruct
     public void init() {
         // 初始化角色
-        hibernateOperations.xtx((hibernateOperations) -> {
+        hibernateOperations.xtx(() -> {
             cached.put(ADMIN_ROLE_CODE, loadRole(ADMIN_ROLE_CODE));
             cached.put(ACCOUNT_ROLE_CODE, loadRole(ACCOUNT_ROLE_CODE));
         });
