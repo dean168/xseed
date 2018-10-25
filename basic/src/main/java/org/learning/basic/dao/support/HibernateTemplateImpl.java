@@ -21,15 +21,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class HibernateTemplateSupport extends HibernateTemplate implements IHibernateOperations {
+public class HibernateTemplateImpl extends HibernateTemplate implements IHibernateOperations {
 
 	private Dialect dialect;
 
-	public HibernateTemplateSupport() {
+	public HibernateTemplateImpl() {
 		super();
 	}
 
-	public HibernateTemplateSupport(SessionFactory sessionFactory) {
+	public HibernateTemplateImpl(SessionFactory sessionFactory) {
 		super(sessionFactory);
 	}
 
