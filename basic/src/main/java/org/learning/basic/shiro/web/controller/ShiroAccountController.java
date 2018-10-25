@@ -56,15 +56,15 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     @RequestMapping(method = POST, value = "/register",
             consumes = {APPLICATION_JSON_UTF8_VALUE},
             produces = {APPLICATION_JSON_UTF8_VALUE})
-    public synchronized Status register(@RequestBody RegisterForm form) {
+    public synchronized Status<?> register(@RequestBody RegisterForm form) {
         if (StringUtils.isEmpty(form.getEmail())) {
-            return new Status(false, I18nUtils.message("ACCOUNT.REGISTER.EMAIL.NULL"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.EMAIL.NULL"));
         } else if (StringUtils.isEmpty(form.getPassword())) {
-            return new Status(false, I18nUtils.message("ACCOUNT.REGISTER.PASSWORD.NULL"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.PASSWORD.NULL"));
         } else if (!StringUtils.equals(form.getPassword(), form.getConfirmPassword())) {
-            return new Status(false, I18nUtils.message("ACCOUNT.REGISTER.CONFIRMPASSWORD.ERROR"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.CONFIRMPASSWORD.ERROR"));
         } else if (unique(null, form.getEmail())) {
-            return new Status(false, I18nUtils.message("ACCOUNT.REGISTER.USER.EXIST"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.USER.EXIST"));
         } else {
             ShiroAccount accountToUse = BeanUtils.instantiate(accountClass());
             BeanUtils.copyProperties(form, accountToUse);
@@ -78,13 +78,11 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         SQL sql = new SQL();
         sql.append("select count(*) from ").append(accountClass());
         sql.append(" where email = ?", email);
-        if (StringUtils.isNotEmpty(id)) {
-            sql.append(" and id <> ?", id);
-        }
+        sql.appendIfExist(" and id <> ?", id);
         return hibernateOperations.count(sql.getSQL(), sql.getParams()) > 0;
     }
 
-    protected Status doLogin(LoginForm account) {
+    protected Status<?> doLogin(LoginForm account) {
         UsernamePasswordToken token = new UsernamePasswordToken(account.getEmail(), account.getPassword(), account.isRme());
         try {
             // 登录操作
@@ -95,7 +93,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
                     logger.debug("not active account#" + SecurityUtils.getSubject().getPrincipal() + " can not login");
                 }
                 SecurityUtils.getSubject().logout();
-                return new Status(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
+                return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
             }
             if (logger.isDebugEnabled()) {
                 logger.debug("login#" + userToUse.getId() + "(" + userToUse.getEmail() + ")");
@@ -106,7 +104,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
             if (logger.isDebugEnabled()) {
                 logger.debug(e.getMessage());
             }
-            return new Status(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
         }
     }
 
@@ -115,8 +113,8 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
      */
     @RequestMapping(method = GET, value = "locale",
             produces = {APPLICATION_JSON_UTF8_VALUE})
-    public Status locale() {
-        return new Status(true, null, String.valueOf(I18nUtils.current()));
+    public Status<?> locale() {
+        return new Status<>(true, null, String.valueOf(I18nUtils.current()));
     }
 
     /**
@@ -124,20 +122,20 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
      */
     @RequestMapping(method = GET, value = "session",
             produces = {APPLICATION_JSON_UTF8_VALUE})
-    public Status session() {
+    public Status<?> session() {
         String accountId = (String) SecurityUtils.getSubject().getPrincipal();
         A account = null;
         if (StringUtils.isEmpty(accountId)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Not logged in");
             }
-            return new Status(false, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
         } else if ((account = accountService.getAccountById(accountId)) == null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Not exist account");
             }
             SecurityUtils.getSubject().logout();
-            return new Status(false, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug("csession#" + account.getId() + "(" + account.getEmail() + ")");
@@ -158,7 +156,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     @RequestMapping(method = POST, value = "/login",
             consumes = {APPLICATION_JSON_UTF8_VALUE},
             produces = {APPLICATION_JSON_UTF8_VALUE})
-    public Status login(@RequestBody LoginForm user) {
+    public Status<?> login(@RequestBody LoginForm user) {
         return doLogin(user);
     }
 
@@ -168,25 +166,25 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     @RequestMapping(method = POST, value = "upasswd",
             consumes = {APPLICATION_JSON_UTF8_VALUE},
             produces = {APPLICATION_JSON_UTF8_VALUE})
-    public Status upasswd(@RequestBody UPasswdForm form) {
+    public Status<?> upasswd(@RequestBody UPasswdForm form) {
         SessionContext context = SessionContext.get();
         A user = context.account();
         if (StringUtils.isEmpty(form.getOldpasswd())) {
-            return new Status(false, I18nUtils.message("ACCOUNT.UPASSWD.OLDPASSWORD.NULL"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.UPASSWD.OLDPASSWORD.NULL"));
         } else if (StringUtils.isEmpty(form.getNewpasswd())) {
-            return new Status(false, I18nUtils.message("ACCOUNT.UPASSWD.NEWPASSWORD.NULL"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.UPASSWD.NEWPASSWORD.NULL"));
         } else if (!StringUtils.equals(user.getPassword(), new Sha256Hash(form.getOldpasswd(), user.getEmail()).toBase64())) {
-            return new Status(false, I18nUtils.message("ACCOUNT.UPASSWD.OLDPASSWORD.ERROR"));
+            return new Status<>(false, I18nUtils.message("ACCOUNT.UPASSWD.OLDPASSWORD.ERROR"));
         } else {
             user.setPassword(new Sha256Hash(form.getNewpasswd(), user.getEmail()).toBase64());
             hibernateOperations.xupdate(user);
-            return new Status(true, I18nUtils.message("ACCOUNT.UPASSWD.SUCCESS"));
+            return new Status<>(true, I18nUtils.message("ACCOUNT.UPASSWD.SUCCESS"));
         }
     }
 
     @RequestMapping(method = GET, value = "logout",
             produces = {APPLICATION_JSON_UTF8_VALUE})
-    public Status logout() throws IOException {
+    public Status<?> logout() throws IOException {
         try {
             SecurityUtils.getSubject().logout();
             SessionContext context = SessionContext.get();
@@ -197,11 +195,11 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         } catch (Exception e) {
             logger.error(null, e);
         }
-        return new Status(true, I18nUtils.message("ACCOUNT.LOGOUT.SUCCESS"));
+        return new Status<>(true, I18nUtils.message("ACCOUNT.LOGOUT.SUCCESS"));
     }
 
     @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
-    public static class SessionStatus extends Status {
+    public static class SessionStatus extends Status<ShiroAccount> {
 
         @JsonProperty("id")
         private String id;

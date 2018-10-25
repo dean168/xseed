@@ -38,7 +38,7 @@ public abstract class StatusUtils {
     protected abstract JsonGenerator _createGenerator(OutputStream os) throws IOException;
 
     @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
-    public static class Status {
+    public static class Status<D> {
 
         public static final int FALSE = 0;
         public static final int TRUE = 1;
@@ -48,7 +48,7 @@ public abstract class StatusUtils {
         @JsonProperty("message")
         private String message;
         @JsonProperty("data")
-        private Object data;
+        private D data;
 
         public Status() {
         }
@@ -61,7 +61,7 @@ public abstract class StatusUtils {
             this(success ? TRUE : FALSE, message, null);
         }
 
-        public Status(boolean success, String message, Object data) {
+        public Status(boolean success, String message, D data) {
             this(success ? TRUE : FALSE, message, data);
         }
 
@@ -73,7 +73,7 @@ public abstract class StatusUtils {
             this(errcode, message, null);
         }
 
-        public Status(int errcode, String message, Object data) {
+        public Status(int errcode, String message, D data) {
             this.errcode = errcode;
             this.message = message;
             this.data = data;
@@ -95,18 +95,18 @@ public abstract class StatusUtils {
             this.message = message;
         }
 
-        public Object getData() {
+        public D getData() {
             return data;
         }
 
-        public void setData(Object data) {
+        public void setData(D data) {
             this.data = data;
         }
     }
 
 
     @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
-    public static class MediaStatus extends Status {
+    public static class MediaStatus extends Status<String> {
 
         @JsonProperty("contentType")
         private String contentType;

@@ -10,7 +10,9 @@ import java.util.Arrays;
 
 public class DruidDataSourceImpl extends DruidDataSource {
 
-    private static final Logger logger = LoggerFactory.getLogger(DruidDataSourceImpl.class);
+	private static final long serialVersionUID = 5617218618743035918L;
+
+	private static final Logger logger = LoggerFactory.getLogger(DruidDataSourceImpl.class);
 
     private String envs;
     private String inits;

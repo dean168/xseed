@@ -26,7 +26,6 @@ public class DictServiceImpl implements IDictService {
 		return prepared(dict, (D) hibernateOperations.get(forName(dict.getType()), dict.getId()));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <D extends Dict> D name(Class<D> type, String name, String... suffixs) {
 		name = StringUtils.trim(name);
@@ -52,7 +51,6 @@ public class DictServiceImpl implements IDictService {
 		return hibernateOperations.xmerge(dict);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <D extends Dict> Pagination<D> search(Dict dict, int offset, int limit) {
 		SQL sql = new SQL();
 		sql.append("from ").append(dict.getType()).append(" where 1 = 1");
@@ -71,7 +69,6 @@ public class DictServiceImpl implements IDictService {
 	}
 
 
-	@SuppressWarnings("unchecked")
 	public <D extends Dict> Pagination<D> list(Dict dict, int offset, int limit) {
 		SQL sql = new SQL();
 		sql.append("from ").append(dict.getType()).append(" where 1 = 1");

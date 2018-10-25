@@ -15,9 +15,9 @@ public class SessionContext {
     public static final String RESPONSE = "response";
     public static final String REQUEST = "request";
     public static final String LOCALE = "locale";
-    private static final ThreadLocal<SessionContext> CTX = new ThreadLocal<SessionContext>();
+    private static final ThreadLocal<SessionContext> CTX = new ThreadLocal<>();
     private static IAccountService AS = null;
-    private Map<String, Object> attributes = new HashMap<String, Object>();
+    private Map<String, Object> attributes = new HashMap<>();
 
     public static SessionContext get() {
         return CTX.get();

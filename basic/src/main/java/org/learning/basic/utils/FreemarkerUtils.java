@@ -55,9 +55,7 @@ public abstract class FreemarkerUtils {
             rootToUse.put("statics", statics);
             rootToUse.put("enums", enums);
             template.process(rootToUse, os);
-        } catch (IOException e) {
-            throw new BasicException(null, null, e);
-        } catch (TemplateException e) {
+        } catch (IOException | TemplateException e) {
             throw new BasicException(null, null, e);
         }
     }

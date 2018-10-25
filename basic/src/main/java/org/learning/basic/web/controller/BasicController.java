@@ -1,8 +1,6 @@
 package org.learning.basic.web.controller;
 
-import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.learning.basic.core.ITempService;
 import org.learning.basic.core.domain.SessionContext;
 import org.learning.basic.i18n.utils.I18nUtils;
@@ -87,9 +85,7 @@ public class BasicController {
 
     protected boolean isImage(File temp) {
         // 先验证文件头字节
-        InputStream is = null;
-        try {
-            is = new FileInputStream(temp);
+        try (InputStream is = new FileInputStream(temp)) {
             int b1 = is.read() & 0xff;
             int b2 = is.read() & 0xff;
             // 判断是否是图片文件头字节
@@ -105,15 +101,11 @@ public class BasicController {
                 logger.debug(null, e);
             }
             return false;
-        } finally {
-            IOUtils.closeQuietly(is);
         }
     }
 
     protected boolean isZip(File temp) {
-        InputStream is = null;
-        try {
-            is = new FileInputStream(temp);
+        try (InputStream is = new FileInputStream(temp)) {
             int b1 = is.read() & 0xff;
             int b2 = is.read() & 0xff;
             return b1 == 0x50 && b2 == 0x4b;
@@ -122,8 +114,6 @@ public class BasicController {
                 logger.debug(null, e);
             }
             return false;
-        } finally {
-            IOUtils.closeQuietly(is);
         }
     }
 
@@ -164,17 +154,10 @@ public class BasicController {
             response.setHeader("Content-Disposition", "attachment;filename=" + attachmentNameToUse);
         }
 
-        OutputStream os = response.getOutputStream();
-
-        InputStream is = null;
-        try {
-            if (media.exists()) {
-                IOUtils.copy(is = new FileInputStream(media), os);
-            } else if (logger.isWarnEnabled()) {
-                logger.warn(media + " is not exist");
-            }
-        } finally {
-            IOUtils.closeQuietly(is);
+        if (media.exists()) {
+            FileUtils.copyFile(media, response.getOutputStream());
+        } else if (logger.isWarnEnabled()) {
+            logger.warn(media + " is not exist");
         }
     }
 
@@ -218,23 +201,20 @@ public class BasicController {
         });
     }
 
-    protected void render(String name, Object root) throws IOException, TemplateException {
+    protected void render(String name, Object root) throws IOException {
         render(null, name, root, APPLICATION_JSON_UTF8_VALUE);
     }
 
-    protected void render(Class<?> clazz, String name, Object root) throws IOException, TemplateException {
+    protected void render(Class<?> clazz, String name, Object root) throws IOException {
         render(clazz, name, root, APPLICATION_JSON_UTF8_VALUE);
     }
 
-    protected void render(Class<?> clazz, String name, Object root, String contentType) throws IOException, TemplateException {
+    protected void render(Class<?> clazz, String name, Object root, String contentType) throws IOException {
         SessionContext context = SessionContext.get();
         HttpServletResponse response = context.response();
         response.setContentType(contentType);
-        OutputStream os = response.getOutputStream();
-        try {
+        try (OutputStream os = response.getOutputStream()) {
             FreemarkerUtils.render(clazz, name, root, os);
-        } finally {
-            IOUtils.closeQuietly(os);
         }
     }
 }

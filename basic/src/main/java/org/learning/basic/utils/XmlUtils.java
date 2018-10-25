@@ -17,7 +17,7 @@ import org.springframework.util.ClassUtils;
 
 public abstract class XmlUtils {
 
-	private static final ConcurrentMap<Class<?>, JAXBContext> jaxbContexts = new ConcurrentHashMap<Class<?>, JAXBContext>(64);
+	private static final ConcurrentMap<Class<?>, JAXBContext> jaxbContexts = new ConcurrentHashMap<>(64);
 
 	protected static JAXBContext getJaxbContext(Class<?> clazz) {
 		Assert.notNull(clazz, "'clazz' must not be null");

@@ -13,7 +13,7 @@ public class SQLSupport {
 	public static final class SQL extends SQLSupport {
 
 		private StringBuffer sql = new StringBuffer();
-		private List<Object> params = new ArrayList<Object>();
+		private List<Object> params = new ArrayList<>();
 
 		public SQL append(Class<?> clazz, Object... args) {
 			return append(clazz.getName(), args);
