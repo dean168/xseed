@@ -36,7 +36,7 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
     @SuppressWarnings("unchecked")
     public static <T extends Basic> T ref(T src, IRefOperations opr) {
         if (src != null && StringUtils.isNotEmpty(src.getId())) {
-            Class<?> clazz = ClassUtils.getUserClass(src);
+            Class<T> clazz = (Class<T>) ClassUtils.getUserClass(src);
             return (T) opr.load(clazz, src.getId());
         } else {
             return null;
@@ -45,6 +45,6 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
 
     public interface IRefOperations {
 
-        <T> T load(Class<T> entityClass, Serializable id);
+        Object load(Class<?> clazz, Serializable id);
     }
 }
