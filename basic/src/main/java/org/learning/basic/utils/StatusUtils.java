@@ -4,30 +4,48 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import org.learning.basic.core.BasicException;
+import org.springframework.http.HttpStatus;
 
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 public abstract class StatusUtils {
 
-    protected void _writeStatus(OutputStream os, boolean status, String message) {
-        _writeStatus(os, status, message, null);
+    protected void _status(ServletResponse response, boolean status, String message) {
+        _status(response, status ? Status.TRUE : Status.FALSE, message);
     }
 
-    protected void _writeStatus(OutputStream os, boolean status, String message, Map<String, String> props) {
+    protected void _status(ServletResponse response, HttpStatus status, String message) {
+        _status(response, status.value(), message);
+    }
+
+    protected void _status(ServletResponse response, int status, String message) {
+        response.setContentType(APPLICATION_JSON_UTF8_VALUE);
+        try (OutputStream os = response.getOutputStream()) {
+            _status(os, status, message);
+        } catch (IOException e) {
+            throw new BasicException(null, null, e);
+        }
+    }
+
+    protected void _status(OutputStream os, boolean status, String message) {
+        _status(os, status ? Status.TRUE : Status.FALSE, message);
+    }
+
+    protected void _status(OutputStream os, HttpStatus status, String message) {
+        _status(os, status.value(), message);
+    }
+
+    protected void _status(OutputStream os, int status, String message) {
         try {
             JsonGenerator jg = _createGenerator(os);
             jg.writeStartObject();
-            jg.writeNumberField("errcode", status ? Status.TRUE : Status.FALSE);
+            jg.writeNumberField("errcode", status);
             jg.writeStringField("message", message);
-            if (props != null) {
-                for (Map.Entry<String, String> entry : props.entrySet()) {
-                    jg.writeStringField(entry.getKey(), entry.getValue());
-                }
-            }
             jg.writeEndObject();
             jg.flush();
         } catch (IOException e) {
@@ -40,8 +58,8 @@ public abstract class StatusUtils {
     @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
     public static class Status<D> {
 
-        public static final int FALSE = 0;
-        public static final int TRUE = 1;
+        public static final int FALSE = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        public static final int TRUE = HttpStatus.OK.value();
 
         @JsonProperty("errcode")
         private int errcode;
@@ -63,6 +81,18 @@ public abstract class StatusUtils {
 
         public Status(boolean success, String message, D data) {
             this(success ? TRUE : FALSE, message, data);
+        }
+
+        public Status(HttpStatus status) {
+            this(status, null, null);
+        }
+
+        public Status(HttpStatus status, String message) {
+            this(status, message, null);
+        }
+
+        public Status(HttpStatus status, String message, D data) {
+            this(status.value(), message, data);
         }
 
         public Status(int errcode) {

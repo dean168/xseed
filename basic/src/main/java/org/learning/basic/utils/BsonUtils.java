@@ -12,14 +12,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import de.undercouch.bson4jackson.BsonFactory;
 import org.learning.basic.core.BasicException;
+import org.springframework.http.HttpStatus;
 
+import javax.servlet.ServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 public abstract class BsonUtils extends StatusUtils {
 
@@ -30,12 +31,28 @@ public abstract class BsonUtils extends StatusUtils {
         }
     };
 
-    public static void writeStatus(OutputStream os, boolean status, String message) {
-        BU._writeStatus(os, status, message);
+    public static void status(ServletResponse response, boolean status, String message) {
+        BU._status(response, status, message);
     }
 
-    public static void writeStatus(OutputStream os, boolean status, String message, Map<String, String> props) {
-        BU._writeStatus(os, status, message, props);
+    public static void status(ServletResponse response, HttpStatus status, String message) {
+        BU._status(response, status, message);
+    }
+
+    public static void status(ServletResponse response, int status, String message) {
+        BU._status(response, status, message);
+    }
+
+    public static void status(OutputStream os, boolean status, String message) {
+        BU._status(os, status, message);
+    }
+
+    public static void status(OutputStream os, HttpStatus status, String message) {
+        BU._status(os, status, message);
+    }
+
+    public static void status(OutputStream os, int status, String message) {
+        BU._status(os, status, message);
     }
 
     public static final class Jackson {

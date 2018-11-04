@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -129,13 +130,13 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
             if (logger.isDebugEnabled()) {
                 logger.debug("Not logged in");
             }
-            return new Status<>(false, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
+            return new Status<>(HttpStatus.UNAUTHORIZED, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
         } else if ((account = accountService.getAccountById(accountId)) == null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Not exist account");
             }
             SecurityUtils.getSubject().logout();
-            return new Status<>(false, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
+            return new Status<>(HttpStatus.UNAUTHORIZED, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug("csession#" + account.getId() + "(" + account.getEmail() + ")");

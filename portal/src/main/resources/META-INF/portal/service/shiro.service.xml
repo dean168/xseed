@@ -16,13 +16,16 @@
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.html"/>
-        <property name="successUrl" value="/#/home"/>
-        <property name="unauthorizedUrl" value="/unauthorized.html"/>
         <property name="filters">
             <util:map>
                 <entry key="authc">
-                    <bean class="org.apache.shiro.web.filter.authc.PassThruAuthenticationFilter"/>
+                    <bean class="org.learning.basic.shiro.web.filter.ShiroPassThruAuthenticationFilter"/>
+                </entry>
+                <entry key="roles">
+                    <bean class="org.learning.basic.shiro.web.filter.ShiroRolesAuthorizationFilter"/>
+                </entry>
+                <entry key="perms">
+                    <bean class="org.learning.basic.shiro.web.filter.ShiroPermissionsAuthorizationFilter"/>
                 </entry>
             </util:map>
         </property>

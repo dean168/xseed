@@ -18,8 +18,10 @@ import org.learning.basic.core.BasicException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,12 +37,28 @@ public abstract class JsonUtils extends StatusUtils {
         }
     };
 
-    public static void writeStatus(OutputStream os, boolean status, String message) {
-        JU._writeStatus(os, status, message);
+    public static void status(ServletResponse response, boolean status, String message) {
+        JU._status(response, status, message);
     }
 
-    public static void writeStatus(OutputStream os, boolean status, String message, Map<String, String> props) {
-        JU._writeStatus(os, status, message, props);
+    public static void status(ServletResponse response, HttpStatus status, String message) {
+        JU._status(response, status, message);
+    }
+
+    public static void status(ServletResponse response, int status, String message) {
+        JU._status(response, status, message);
+    }
+
+    public static void status(OutputStream os, boolean status, String message) {
+        JU._status(os, status, message);
+    }
+
+    public static void status(OutputStream os, HttpStatus status, String message) {
+        JU._status(os, status, message);
+    }
+
+    public static void status(OutputStream os, int status, String message) {
+        JU._status(os, status, message);
     }
 
     public static final class Jackson {
