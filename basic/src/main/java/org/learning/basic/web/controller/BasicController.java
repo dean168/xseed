@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,8 +24,6 @@ import java.util.Map;
 import static org.learning.basic.utils.JsonUtils.MediaStatus;
 import static org.learning.basic.utils.JsonUtils.Status;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 //@RestController
 //@RequestMapping("basic")
@@ -40,29 +37,26 @@ public class BasicController {
 //	@Value("${basic.media.root}")
 //	protected String mediaRoot;
 
-    @RequestMapping(method = POST, value = "media", produces = {APPLICATION_JSON_UTF8_VALUE})
-    public MediaStatus upload(@RequestParam(value = "multipartFile") MultipartFile multipartFile, HttpServletResponse response)
-            throws IOException {
+//    @RequestMapping(method = POST, value = "media", produces = {APPLICATION_JSON_UTF8_VALUE})
+    public MediaStatus media(@RequestParam(value = "media") MultipartFile media) throws IOException {
 
         File parent = getTempDirectory();
         File temp = createTempFile(parent);
         if (logger.isDebugEnabled()) {
-            logger.debug("upload media#" + multipartFile.getOriginalFilename() + " content-type#" + multipartFile.getContentType() + " temp#" + temp);
+            logger.debug("upload media#" + media.getOriginalFilename() + " content-type#" + media.getContentType() + " temp#" + temp);
         }
 
-        try (InputStream is = multipartFile.getInputStream()) {
+        try (InputStream is = media.getInputStream()) {
             FileUtils.copyToFile(is, temp);
         }
 
-        response.setContentType(APPLICATION_JSON_UTF8_VALUE);
-
         MediaStatus status = new MediaStatus();
 
-        status.setContentType(multipartFile.getContentType());
-        status.setContentLength(multipartFile.getSize());
-        status.setName(multipartFile.getName());
-        status.setFilename(multipartFile.getOriginalFilename());
-        if (valid(multipartFile.getContentType(), temp)) {
+        status.setContentType(media.getContentType());
+        status.setContentLength(media.getSize());
+        status.setName(media.getName());
+        status.setFilename(media.getOriginalFilename());
+        if (valid(media.getContentType(), temp)) {
             status.setTemp(temp.getName());
             status.setErrcode(Status.TRUE);
             status.setMessage(I18nUtils.message("BASIC.UPLOADMEDIA.SUCCESS"));
@@ -117,12 +111,11 @@ public class BasicController {
         }
     }
 
-    @RequestMapping(method = GET, value = "media")
+//    @RequestMapping(method = GET, value = "media")
     public void media(@RequestParam(value = "id") String id,
                       @RequestParam(value = "contentType", required = false) String contentType,
                       @RequestParam(value = "attachmentName", required = false) String attachmentName,
-                      HttpServletResponse response)
-            throws IOException {
+                      HttpServletResponse response) throws IOException {
 
         File media = null;
 
