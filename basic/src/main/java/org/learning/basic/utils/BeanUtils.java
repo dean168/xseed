@@ -33,6 +33,26 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         }
     }
 
+    public static <B extends Basic> void merged(Collection<B> dest, B... members) {
+        for (B member : members) {
+            B memberToUse = get(dest, member.getId());
+            if (memberToUse != null) {
+                copyProperties(member, memberToUse);
+            } else {
+                dest.add(member);
+            }
+        }
+    }
+
+    public static <B extends Basic> B get(Collection<B> members, String id) {
+        for (B basic : members) {
+            if (StringUtils.equals(basic.getId(), id)) {
+                return basic;
+            }
+        }
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends Basic> T ref(T src, IRefOperations opr) {
         if (src != null && StringUtils.isNotEmpty(src.getId())) {
