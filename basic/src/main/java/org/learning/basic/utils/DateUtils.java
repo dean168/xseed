@@ -53,4 +53,34 @@ public abstract class DateUtils {
         }
         return null;
     }
+
+    public static boolean between(Date now, Date start, Date end) {
+        if (now == null || start == null || end == null) {
+            return false;
+        }
+        if (now.getTime() == start.getTime() || now.getTime() == end.getTime()) {
+            return true;
+        }
+        return between(calendar(now), calendar(start), calendar(end));
+    }
+
+    public static boolean between(Calendar now, Calendar start, Calendar end) {
+        if (now == null || start == null || end == null) {
+            return false;
+        }
+        if (now.getTimeInMillis() == start.getTimeInMillis() || now.getTimeInMillis() == end.getTimeInMillis()) {
+            return true;
+        }
+        return now.after(start) && now.before(end);
+    }
+
+    public static Calendar calendar(Date date) {
+        return date != null ? calendar(date.getTime()) : null;
+    }
+
+    public static Calendar calendar(long timeInMillis) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timeInMillis);
+        return cal;
+    }
 }
