@@ -109,15 +109,6 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         pagination.setLimit(limit);
         pagination.setResult(result);
         if (limit > 0) {
-//			String count = "select count(*) from " + StringUtils.substringAfter(sql, "from");
-//			if (StringUtils.containsIgnoreCase(count, "order by")) {
-//				String countToUse = StringUtils.lowerCase(count);
-//				count = StringUtils.substring(count, 0, StringUtils.indexOf(countToUse, "order by"));
-//			}
-//			if (StringUtils.containsIgnoreCase(count, "group by")) {
-//				String countToUse = StringUtils.lowerCase(count);
-//				count = StringUtils.substring(count, 0, StringUtils.indexOf(countToUse, "group by"));
-//			}
             String count = DaoUtils.count(sql);
             pagination.setTotal(count(count, args));
         } else {

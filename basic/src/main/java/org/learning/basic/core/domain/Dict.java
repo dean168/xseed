@@ -5,29 +5,65 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
+/**
+ * 字典父类
+ */
 @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
 public class Dict extends Ordered {
 
+    /**
+     * 字典类型
+     */
     @JsonProperty("type")
     private String type;
+    /**
+     * 字典名称
+     */
     @JsonProperty("name")
     private String name;
+    /**
+     * 字典描述
+     */
     @JsonProperty("desc")
     private String desc;
+    /**
+     * 字典父ID
+     */
     @JsonProperty("pid")
-    private String parentId;
+    private String pid;
+    /**
+     * 子字典数量
+     */
     @JsonProperty("cc")
     private Integer ccount;
+    /**
+     * 唯一路径
+     */
     @JsonProperty("xpath")
     private String xpath;
+    /**
+     * 唯一名称
+     */
     @JsonProperty("uname")
     private String uname;
+    /**
+     * 别名
+     * @see #delimiters()
+     * 为了方便数据 like 查询, 别名前面和后面都加上分隔符, 如: |aaa|bbb|ccc|
+     * 如要更改分隔符, 子类重写 delimiters() 方法
+     */
+    @JsonProperty("alias")
+    private String alias;
 
     public Dict() {
     }
 
     public <D extends Dict> Dict(Class<D> clazz) {
         this.type = clazz.getName();
+    }
+
+    public String delimiters() {
+        return "|";
     }
 
     public String getType() {
@@ -54,12 +90,12 @@ public class Dict extends Ordered {
         this.desc = desc;
     }
 
-    public String getParentId() {
-        return parentId;
+    public String getPid() {
+        return pid;
     }
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     public Integer getCcount() {
@@ -84,5 +120,13 @@ public class Dict extends Ordered {
 
     public void setUname(String uname) {
         this.uname = uname;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }
