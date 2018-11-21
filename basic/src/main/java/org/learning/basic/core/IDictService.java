@@ -12,7 +12,7 @@ public interface IDictService {
 
     <D extends Dict> D get(Dict dict);
 
-    <D extends Dict> D get(Class<D> type, String name);
+    <D extends Dict> D name(Class<D> type, String name);
 
     <D extends Dict> Pagination<D> search(Dict dict, int offset, int limit);
 

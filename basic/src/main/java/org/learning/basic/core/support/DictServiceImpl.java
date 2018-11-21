@@ -27,7 +27,7 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Override
-    public <D extends Dict> D get(Class<D> type, String name) {
+    public <D extends Dict> D name(Class<D> type, String name) {
         name = StringUtils.trim(name);
         if (StringUtils.isEmpty(name)) {
             return null;
