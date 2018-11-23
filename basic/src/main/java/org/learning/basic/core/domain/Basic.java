@@ -17,7 +17,7 @@ public class Basic {
      * 创建时间
      */
     @JsonProperty("createdAt")
-    private long createdAt;
+    private Long createdAt;
     /**
      * 创建人
      */
@@ -27,7 +27,7 @@ public class Basic {
      * 最后更新时间
      */
     @JsonProperty("updatedAt")
-    private long updatedAt;
+    private Long updatedAt;
     /**
      * 最后更新人
      */
@@ -38,12 +38,12 @@ public class Basic {
         this.id = null;
     }
 
-    public void created(String createdBy, long createdAt) {
+    public void created(String createdBy, Long createdAt) {
         this.createdBy = createdBy;
         this.createdAt = createdAt;
     }
 
-    public void updated(String updatedBy, long updatedAt) {
+    public void updated(String updatedBy, Long updatedAt) {
         this.updatedBy = updatedBy;
         this.updatedAt = updatedAt;
     }
@@ -56,11 +56,11 @@ public class Basic {
         this.id = id;
     }
 
-    public long getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -72,11 +72,11 @@ public class Basic {
         this.createdBy = createdBy;
     }
 
-    public long getUpdatedAt() {
+    public Long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 

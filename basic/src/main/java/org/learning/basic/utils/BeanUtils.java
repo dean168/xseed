@@ -20,13 +20,13 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         }
     }
 
-    public static <B extends Basic> void created(B basic, String createdBy, long createdAt) {
+    public static <B extends Basic> void created(B basic, String createdBy, Long createdAt) {
         if (basic != null) {
             basic.created(createdBy, createdAt);
         }
     }
 
-    public static <B extends Basic> void updated(B basic, String updatedBy, long updatedAt) {
+    public static <B extends Basic> void updated(B basic, String updatedBy, Long updatedAt) {
         if (basic != null) {
             basic.updated(updatedBy, updatedAt);
         }
