@@ -34,7 +34,7 @@ public class Basic {
     @JsonProperty("updatedBy")
     private String updatedBy;
 
-    public void reset() {
+    public void renewed() {
         this.id = null;
     }
 

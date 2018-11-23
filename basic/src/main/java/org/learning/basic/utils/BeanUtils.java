@@ -8,15 +8,15 @@ import java.util.Collection;
 
 public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
 
-    public static <B extends Basic> void reset(Collection<B> basics) {
+    public static <B extends Basic> void renewed(Collection<B> basics) {
         if (basics != null) {
-            basics.stream().forEach(basic -> reset(basic));
+            basics.stream().forEach(basic -> renewed(basic));
         }
     }
 
-    public static <B extends Basic> void reset(B basic) {
+    public static <B extends Basic> void renewed(B basic) {
         if (basic != null) {
-            basic.reset();
+            basic.renewed();
         }
     }
 
