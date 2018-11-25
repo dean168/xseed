@@ -15,15 +15,15 @@ public abstract class DateUtils {
     /**
      * 默认时区通过 -Duser.timezone=GMT+08 启动参数设置
      *
-     * @param pattern
      * @param source
+     * @param pattern
      * @return
      */
-    public static Date parse(String pattern, String source) {
-        return parse(pattern, source, TimeZone.getDefault());
+    public static Date parse(String source, String pattern) {
+        return parse(source, pattern, TimeZone.getDefault());
     }
 
-    public static Date parse(String pattern, String source, TimeZone zone) {
+    public static Date parse(String source, String pattern, TimeZone zone) {
         if (StringUtils.isEmpty(source)) {
             return null;
         }
@@ -33,6 +33,19 @@ public abstract class DateUtils {
             return sdf.parse(source);
         } catch (ParseException e) {
             throw new RuntimeException("can not parse " + source + " pattern " + pattern, e);
+        }
+    }
+
+    public static Date parse(String source, String pattern, TimeZone zone, Date defaultDate) {
+        if (StringUtils.isEmpty(source)) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        sdf.setTimeZone(zone);
+        try {
+            return sdf.parse(source);
+        } catch (ParseException e) {
+            return defaultDate;
         }
     }
 
