@@ -4,10 +4,10 @@ import org.learning.basic.core.domain.Basic;
 import org.springframework.util.ClassUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
 
@@ -55,8 +55,9 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return null;
     }
 
-    public static <B extends Basic> Collection<B> ref(Collection<B> src, IRefOperations opr) {
-        List<B> deletes = new ArrayList<>();
+    @SuppressWarnings("unchecked")
+    public static <B extends Basic> Set<B> ref(Set<B> src, IRefOperations opr) {
+        Set<B> deletes = new HashSet<>();
         for (B basic : src) {
             B basicToUse = ref(basic, opr);
             if (basicToUse != null) {
