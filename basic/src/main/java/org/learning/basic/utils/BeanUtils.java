@@ -4,8 +4,10 @@ import org.learning.basic.core.domain.Basic;
 import org.springframework.util.ClassUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
 
@@ -53,11 +55,25 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         return null;
     }
 
+    public static <B extends Basic> Collection<B> ref(Collection<B> src, IRefOperations opr) {
+        List<B> deletes = new ArrayList<>();
+        for (B basic : src) {
+            B basicToUse = ref(basic, opr);
+            if (basicToUse != null) {
+                copyProperties(basicToUse, basic);
+            } else {
+                deletes.add(basic);
+            }
+        }
+        src.removeAll(deletes);
+        return src;
+    }
+
     @SuppressWarnings("unchecked")
-    public static <T extends Basic> T ref(T src, IRefOperations opr) {
+    public static <B extends Basic> B ref(B src, IRefOperations opr) {
         if (src != null && StringUtils.isNotEmpty(src.getId())) {
-            Class<T> clazz = (Class<T>) ClassUtils.getUserClass(src);
-            return (T) opr.load(clazz, src.getId());
+            Class<B> clazz = (Class<B>) ClassUtils.getUserClass(src);
+            return (B) opr.load(clazz, src.getId());
         } else {
             return null;
         }
