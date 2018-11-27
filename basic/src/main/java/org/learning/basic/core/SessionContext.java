@@ -1,6 +1,6 @@
-package org.learning.basic.core.domain;
+package org.learning.basic.core;
 
-import org.learning.basic.core.IAccountService;
+import org.learning.basic.core.domain.Account;
 import org.learning.basic.utils.ServiceUtils;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package org.learning.basic.utils;
 
-import org.learning.basic.core.domain.SessionContext;
+import org.learning.basic.core.SessionContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 

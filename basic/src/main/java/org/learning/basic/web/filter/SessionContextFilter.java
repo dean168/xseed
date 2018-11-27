@@ -11,7 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.learning.basic.core.domain.SessionContext;
+import org.learning.basic.core.SessionContext;
 
 public class SessionContextFilter implements Filter {
 

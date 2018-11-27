@@ -4,7 +4,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.learning.basic.core.domain.Account;
-import org.learning.basic.core.domain.SessionContext;
+import org.learning.basic.core.SessionContext;
 import org.learning.basic.dao.IHibernateOperations;
 import org.learning.basic.dao.support.SQLSupport;
 import org.learning.basic.shiro.domain.ShiroAccount;

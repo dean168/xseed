@@ -2,7 +2,7 @@ package org.learning.basic.utils;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.learning.basic.core.domain.SessionContext;
+import org.learning.basic.core.SessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;

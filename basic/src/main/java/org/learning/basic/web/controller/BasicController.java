@@ -2,7 +2,7 @@ package org.learning.basic.web.controller;
 
 import org.apache.commons.io.FileUtils;
 import org.learning.basic.core.ITempService;
-import org.learning.basic.core.domain.SessionContext;
+import org.learning.basic.core.SessionContext;
 import org.learning.basic.i18n.utils.I18nUtils;
 import org.learning.basic.utils.ByteUtils;
 import org.learning.basic.utils.FreemarkerUtils;

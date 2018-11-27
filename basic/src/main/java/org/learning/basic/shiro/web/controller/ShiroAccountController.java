@@ -7,7 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.learning.basic.core.domain.SessionContext;
+import org.learning.basic.core.SessionContext;
 import org.learning.basic.dao.IHibernateOperations;
 import org.learning.basic.dao.support.SQLSupport.SQL;
 import org.learning.basic.i18n.utils.I18nUtils;

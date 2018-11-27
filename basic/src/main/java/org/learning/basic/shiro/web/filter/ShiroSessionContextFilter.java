@@ -1,7 +1,7 @@
 package org.learning.basic.shiro.web.filter;
 
 import org.apache.shiro.SecurityUtils;
-import org.learning.basic.core.domain.SessionContext;
+import org.learning.basic.core.SessionContext;
 import org.learning.basic.web.filter.SessionContextFilter;
 
 import javax.servlet.ServletRequest;
