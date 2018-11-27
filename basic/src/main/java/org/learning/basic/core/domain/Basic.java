@@ -1,7 +1,10 @@
 package org.learning.basic.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
@@ -17,7 +20,8 @@ public class Basic {
      * 创建时间
      */
     @JsonProperty("createdAt")
-    private Long createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createdAt;
     /**
      * 创建人
      */
@@ -27,7 +31,8 @@ public class Basic {
      * 最后更新时间
      */
     @JsonProperty("updatedAt")
-    private Long updatedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updatedAt;
     /**
      * 最后更新人
      */
@@ -38,12 +43,12 @@ public class Basic {
         this.id = null;
     }
 
-    public void created(String createdBy, Long createdAt) {
+    public void created(String createdBy, Date createdAt) {
         this.createdBy = createdBy;
         this.createdAt = createdAt;
     }
 
-    public void updated(String updatedBy, Long updatedAt) {
+    public void updated(String updatedBy, Date updatedAt) {
         this.updatedBy = updatedBy;
         this.updatedAt = updatedAt;
     }
@@ -56,11 +61,11 @@ public class Basic {
         this.id = id;
     }
 
-    public Long getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Long createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -72,11 +77,11 @@ public class Basic {
         this.createdBy = createdBy;
     }
 
-    public Long getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Long updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 

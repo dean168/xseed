@@ -112,12 +112,12 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
                 }
                 accountToUse.getRoles().addAll(Arrays.asList(roles));
             }
-            accountToUse.setCreatedAt(System.currentTimeMillis());
+            accountToUse.setCreatedAt(new Date());
         }
         if (context != null) {
             accountToUse.setUpdatedBy(context.accountId());
         }
-        accountToUse.setUpdatedAt(System.currentTimeMillis());
+        accountToUse.setUpdatedAt(new Date());
         return hibernateOperations.merge(accountToUse);
     }
 

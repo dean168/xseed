@@ -5,6 +5,7 @@ import org.springframework.util.ClassUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
 
@@ -20,13 +21,13 @@ public abstract class BeanUtils extends org.springframework.beans.BeanUtils {
         }
     }
 
-    public static <B extends Basic> void created(B basic, String createdBy, Long createdAt) {
+    public static <B extends Basic> void created(B basic, String createdBy, Date createdAt) {
         if (basic != null) {
             basic.created(createdBy, createdAt);
         }
     }
 
-    public static <B extends Basic> void updated(B basic, String updatedBy, Long updatedAt) {
+    public static <B extends Basic> void updated(B basic, String updatedBy, Date updatedAt) {
         if (basic != null) {
             basic.updated(updatedBy, updatedAt);
         }
