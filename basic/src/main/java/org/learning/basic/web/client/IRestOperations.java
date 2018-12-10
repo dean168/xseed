@@ -10,6 +10,8 @@ import java.util.Map;
 
 public interface IRestOperations extends RestOperations {
 
+    String SERVICE_ID = "basic.restOperations";
+
     @Nullable
     <T> T getForObject(String url, ParameterizedTypeReference<T> responseType, Object... uriVariables) throws RestClientException;
 

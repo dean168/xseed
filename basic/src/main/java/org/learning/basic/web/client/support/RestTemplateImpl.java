@@ -1,11 +1,14 @@
 package org.learning.basic.web.client.support;
 
+import org.learning.basic.utils.JsonUtils.Jackson;
 import org.learning.basic.web.client.IRestOperations;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestClientException;
@@ -18,14 +21,26 @@ import java.util.Map;
 public class RestTemplateImpl extends RestTemplate implements IRestOperations {
 
     public RestTemplateImpl() {
+        super();
+        jacksons();
     }
 
     public RestTemplateImpl(ClientHttpRequestFactory requestFactory) {
         super(requestFactory);
+        jacksons();
     }
 
     public RestTemplateImpl(List<HttpMessageConverter<?>> messageConverters) {
         super(messageConverters);
+        jacksons();
+    }
+
+    protected void jacksons() {
+        getMessageConverters().forEach(converter -> {
+            if (MappingJackson2HttpMessageConverter.class.isAssignableFrom(ClassUtils.getUserClass(converter.getClass()))) {
+                ((MappingJackson2HttpMessageConverter) converter).setObjectMapper(Jackson.OM);
+            }
+        });
     }
 
     @Override

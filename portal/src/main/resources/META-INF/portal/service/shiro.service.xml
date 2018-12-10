@@ -19,13 +19,19 @@
         <property name="filters">
             <util:map>
                 <entry key="authc">
-                    <bean class="org.learning.basic.shiro.web.filter.ShiroPassThruAuthenticationFilter"/>
+                    <bean class="org.learning.basic.shiro.web.filter.ShiroPassThruAuthenticationFilter">
+                        <property name="shiroSubject" ref="basic.shiroSubject" />
+                    </bean>
                 </entry>
                 <entry key="roles">
-                    <bean class="org.learning.basic.shiro.web.filter.ShiroRolesAuthorizationFilter"/>
+                    <bean class="org.learning.basic.shiro.web.filter.ShiroRolesAuthorizationFilter">
+                        <property name="shiroSubject" ref="basic.shiroSubject" />
+                    </bean>
                 </entry>
                 <entry key="perms">
-                    <bean class="org.learning.basic.shiro.web.filter.ShiroPermissionsAuthorizationFilter"/>
+                    <bean class="org.learning.basic.shiro.web.filter.ShiroPermissionsAuthorizationFilter">
+                        <property name="shiroSubject" ref="basic.shiroSubject" />
+                    </bean>
                 </entry>
             </util:map>
         </property>
