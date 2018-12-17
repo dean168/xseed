@@ -37,7 +37,7 @@ public class DictServiceImpl implements IDictService {
         SQL sql = new SQL();
         sql.append("from ").append(type);
         sql.append(" where name = ?", name);
-        sql.append(" or alias like ?", SQL.LIKE + dict.delimiters() + dict.getAlias() + dict.delimiters() + SQL.LIKE);
+        sql.append(" or alias like ?", SQL.LIKE + dict.delimiters() + name + dict.delimiters() + SQL.LIKE);
         List<D> list = (List<D>) hibernateOperations.findByPagination(sql.getSQL(), 0, 1, sql.getParams());
         if (!list.isEmpty()) {
             return list.get(0);
@@ -58,12 +58,12 @@ public class DictServiceImpl implements IDictService {
             sql.appendIfExist(" and pid = ?", dict.getPid());
         }
         sql.appendIfExist(" and id = ?", dict.getId());
-        sql.appendIfExistForLike(" and name like ?", dict.getName());
-        sql.appendIfExistForLike(" and desc like ?", dict.getDesc());
-        if (StringUtils.isNotEmpty(dict.getAlias())) {
-            String alias = SQL.LIKE + dict.delimiters() + SQL.LIKE + dict.getAlias() + SQL.LIKE + dict.delimiters() + SQL.LIKE;
-            sql.append(" and alias like ?", alias);
+        if (StringUtils.isNotEmpty(dict.getName())) {
+            sql.append(" and ( name like ?", SQL.LIKE + dict.getName() + SQL.LIKE);
+            String alias = SQL.LIKE + dict.delimiters() + SQL.LIKE + dict.getName() + SQL.LIKE + dict.delimiters() + SQL.LIKE;
+            sql.append(" or alias like ? )", alias);
         }
+        sql.appendIfExistForLike(" and desc like ?", dict.getDesc());
         sql.append(" order by order");
         Pagination<D> pagination = hibernateOperations.findForPagination(sql.getSQL(), offset, limit, sql.getParams());
         prepared(dict, pagination.getResult());
@@ -79,12 +79,12 @@ public class DictServiceImpl implements IDictService {
             sql.appendIfExist(" and pid = ?", dict.getPid());
         }
         sql.appendIfExist(" and id = ?", dict.getId());
-        sql.appendIfExist(" and name = ?", dict.getName());
-        sql.appendIfExist(" and desc = ?", dict.getDesc());
-        if (StringUtils.isNotEmpty(dict.getAlias())) {
-            String alias = SQL.LIKE + dict.delimiters() + dict.getAlias() + dict.delimiters() + SQL.LIKE;
-            sql.append(" and alias like ?", alias);
+        if (StringUtils.isNotEmpty(dict.getName())) {
+            sql.append(" and ( name = ?", dict.getName());
+            String alias = SQL.LIKE + dict.delimiters() + dict.getName() + dict.delimiters() + SQL.LIKE;
+            sql.append(" or alias like ? )", alias);
         }
+        sql.appendIfExist(" and desc = ?", dict.getDesc());
         sql.append(" order by order");
         Pagination<D> pagination = hibernateOperations.findForPagination(sql.getSQL(), offset, limit, sql.getParams());
         prepared(dict, pagination.getResult());
