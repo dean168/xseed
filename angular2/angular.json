@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular2": {
+    "angular2-seed": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -51,18 +51,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular2:build"
+            "browserTarget": "angular2-seed:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular2:build:production"
+              "browserTarget": "angular2-seed:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular2:build"
+            "browserTarget": "angular2-seed:build"
           }
         },
         "test": {
@@ -96,7 +96,7 @@
         }
       }
     },
-    "angular2-e2e": {
+    "angular2-seed-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -104,7 +104,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular2:serve"
+            "devServerTarget": "angular2-seed:serve"
           }
         },
         "lint": {
@@ -119,5 +119,5 @@
       }
     }
   },
-  "defaultProject": "angular2"
+  "defaultProject": "angular2-seed"
 }

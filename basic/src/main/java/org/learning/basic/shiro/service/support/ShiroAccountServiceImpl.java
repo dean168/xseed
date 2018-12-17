@@ -62,7 +62,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
         SQLSupport.SQL sql = new SQLSupport.SQL();
         sql.append("from ").append(ShiroAccount.class);
         sql.append(" where email = ?", email);
-        List<?> list = hibernateOperations.find(sql.getSQL(), sql.getParams());
+        List<?> list = hibernateOperations.find(sql);
         return !list.isEmpty() ? (U) list.get(0) : null;
     }
 
@@ -144,7 +144,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
         SQLSupport.SQL sql = new SQLSupport.SQL();
         sql.append("from ").append(ShiroRole.class);
         sql.append(" where code = ?", code);
-        List<?> list = hibernateOperations.find(sql.getSQL(), sql.getParams());
+        List<?> list = hibernateOperations.find(sql);
         return !list.isEmpty() ? (ShiroRole) list.get(0) : null;
     }
 }

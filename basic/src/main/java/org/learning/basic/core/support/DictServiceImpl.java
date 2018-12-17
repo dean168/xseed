@@ -26,7 +26,8 @@ public class DictServiceImpl implements IDictService {
         return prepared(dict, (D) hibernateOperations.get(forName(dict.getType()), dict.getId()));
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <D extends Dict> D name(Class<D> type, String name) {
         name = StringUtils.trim(name);
         if (StringUtils.isEmpty(name)) {
@@ -98,7 +99,7 @@ public class DictServiceImpl implements IDictService {
         }
         SQL sql = new SQL();
         sql.append("from ").append(clazz).append(" where id in (").addInParams(ids).append(")");
-        return (List<D>) hibernateOperations.find(sql.getSQL(), sql.getParams());
+        return (List<D>) hibernateOperations.find(sql);
     }
 
     private <D extends Dict> List<D> prepared(Dict dict, List<D> list) {

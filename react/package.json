@@ -1,7 +1,7 @@
 {
-    "name": "xseed-react",
+    "name": "react-seed",
     "version": "0.0.1",
-    "description": "xseed-react project",
+    "description": "react-seed project",
     "config": {
         "buildDir": "./dist",
         "devHost": "127.0.0.1",

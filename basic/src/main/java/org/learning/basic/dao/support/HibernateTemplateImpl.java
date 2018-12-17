@@ -1,7 +1,6 @@
 package org.learning.basic.dao.support;
 
 import org.hibernate.LockMode;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.query.NativeQuery;
@@ -36,7 +35,7 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
     @SuppressWarnings("unchecked")
     public Date currentTimestamp() {
         Assert.isTrue(dialect.supportsCurrentTimestampSelection(), "dialect.supportsCurrentTimestampSelection() must be true.");
-        return execute((Session session) -> {
+        return execute(session -> {
             NativeQuery<Date> query = session.createNativeQuery(dialect.getCurrentTimestampSelectString());
             return query.getResultList().get(0);
         });
@@ -86,16 +85,20 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         }
     }
 
-    public List<?> findByPagination(final String sql, final int offset, final int limit, final Object... args) {
-        return execute((Session session) -> {
+    public List<?> find(SQL sql) {
+        return execute(session -> {
+            Query<?> query = session.createQuery(sql.getSQL());
+            params(query, sql.getParams());
+            prepareQuery(query);
+            return query.getResultList();
+        });
+    }
+
+    public List<?> findByPagination(String sql, int offset, int limit, Object... args) {
+        return execute(session -> {
             Query<?> query = session.createQuery(sql);
-            for (int i = 0; args != null && i < args.length; i++) {
-                query.setParameter(i, args[i]);
-            }
-            if (limit > 0) {
-                query.setFirstResult(offset);
-                query.setMaxResults(limit);
-            }
+            params(query, args);
+            limit(query, offset, limit);
             prepareQuery(query);
             return query.getResultList();
         });
@@ -139,6 +142,19 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
     public int count(String sql, Object... args) {
         List<?> list = find(sql, args);
         return !list.isEmpty() ? Integer.valueOf(String.valueOf(list.get(0))) : 0;
+    }
+
+    protected void params(Query<?> query, Object... args) {
+        for (int i = 0; args != null && i < args.length; i++) {
+            query.setParameter(i, args[i]);
+        }
+    }
+
+    protected void limit(Query<?> query, int offset, int limit) {
+        if (limit > 0) {
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+        }
     }
 
     /**

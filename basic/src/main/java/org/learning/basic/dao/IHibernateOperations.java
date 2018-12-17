@@ -2,6 +2,7 @@ package org.learning.basic.dao;
 
 import org.hibernate.LockMode;
 import org.learning.basic.core.domain.Pagination;
+import org.learning.basic.dao.support.SQLSupport.SQL;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateOperations;
 
@@ -23,6 +24,8 @@ public interface IHibernateOperations extends HibernateOperations {
     void xtx(TransactionalHandler1 handler);
 
     void xtx(TransactionalHandler2 handler);
+
+    List<?> find(SQL sql);
 
     List<?> findByPagination(String sql, int offset, int limit, Object... args);
 
