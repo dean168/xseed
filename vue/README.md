@@ -5,5 +5,5 @@ vue create vue-seed
 cd vue-seed
 vue add router
 vue add element
-npm install vue-i18n jquery --save
+npm install vue-i18n axios jquery --save
 ```
