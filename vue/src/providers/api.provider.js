@@ -1,6 +1,11 @@
 import axios from 'axios'
 import { Loading, Message } from 'element-ui'
-import router from './router'
+import router from '@/plugins/router'
+
+export default function (Vue) {
+  Vue.prototype.exchange = exchange
+  Vue.prototype.fetch = fetch
+}
 
 export const exchange = (options) => {
   return new Promise((resolve, reject) => {
