@@ -107,9 +107,9 @@ public abstract class BsonUtils extends StatusUtils {
             }
         }
 
-        public static <T> T readValue(byte[] content, TypeReference<T> jsonTypeReference) {
+        public static <T> T readValue(byte[] content, TypeReference<T> typeReference) {
             try {
-                return OM.readValue(content, jsonTypeReference);
+                return OM.readValue(content, typeReference);
             } catch (IOException e) {
                 throw new BasicException(null, null, e);
             }
@@ -131,9 +131,25 @@ public abstract class BsonUtils extends StatusUtils {
             }
         }
 
+        public static <T> T readValue(File src, TypeReference<T> typeReference) {
+            try {
+                return OM.readValue(src, typeReference);
+            } catch (IOException e) {
+                throw new BasicException(null, null, e);
+            }
+        }
+
         public static <T> T readValue(File src, Class<T> valueType) {
             try {
                 return OM.readValue(src, valueType);
+            } catch (IOException e) {
+                throw new BasicException(null, null, e);
+            }
+        }
+
+        public static <T> T readValue(InputStream is, TypeReference<T> typeReference) {
+            try {
+                return OM.readValue(is, typeReference);
             } catch (IOException e) {
                 throw new BasicException(null, null, e);
             }

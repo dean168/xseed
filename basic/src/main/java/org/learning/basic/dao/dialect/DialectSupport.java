@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 public class DialectSupport implements InitializingBean {
+
     private Dialect dialect;
 
     public DialectSupport() {
