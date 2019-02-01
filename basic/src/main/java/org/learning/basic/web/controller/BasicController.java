@@ -58,10 +58,10 @@ public class BasicController {
         status.setFilename(media.getOriginalFilename());
         if (valid(media.getContentType(), temp)) {
             status.setTemp(temp.getName());
-            status.setErrcode(Status.TRUE);
+            status.setCode(Status.TRUE);
             status.setMessage(I18nUtils.message("BASIC.UPLOADMEDIA.SUCCESS"));
         } else {
-            status.setErrcode(Status.FALSE);
+            status.setCode(Status.FALSE);
             status.setMessage(I18nUtils.message("BASIC.UPLOADMEDIA.FAIL"));
         }
 

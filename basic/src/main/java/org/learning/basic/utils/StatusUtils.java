@@ -44,7 +44,7 @@ public abstract class StatusUtils {
         try {
             JsonGenerator jg = _createGenerator(os);
             jg.writeStartObject();
-            jg.writeNumberField("errcode", status);
+            jg.writeNumberField("code", status);
             jg.writeStringField("message", message);
             jg.writeEndObject();
             jg.flush();
@@ -61,8 +61,8 @@ public abstract class StatusUtils {
         public static final int FALSE = HttpStatus.INTERNAL_SERVER_ERROR.value();
         public static final int TRUE = HttpStatus.OK.value();
 
-        @JsonProperty("errcode")
-        private int errcode;
+        @JsonProperty("code")
+        private int code;
         @JsonProperty("message")
         private String message;
         @JsonProperty("data")
@@ -95,26 +95,26 @@ public abstract class StatusUtils {
             this(status.value(), message, data);
         }
 
-        public Status(int errcode) {
-            this(errcode, null, null);
+        public Status(int code) {
+            this(code, null, null);
         }
 
-        public Status(int errcode, String message) {
-            this(errcode, message, null);
+        public Status(int code, String message) {
+            this(code, message, null);
         }
 
-        public Status(int errcode, String message, D data) {
-            this.errcode = errcode;
+        public Status(int code, String message, D data) {
+            this.code = code;
             this.message = message;
             this.data = data;
         }
 
-        public int getErrcode() {
-            return errcode;
+        public int getCode() {
+            return code;
         }
 
-        public void setErrcode(int errcode) {
-            this.errcode = errcode;
+        public void setCode(int code) {
+            this.code = code;
         }
 
         public String getMessage() {

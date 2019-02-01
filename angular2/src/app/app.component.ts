@@ -37,7 +37,7 @@ export class AppComponent {
   _session() {
     this.api.options({ method: 'get', url: 'account/session', errorText: 'commons.http.error.unknown' }).then(
       (status: any) => {
-        if (status.errcode) {
+        if (status.code) {
           (!this.router.url.length || this.router.url == '/') && this.router.navigate(['/portal']);
         } else {
           this.router.navigate(['/login']);

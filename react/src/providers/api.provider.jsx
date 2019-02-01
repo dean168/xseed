@@ -10,7 +10,7 @@ import { subject } from './subject.provider';
 export const exchange = (options) => {
     return new Promise((resolve, reject) => {
         fetch(options).then(
-            status => status.errcode ? resolve(status.data) : message.error(status.message),
+            status => status.code ? resolve(status.data) : message.error(status.message),
             error => (options.errorText && message.error(options.errorText)) || reject(error)
         );
     });

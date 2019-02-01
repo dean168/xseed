@@ -18,7 +18,7 @@ export class ApiProvider {
     exchange(options) {
         return new Promise((resolve, reject) => {
             this.options(options).then(
-                (status: any) => status.errcode ? resolve(status.data) : alert(status.message),
+                (status: any) => status.code ? resolve(status.data) : alert(status.message),
                 error => reject(error)
             )
         });
