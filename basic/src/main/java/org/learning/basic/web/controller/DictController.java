@@ -43,8 +43,13 @@ public class DictController {
 	}
 
 	@RequestMapping(method = POST, value = "search", produces = { APPLICATION_JSON_UTF8_VALUE })
-	public <D extends Dict> Status<Pagination<D>> list(@RequestBody Dict dict, @RequestParam int offset, @RequestParam int limit) {
+	public <D extends Dict> Status<Pagination<D>> search(@RequestBody Dict dict, @RequestParam int offset, @RequestParam int limit) {
 		return new Status<>(true, null, dictService.search(dict, offset, limit));
+	}
+
+	@RequestMapping(method = POST, value = "list", produces = { APPLICATION_JSON_UTF8_VALUE })
+	public <D extends Dict> Status<Pagination<D>> list(@RequestBody Dict dict, @RequestParam int offset, @RequestParam int limit) {
+		return new Status<>(true, null, dictService.list(dict, offset, limit));
 	}
 
 	@SuppressWarnings("unchecked")
