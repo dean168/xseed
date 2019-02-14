@@ -1,4 +1,4 @@
-package org.learning.basic.web.client.support;
+package org.learning.basic.web.clients.support;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpRequest;
@@ -10,7 +10,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 import org.learning.basic.core.SessionContext;
 import org.learning.basic.utils.RSAUtils;
-import org.learning.basic.web.client.IHCRequestFactory;
+import org.learning.basic.web.clients.IHCRequestFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;

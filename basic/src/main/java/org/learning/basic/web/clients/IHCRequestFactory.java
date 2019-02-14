@@ -1,4 +1,4 @@
-package org.learning.basic.web.client;
+package org.learning.basic.web.clients;
 
 import org.apache.http.client.HttpClient;
 import org.springframework.http.client.ClientHttpRequestFactory;

@@ -1,4 +1,4 @@
-package org.learning.basic.web.filter;
+package org.learning.basic.web.filters;
 
 import java.io.IOException;
 

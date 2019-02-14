@@ -1,4 +1,4 @@
-package org.learning.basic.web.client;
+package org.learning.basic.web.clients;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.lang.Nullable;

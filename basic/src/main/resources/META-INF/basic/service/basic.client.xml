@@ -14,12 +14,12 @@
                 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
                 default-lazy-init="true">
 
-    <bean id="basic.HCRequestFactory" class="org.learning.basic.web.client.support.HCRequestFactoryImpl">
+    <bean id="basic.HCRequestFactory" class="org.learning.basic.web.clients.support.HCRequestFactoryImpl">
         <property name="accessKey" value="${basic.shiro.tokens.accessKey}" />
         <property name="headerName" value="${basic.shiro.tokens.headerName}" />
     </bean>
 
-    <bean id="basic.restOperations" class="org.learning.basic.web.client.support.RestTemplateImpl">
+    <bean id="basic.restOperations" class="org.learning.basic.web.clients.support.RestTemplateImpl">
         <property name="requestFactory" ref="basic.HCRequestFactory" />
     </bean>
 

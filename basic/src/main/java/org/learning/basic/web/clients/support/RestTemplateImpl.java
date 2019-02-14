@@ -1,7 +1,7 @@
-package org.learning.basic.web.client.support;
+package org.learning.basic.web.clients.support;
 
 import org.learning.basic.utils.JsonUtils.Jackson;
-import org.learning.basic.web.client.IRestOperations;
+import org.learning.basic.web.clients.IRestOperations;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequestFactory;
