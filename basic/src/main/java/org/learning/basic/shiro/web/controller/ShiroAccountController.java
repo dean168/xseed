@@ -16,7 +16,7 @@ import org.learning.basic.shiro.domain.ShiroRole;
 import org.learning.basic.shiro.domain.ShiroStatus;
 import org.learning.basic.shiro.service.IShiroAccountService;
 import org.learning.basic.utils.StatusUtils.Status;
-import org.learning.basic.web.controller.BasicController;
+import org.learning.basic.web.controls.BasicController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;

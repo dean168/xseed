@@ -1,4 +1,4 @@
-package org.learning.basic.web.controller;
+package org.learning.basic.web.controls;
 
 import org.apache.commons.io.FileUtils;
 import org.learning.basic.core.ITempService;

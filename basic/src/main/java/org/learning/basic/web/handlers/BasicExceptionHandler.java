@@ -1,4 +1,4 @@
-package org.learning.basic.web.handler;
+package org.learning.basic.web.handlers;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import org.learning.basic.utils.JsonUtils.Jackson;
