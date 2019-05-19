@@ -2,6 +2,7 @@ package org.learning.basic.dao.support;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.learning.basic.core.BasicException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,19 +11,42 @@ import java.util.List;
 
 public class SQLSupport {
 
-    public static final class SQL extends SQLSupport {
+    public static class SQL extends SQLSupport {
 
         public static final String LIKE = "%";
+        public static final int HQL = 1;
+        public static final int SQL = 2;
 
-        private StringBuffer sql = new StringBuffer();
+        private int type = HQL;
+        private StringBuffer text = new StringBuffer();
         private List<Object> params = new ArrayList<>();
+        private int offset;
+
+        public SQL() {
+        }
+
+        public SQL(int type) {
+            this.type = type;
+        }
 
         public SQL append(Class<?> clazz, Object... args) {
             return append(clazz.getName(), args);
         }
 
         public SQL append(String content, Object... args) {
-            sql.append(content);
+            if (type == HQL) {
+                for (int i = 0; i < content.length(); i++) {
+                    char c = content.charAt(i);
+                    text.append(c);
+                    if (c == '?') {
+                        text.append(offset++);
+                    }
+                }
+            } else if (type == SQL) {
+                text.append(content);
+            } else {
+                throw new BasicException("undefined type: " + type);
+            }
             for (int i = 0; args != null && i < args.length; i++) {
                 params.add(args[i]);
             }
@@ -50,11 +74,9 @@ public class SQLSupport {
 
         public SQL addInParams(String... args) {
             for (int i = 0; i < ArrayUtils.getLength(args); i++) {
-                sql.append("?");
-                params.add(args[i]);
-
+                append("?", args[i]);
                 if (i + 1 < args.length) {
-                    sql.append(", ");
+                    text.append(", ");
                 }
             }
             return this;
@@ -62,11 +84,9 @@ public class SQLSupport {
 
         public SQL addInParams(Collection<?> args) {
             for (Iterator<?> it = args.iterator(); it.hasNext(); ) {
-                sql.append("?");
-                params.add(it.next());
-
+                append("?", it.next());
                 if (it.hasNext()) {
-                    sql.append(", ");
+                    text.append(", ");
                 }
             }
             return this;
@@ -74,11 +94,9 @@ public class SQLSupport {
 
         public SQL addInParams(Object... args) {
             for (int i = 0; i < ArrayUtils.getLength(args); i++) {
-                sql.append("?");
-                params.add(args[i]);
-
+                append("?", args[i]);
                 if (i + 1 < args.length) {
-                    sql.append(", ");
+                    text.append(", ");
                 }
             }
             return this;
@@ -132,25 +150,25 @@ public class SQLSupport {
         }
 
         public void removeEnd(int length) {
-            sql.delete(sql.length() - length, sql.length());
+            text.delete(text.length() - length, text.length());
         }
 
         public void removeEnd(String remove) {
-            if (StringUtils.endsWith(sql.toString(), remove)) {
+            if (StringUtils.endsWith(text.toString(), remove)) {
                 removeEnd(remove.length());
             }
         }
 
         public boolean endsWith(String suffix) {
-            return StringUtils.endsWith(sql.toString(), suffix);
+            return StringUtils.endsWith(text.toString(), suffix);
         }
 
         public int indexOf(String text) {
-            return sql.indexOf(text);
+            return this.text.indexOf(text);
         }
 
         public String getSQL() {
-            return sql.toString();
+            return text.toString();
         }
 
         public Object[] getParams() {
