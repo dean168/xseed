@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service(IShiroRealm.SERVICE_ID)
 public class ShiroRealmSupport extends AuthorizingRealm implements IShiroRealm {
 
@@ -41,18 +43,21 @@ public class ShiroRealmSupport extends AuthorizingRealm implements IShiroRealm {
     }
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String userId = (String) principals.fromRealm(getName()).iterator().next();
-        ShiroAccount user = accountService.getAccountById(userId);
-        if (user != null) {
-            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            for (ShiroRole role : user.getRoles()) {
-                info.addRole(role.getCode());
-                info.addStringPermissions(role.getPermissionCodes());
-            }
-            return info;
-        } else {
+        Collection accounts = principals.fromRealm(getName());
+        if (accounts.isEmpty()) {
             return null;
         }
+        String accountId = (String) accounts.iterator().next();
+        ShiroAccount account = accountService.getAccountById(accountId);
+        if (account == null) {
+            return null;
+        }
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        for (ShiroRole role : account.getRoles()) {
+            info.addRole(role.getCode());
+            info.addStringPermissions(role.getPermissionCodes());
+        }
+        return info;
     }
 
 }
