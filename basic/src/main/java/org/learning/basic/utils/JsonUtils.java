@@ -121,6 +121,14 @@ public abstract class JsonUtils extends StatusUtils {
             }
         }
 
+        public static void writeValue(JsonGenerator jg, Object value) {
+            try {
+                OM.writeValue(jg, value);
+            } catch (IOException e) {
+                throw new BasicException(null, null, e);
+            }
+        }
+
         public static <T> T readValue(String content, TypeReference<T> typeReference) {
             try {
                 return OM.readValue(content, typeReference);
