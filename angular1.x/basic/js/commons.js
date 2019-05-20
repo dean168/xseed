@@ -210,7 +210,7 @@ angular.module('basic.commons', []).directive('bcFocus', function($timeout, $com
 						url: url,
 						data: data,
 						success: function(status) {
-						    status.errcode ? options.upcallback(media, status) : $commons.alert(status.message);
+						    status.code === 200 ? options.upcallback(media, status) : $commons.alert(status.message);
 						},
 						errorText: '服务请求错误'
 					});
@@ -328,7 +328,7 @@ angular.module('basic.commons', []).directive('bcFocus', function($timeout, $com
                         url: '/api/dict/search?offset=' + options.tabs[index2].offset + '&limit=' + options.tabs[index2].limit,
                         data: parent2,
                         success: function(status) {
-                            if (status.errcode) {
+                            if (status.code === 200) {
                                 var pagination = status.data;
                                 var cid = tabs2.children('li.bc-tab').eq(index2).attr('cid'), content = contents2.children('div.bc-content').eq(index2).empty(), joins = [];
                                 if (options.tabs[index2].group) {
@@ -414,7 +414,7 @@ angular.module('basic.commons', []).directive('bcFocus', function($timeout, $com
                             url: '/api/dict/search?offset=0&limit=20',
                             data: { type: options.dict.type, uname: options.dict.uname, name: text },
                             success: function(status) {
-                                status.errcode ? render1(cached1[text] = status.data) : $commons.alert(status.message);
+                                status.code === 200 ? render1(cached1[text] = status.data) : $commons.alert(status.message);
                             },
                             errorText: '服务请求错误'
                         }) : render1(cached1[text]);
@@ -488,7 +488,7 @@ angular.module('basic.commons', []).directive('bcFocus', function($timeout, $com
                             url: '/api/dict/get',
                             data: { type: options.dict.type, id: model.id, xpath: 'true' },
                             success: function(status) {
-                                if (status.errcode) {
+                                if (status.code === 200) {
                                     if (status.data.xpath && (status.data.xpaths = status.data.xpath.substr(1, status.data.xpath.length).split('/'))) {
                                         options.dict.id == 'null' && status.data.xpaths.unshift('null');
                                         for (var i = $.inArray(options.dict.id, status.data.xpaths), ts = tabs2.children('li.bc-tab'); i < status.data.xpaths.length && i < ts.length; i++) {

@@ -35,7 +35,7 @@ public class BasicExceptionHandler {
         try (OutputStream os = response.getOutputStream()) {
             try (JsonGenerator jg = Jackson.createGenerator(os)) {
                 jg.writeStartObject();
-                jg.writeNumberField("errcode", Status.FALSE);
+                jg.writeNumberField("code", Status.FALSE);
                 jg.writeStringField("message", messages(locale, e));
                 jg.writeEndObject();
                 jg.flush();

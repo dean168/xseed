@@ -10,11 +10,11 @@ export default function (Vue) {
 export const exchange = (options) => {
   return new Promise((resolve, reject) => {
     fetch(options).then(status => {
-      if (status.errcode === 200) {
+      if (status.code === 200) {
         resolve(status.data)
-      } else if (status.errcode === 401) { // 未授权、未登录
+      } else if (status.code === 401) { // 未授权、未登录
         router.push('/login')
-      } else if (status.errcode === 403) { // 拒绝访问、无权限查看
+      } else if (status.code === 403) { // 拒绝访问、无权限查看
         Message({ type: 'error', message: status.message })
       } else {
         console.error(options.method + ' ' + options.url, status)

@@ -7,7 +7,7 @@ angular.module('portal.controllers', []).controller('loginController', function(
 			url : '/api/account/login',
 			data: user,
 			success : function(status) {
-				if (status.errcode) {
+				if (status.code === 200) {
 					angular.extend($.context.session, status);
 					$.context.rme(GLOBAL_SESSION);
 					$state.transitionTo('portal');
@@ -23,7 +23,7 @@ angular.module('portal.controllers', []).controller('loginController', function(
 			url : '/api/account/register',
 			data: user,
 			success : function(status) {
-				if (status.errcode) {
+				if (status.code === 200) {
 					angular.extend($.context.session, status);
 					$.context.rme(GLOBAL_SESSION);
 				} else {

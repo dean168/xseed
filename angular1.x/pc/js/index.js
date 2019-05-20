@@ -10,7 +10,7 @@ var GLOBAL_SESSION = 'portal.session';
         cache : false,
         dataType : 'json',
 		success : function(status) {
-			if (status.errcode) {
+			if (status.code === 200) {
 				angular.extend($.context.session, status);
 			} else {
 				window.location.replace('#/login');
