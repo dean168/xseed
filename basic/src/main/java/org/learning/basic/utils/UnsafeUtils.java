@@ -72,10 +72,14 @@ public abstract class UnsafeUtils {
         }
 
         public long put(long key, long value) {
+            // 从根节点往下找
             long address = root;
+            // 经过的父节点
             long[] parents = ArrayUtils.EMPTY_LONG_ARRAY;
             while (true) {
+                // 当前节点类型
                 byte type = type(address);
+                // 按当前节点的 size，二分法查找
                 int size = size(address), low = 0, high = size - 1;
                 while (low <= high) {
                     int mid = (low + high) >>> 1;
@@ -85,6 +89,7 @@ public abstract class UnsafeUtils {
                     } else if (current > key) {
                         high = mid - 1;
                     } else {
+                        // 命中目标
                         while (type == Types.NODE) {
                             address = value(address, mid);
                             type = type(address);
@@ -93,10 +98,14 @@ public abstract class UnsafeUtils {
                         return address;
                     }
                 }
+                // 没找到，往下层找
                 if (type == Types.DATA) {
+                    // 已到底层了，插入新值
                     return insert(parents, address, size, low, key, value);
                 } else if (type == Types.NODE) {
+                    // 记住经过的节点
                     parents = ArrayUtils.add(parents, address);
+                    // 从最接近的节点再找
                     address = value(address, low > 0 ? --low : 0);
                 } else {
                     throw new IllegalArgumentException("undefined type#" + type);
@@ -105,29 +114,40 @@ public abstract class UnsafeUtils {
         }
 
         protected long insert(long[] parents, long address, int size, int i, long key, long value) {
-            if (size < maxsize) {
-                long old = i == 0 && size > 0 ? key(address, i) : -1;
+            if (size < maxsize) { // 当前节点还没满
+                // 假如是第一个，并且已经设置过值，记住当前的 key，用于重新设置父节点的指针值，否则用 MIN_VALUE 表示不需要更改
+                long old = i == 0 && size > 0 ? key(address, i) : Long.MIN_VALUE;
+                // 要插入的位置之后的数据往后偏移
                 offset(address, size, i);
+                // 设置 key
                 key(address, i, key);
+                // 设置 value
                 value(address, i, value);
+                // 设置当前节点的 size
                 size(address, ++size);
-                changed(parents, i, old, key);
+                // 判断是否要更改路径上指向首元素的值
+                if (old != Long.MIN_VALUE) {
+                    changed(parents, i, old, key);
+                }
+                // 返回节点的地址
                 return address;
-            } else if (i == 0) {
+            } else if (i == 0) { // 当前节点已经满了，并且要插入的位置是父节点的第一个
                 long next = nextLinking(address);
+                // 把父节点的所有数据拷贝到 next 节点
                 unsafe.copyMemory(null, address + Caps.METADATA, null, next + Caps.METADATA, maxsize * Caps.ENTRY);
+                // 设置 next 的 size 是 maxsize
                 size(next, maxsize);
                 changed(parents, key(next, 0), next);
                 size(address, 0);
                 insert(parents, address, 0, 0, key, value);
                 mergeL(parents, next, address);
                 return address;
-            } else if (i == maxsize) {
+            } else if (i == maxsize) { // 当前节点已经满了，并且要插入的位置是父节点的最后一个
                 long next = nextLinking(address);
                 insert(parents, next, 0, 0, key, value);
                 mergeR(parents, address, next);
                 return next;
-            } else {
+            } else { // 当前节点已经满了，并且插入位置不是父节点的第一个，并且插入位置不是父节点的最后一个
                 long next = nextLinking(address);
                 int count = maxsize - i;
                 unsafe.copyMemory(null, address + Caps.METADATA + i * Caps.ENTRY, null, next + Caps.METADATA, count * Caps.ENTRY);
@@ -139,6 +159,12 @@ public abstract class UnsafeUtils {
             }
         }
 
+        /**
+         * 节点里的内容往右偏移
+         * @param address 当前节点的地址
+         * @param size 当前节点的 size
+         * @param from 从什么地方开始偏移
+         */
         protected void offset(long address, int size, int from) {
             for (int i = size - 1; i >= from; i--) {
                 unsafe.copyMemory(null, address + Caps.METADATA + i * Caps.ENTRY, null, address + Caps.METADATA + (i + 1) * Caps.ENTRY, Caps.ENTRY);
@@ -170,9 +196,16 @@ public abstract class UnsafeUtils {
             }
         }
 
+        /**
+         * 更改路径上指向首元素的值
+         * @param parents 路径地址
+         * @param i
+         * @param oldKey 旧的 key
+         * @param newKey 新的 key
+         */
         protected void changed(long[] parents, int i, long oldKey, long newKey) {
-            for (int j = parents.length - 1, position = i; j >= 0 && position == 0 && oldKey != -1; j--) {
-                position = keyAt(parents[j], oldKey);
+            for (int j = parents.length - 1; j >= 0; j--) {
+                int position = keyAt(parents[j], oldKey);
                 oldKey = key(parents[j], position);
                 key(parents[j], position, newKey);
             }
@@ -191,10 +224,19 @@ public abstract class UnsafeUtils {
             }
         }
 
+        /**
+         * 创建当前地址的下一个连表地址，是双向指定
+         * @param address 当前地址
+         * @return 创建的连表地址
+         */
         protected long nextLinking(long address) {
+            // 根据当前地址的节点类型申请内存块
             long next = allocate(type(address));
+            // 子地址 -> 父地址
             next(next, next(address));
+            // 父地址 -> 子地址
             next(address, next);
+            // 下一个连表地址
             return next;
         }
 
@@ -249,6 +291,11 @@ public abstract class UnsafeUtils {
             return unsafe.getByte(address);
         }
 
+        /**
+         * 设置节点的 size
+         * @param address 节点的地址
+         * @param size size 值
+         */
         protected void size(long address, int size) {
             unsafe.putInt(address + Caps.TYPE, size);
         }
@@ -265,6 +312,12 @@ public abstract class UnsafeUtils {
             return unsafe.getLong(address + Caps.TYPE_SIZE);
         }
 
+        /**
+         * 设置 key
+         * @param address 当前节点的地址
+         * @param i 节点中的第几个 key
+         * @param key key 的值
+         */
         protected void key(long address, int i, long key) {
             unsafe.putLong(address + Caps.METADATA + i * Caps.ENTRY, key);
         }
@@ -289,6 +342,12 @@ public abstract class UnsafeUtils {
             throw new IllegalArgumentException("key#" + key + " not found at " + address);
         }
 
+        /**
+         * 设置 value
+         * @param address 当前节点的地址
+         * @param i 节点中的第几个 value
+         * @param value value 的值
+         */
         protected void value(long address, int i, long value) {
             unsafe.putLong(address + Caps.METADATA + i * Caps.ENTRY + Caps.KEY, value);
         }
