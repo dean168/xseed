@@ -225,16 +225,16 @@ public abstract class UnsafeUtils {
         }
 
         /**
-         * 创建当前地址的下一个连表地址，是双向指定
+         * 创建当前地址的下一个连表地址
          * @param address 当前地址
          * @return 创建的连表地址
          */
         protected long nextLinking(long address) {
             // 根据当前地址的节点类型申请内存块
             long next = allocate(type(address));
-            // 子地址 -> 父地址
+            // 子地址的 next 设置为父地址的 next
             next(next, next(address));
-            // 父地址 -> 子地址
+            // 父地址的 next 设置为当前创建的地址
             next(address, next);
             // 下一个连表地址
             return next;
@@ -409,7 +409,7 @@ public abstract class UnsafeUtils {
             // public static final byte NEXT_SIBLING = LONG;
             public static final byte KEY = LONG;
             public static final byte VALUE = LONG;
-            public static final byte METADATA = 16;
+            public static final byte METADATA = 16; // TYPE(1) + SIZE(4) + NEXT(8) = 13 -> 剩 3 个字节还没用到先预留
             public static final byte ENTRY = KEY + VALUE;
             public static final byte MIN_SIZE = 3;
         }
