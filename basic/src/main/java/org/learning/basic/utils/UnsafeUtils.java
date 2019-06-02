@@ -115,32 +115,14 @@ public abstract class UnsafeUtils {
 
         protected long insert(long[] parents, long address, int size, int i, long key, long value) {
             if (size < maxsize) { // 当前节点还没满
-                // 假如是第一个，并且已经设置过值，记住当前的 key，用于重新设置父节点的指针值，否则用 MIN_VALUE 表示不需要更改
-                long old = i == 0 && size > 0 ? key(address, i) : Long.MIN_VALUE;
-                // 要插入的位置之后的数据往后偏移
-                offset(address, size, i);
-                // 设置 key
-                key(address, i, key);
-                // 设置 value
-                value(address, i, value);
-                // 设置当前节点的 size
-                size(address, ++size);
-                // 判断是否要更改路径上指向首元素的值
-                if (old != Long.MIN_VALUE) {
-                    changed(parents, i, old, key);
-                }
-                // 返回节点的地址
+                // 插入当前节点
+                insertC(parents, address, size, i, key, value);
+                // 返回插入的节点地址
                 return address;
             } else if (i == 0) { // 当前节点已经满了，并且要插入的位置是父节点的第一个
-                long next = nextLinking(address);
-                // 把父节点的所有数据拷贝到 next 节点
-                unsafe.copyMemory(null, address + Caps.METADATA, null, next + Caps.METADATA, maxsize * Caps.ENTRY);
-                // 设置 next 的 size 是 maxsize
-                size(next, maxsize);
-                changed(parents, key(next, 0), next);
-                size(address, 0);
-                insert(parents, address, 0, 0, key, value);
-                mergeL(parents, next, address);
+                // 左分裂插入
+                insertL(parents, address, size, key, value);
+                // 返回插入的节点地址
                 return address;
             } else if (i == maxsize) { // 当前节点已经满了，并且要插入的位置是父节点的最后一个
                 long next = nextLinking(address);
@@ -159,76 +141,73 @@ public abstract class UnsafeUtils {
             }
         }
 
-        /**
-         * 节点里的内容往右偏移
-         * @param address 当前节点的地址
-         * @param size 当前节点的 size
-         * @param from 从什么地方开始偏移
-         */
-        protected void offset(long address, int size, int from) {
-            for (int i = size - 1; i >= from; i--) {
-                unsafe.copyMemory(null, address + Caps.METADATA + i * Caps.ENTRY, null, address + Caps.METADATA + (i + 1) * Caps.ENTRY, Caps.ENTRY);
+        protected void insertC(long[] parents, long address, int size, int i, long key, long value) {
+            // 假如是第一个，并且已经设置过值，记住当前的 key，用于重新设置父节点的指针值，否则用 MIN_VALUE 表示不需要更改
+            long old = i == 0 && size > 0 ? key(address, i) : Long.MIN_VALUE;
+            // 在要插入的位置之后的数据往后偏移
+            for (int offset = size - 1, from = i; offset >= from; offset--) {
+                unsafe.copyMemory(null, address + Caps.METADATA + offset * Caps.ENTRY, null, address + Caps.METADATA + (offset + 1) * Caps.ENTRY, Caps.ENTRY);
+            }
+            // 设置 key
+            key(address, i, key);
+            // 设置 value
+            value(address, i, value);
+            // 设置当前节点的 size
+            size(address, ++size);
+            // 判断是否要更改路径上指向首元素的值
+            if (old != Long.MIN_VALUE) {
+                for (int offset = parents.length - 1; offset >= 0; offset--) {
+                    int position = keyAt(parents[offset], old);
+                    old = key(parents[offset], position);
+                    key(parents[offset], position, key);
+                }
             }
         }
 
-        protected void changed(long[] parents, long key, long value) {
-            if (parents.length > 0) {
-                long parent = parents[parents.length - 1];
-                int position = keyAt(parent, key);
-                value(parent, position, value);
-            }
-        }
-
-        protected void mergeL(long[] parents, long address, long prev) {
+        protected void insertL(long[] parents, long address, int size, long key, long value) {
             // 记住参数变量，使用循环递归，不使用方法递归 (方法调用深度影响性能)
             long[] parentsToUse = parents;
+            // 初始化要分裂的节点
             long addressToUse = address;
-            long prevToUse = prev;
-            // 获取父节点，没有就创建
-            long parentToUse = parent(parentsToUse, addressToUse);
-            // 父节点的 size
-            int sizeToUse = size(parentToUse);
+            // 初始化分裂节点的 size，这里应该是 maxsize
+            int sizeToUse = size;
+            // 初始化 key, value，递归后是首元素的值
+            long keyToUse = key, valueToUse = value;
+            // 左分裂后的节点地址
+            long prevToUse = addressToUse;
             // 父节点的 size 已满的情况就分裂
             while (sizeToUse == maxsize) {
                 // 在 parentToUse 的左边分裂一个
-                long nextToUse = nextLinking(parentToUse);
+                long nextToUse = nextLinking(addressToUse);
                 // 迁移 parentToUse 的数据到 nextToUse
-                unsafe.copyMemory(null, parentToUse + Caps.METADATA, null, nextToUse + Caps.METADATA, maxsize * Caps.ENTRY);
+                unsafe.copyMemory(null, addressToUse + Caps.METADATA, null, nextToUse + Caps.METADATA, maxsize * Caps.ENTRY);
                 // 设置 nextToUse 的 size 为 maxsize
                 size(nextToUse, maxsize);
                 // 更改父节点中 nextToUse 首元素的指向
-                changed(parentsToUse, key(nextToUse, 0), nextToUse);
+                if (parentsToUse.length > 0) {
+                    // 获取父节点地址
+                    long parent = parentsToUse[parentsToUse.length - 1];
+                    // 设置 nextToUse 在 parent 节点中的指向地址是 nextToUse
+                    value(parent, keyAt(parent, key(nextToUse, 0)), nextToUse);
+                }
                 // 重置 parentToUse
-                size(parentToUse, 0);
+                size(addressToUse, 0);
                 // 节点路径减一个，开始向上递归判断
                 parentsToUse = ArrayUtils.subarray(parentsToUse, 0, parentsToUse.length - 1);
                 // 设置当前父节点的首元素为 prev
-                insert(parentsToUse, parentToUse, 0, 0, key(prevToUse, 0), prevToUse);
+                insert(parentsToUse, addressToUse, 0, 0, keyToUse, valueToUse);
                 // 替换变量，进入下一个递归
-                addressToUse = nextToUse;
-                prevToUse = parentToUse;
+                prevToUse = addressToUse;
                 // 重新获取 parentToUse
-                parentToUse = parent(parentsToUse, addressToUse);
+                addressToUse = parent(parentsToUse, nextToUse);
+                // 设置 key, value 为当前地址的首元素
+                keyToUse = key(addressToUse, 0);
+                valueToUse = addressToUse;
                 // 重新获取 parent 的 size，进入下一个递归的判断
-                sizeToUse = size(parentToUse);
+                sizeToUse = size(addressToUse);
             }
             // parent 的 size 还没满的情况，在 parent 中添加 child
-            child(parentsToUse, parentToUse, sizeToUse, prevToUse);
-        }
-
-        /**
-         * 更改路径上指向首元素的值
-         * @param parents 路径地址
-         * @param i
-         * @param oldKey 旧的 key
-         * @param newKey 新的 key
-         */
-        protected void changed(long[] parents, int i, long oldKey, long newKey) {
-            for (int j = parents.length - 1; j >= 0; j--) {
-                int position = keyAt(parents[j], oldKey);
-                oldKey = key(parents[j], position);
-                key(parents[j], position, newKey);
-            }
+            child(parentsToUse, addressToUse, sizeToUse, prevToUse);
         }
 
         protected void mergeR(long[] parents, long address, long next) {
