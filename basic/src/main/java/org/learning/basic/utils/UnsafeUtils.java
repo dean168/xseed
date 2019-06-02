@@ -180,20 +180,40 @@ public abstract class UnsafeUtils {
         }
 
         protected void mergeL(long[] parents, long address, long prev) {
-            long parent = parent(parents, address);
-            int size = size(parent);
-            if (size == maxsize) {
-                long nextToUse = nextLinking(parent);
-                unsafe.copyMemory(null, parent + Caps.METADATA, null, nextToUse + Caps.METADATA, maxsize * Caps.ENTRY);
+            // 记住参数变量，使用循环递归，不使用方法递归 (方法调用深度影响性能)
+            long[] parentsToUse = parents;
+            long addressToUse = address;
+            long prevToUse = prev;
+            // 获取父节点，没有就创建
+            long parentToUse = parent(parentsToUse, addressToUse);
+            // 父节点的 size
+            int sizeToUse = size(parentToUse);
+            // 父节点的 size 已满的情况就分裂
+            while (sizeToUse == maxsize) {
+                // 在 parentToUse 的左边分裂一个
+                long nextToUse = nextLinking(parentToUse);
+                // 迁移 parentToUse 的数据到 nextToUse
+                unsafe.copyMemory(null, parentToUse + Caps.METADATA, null, nextToUse + Caps.METADATA, maxsize * Caps.ENTRY);
+                // 设置 nextToUse 的 size 为 maxsize
                 size(nextToUse, maxsize);
-                changed(parents, key(nextToUse, 0), nextToUse);
-                size(parent, 0);
-                long[] parentsToUse = ArrayUtils.subarray(parents, 0, parents.length - 1);
-                insert(parentsToUse, parent, 0, 0, key(prev, 0), prev);
-                mergeL(parentsToUse, nextToUse, parent);
-            } else {
-                child(parents, parent, size, prev);
+                // 更改父节点中 nextToUse 首元素的指向
+                changed(parentsToUse, key(nextToUse, 0), nextToUse);
+                // 重置 parentToUse
+                size(parentToUse, 0);
+                // 节点路径减一个，开始向上递归判断
+                parentsToUse = ArrayUtils.subarray(parentsToUse, 0, parentsToUse.length - 1);
+                // 设置当前父节点的首元素为 prev
+                insert(parentsToUse, parentToUse, 0, 0, key(prevToUse, 0), prevToUse);
+                // 替换变量，进入下一个递归
+                addressToUse = nextToUse;
+                prevToUse = parentToUse;
+                // 重新获取 parentToUse
+                parentToUse = parent(parentsToUse, addressToUse);
+                // 重新获取 parent 的 size，进入下一个递归的判断
+                sizeToUse = size(parentToUse);
             }
+            // parent 的 size 还没满的情况，在 parent 中添加 child
+            child(parentsToUse, parentToUse, sizeToUse, prevToUse);
         }
 
         /**
@@ -265,9 +285,19 @@ public abstract class UnsafeUtils {
             return parent;
         }
 
+        /**
+         * 在 parent 中添加 child 元素
+         * @param parents child 的路径
+         * @param parent 在 parent 节点添加
+         * @param size parent 节点的 size
+         * @param child 需要添加的 child
+         */
         protected void child(long[] parents, long parent, int size, long child) {
+            // 获取 child 的第一个元素
             long key = key(child, 0);
+            // 获取 child 在 parent 中最接近的值
             int low = closet(parent, size, key);
+            // 调用插入方法
             insert(ArrayUtils.subarray(parents, 0, parents.length - 1), parent, size, low, key, child);
         }
 
