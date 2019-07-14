@@ -28,7 +28,7 @@ public abstract class StatusUtils {
         try (OutputStream os = response.getOutputStream()) {
             _status(os, status, message);
         } catch (IOException e) {
-            throw new BasicException(null, null, e);
+            throw new BasicException(null, e);
         }
     }
 
@@ -49,7 +49,7 @@ public abstract class StatusUtils {
             jg.writeEndObject();
             jg.flush();
         } catch (IOException e) {
-            throw new BasicException(null, null, e);
+            throw new BasicException(null, e);
         }
     }
 

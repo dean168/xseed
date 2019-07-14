@@ -77,7 +77,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return JF.createGenerator(content, JsonEncoding.UTF8);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -85,7 +85,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return JF.createGenerator(os, JsonEncoding.UTF8);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -93,7 +93,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return JF.createGenerator(writer);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -101,7 +101,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return JF.createParser(in);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -109,7 +109,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return JF.createParser(content);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -117,7 +117,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 OM.writeValue(os, value);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -125,7 +125,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 OM.writeValue(jg, value);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -133,7 +133,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.readValue(content, typeReference);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -141,7 +141,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.readValue(content, valueType);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -157,7 +157,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.readValue(src, typeReference);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -165,7 +165,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.readValue(src, valueType);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -173,7 +173,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.readValue(is, typeReference);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -181,7 +181,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.readValue(is, valueType);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -197,7 +197,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.writeValueAsBytes(value);
             } catch (JsonProcessingException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -205,7 +205,7 @@ public abstract class JsonUtils extends StatusUtils {
             try {
                 return OM.writeValueAsString(value);
             } catch (JsonProcessingException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -214,7 +214,7 @@ public abstract class JsonUtils extends StatusUtils {
                 try {
                     jg.writeStringField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, null, e);
+                    throw new BasicException(null, e);
                 }
             }
         }
@@ -224,7 +224,7 @@ public abstract class JsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, null, e);
+                    throw new BasicException(null, e);
                 }
             }
         }
@@ -234,7 +234,7 @@ public abstract class JsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, null, e);
+                    throw new BasicException(null, e);
                 }
             }
         }
@@ -244,7 +244,7 @@ public abstract class JsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, null, e);
+                    throw new BasicException(null, e);
                 }
             }
         }
@@ -254,7 +254,7 @@ public abstract class JsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, null, e);
+                    throw new BasicException(null, e);
                 }
             }
         }
@@ -264,7 +264,7 @@ public abstract class JsonUtils extends StatusUtils {
                 try {
                     jg.writeStringField(name, new SimpleDateFormat(pattern).format(value));
                 } catch (IOException e) {
-                    throw new BasicException(null, null, e);
+                    throw new BasicException(null, e);
                 }
             }
         }
@@ -276,7 +276,7 @@ public abstract class JsonUtils extends StatusUtils {
             try (InputStream is = FileUtils.openInputStream(content)) {
                 return readValue(is, valueType);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -285,9 +285,9 @@ public abstract class JsonUtils extends StatusUtils {
                  JSONReader jr = new JSONReader(isr)) {
                 return jr.readObject(valueType);
             } catch (UnsupportedEncodingException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -295,7 +295,7 @@ public abstract class JsonUtils extends StatusUtils {
             try (OutputStream os = FileUtils.openOutputStream(content)) {
                 writeValue(os, value);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 
@@ -304,9 +304,9 @@ public abstract class JsonUtils extends StatusUtils {
                  JSONWriter jw = new JSONWriter(osw)) {
                 jw.writeValue(value);
             } catch (UnsupportedEncodingException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             } catch (IOException e) {
-                throw new BasicException(null, null, e);
+                throw new BasicException(null, e);
             }
         }
 

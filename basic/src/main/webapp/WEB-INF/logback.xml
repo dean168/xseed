@@ -9,4 +9,5 @@
     <root level="INFO">
         <appender-ref ref="console"/>
     </root>
+    <logger name="org.learning.basic" level="DEBUG"/>
 </configuration>

@@ -34,7 +34,7 @@ public abstract class FreemarkerUtils {
         try {
             render(clazz, name, root, new OutputStreamWriter(os, ByteUtils.CHARSET_NAME));
         } catch (UnsupportedEncodingException e) {
-            throw new BasicException(null, null, e);
+            throw new BasicException(null, e);
         }
     }
 
@@ -56,7 +56,7 @@ public abstract class FreemarkerUtils {
             rootToUse.put("enums", enums);
             template.process(rootToUse, os);
         } catch (IOException | TemplateException e) {
-            throw new BasicException(null, null, e);
+            throw new BasicException(null, e);
         }
     }
 }

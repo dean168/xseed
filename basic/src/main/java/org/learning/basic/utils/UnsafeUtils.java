@@ -1,25 +1,11 @@
 package org.learning.basic.utils;
 
 import org.springframework.util.Assert;
-import org.springframework.util.ReflectionUtils;
 import sun.misc.Unsafe;
-
-import java.lang.reflect.Field;
 
 public abstract class UnsafeUtils {
 
-    private static final Unsafe US = _getUnsafe();
-
-    public static Unsafe getUnsafe() {
-        return US;
-    }
-
-    private static Unsafe _getUnsafe() {
-        Field field = ReflectionUtils.findField(Unsafe.class, "theUnsafe");
-        Assert.notNull(field, Unsafe.class.getName() + ".theUnsafe not found");
-        ReflectionUtils.makeAccessible(field);
-        return (Unsafe) ReflectionUtils.getField(field, null);
-    }
+    public static final Unsafe US = org.springframework.objenesis.instantiator.util.UnsafeUtils.getUnsafe();
 
     public static final class BPlus {
 
@@ -32,7 +18,7 @@ public abstract class UnsafeUtils {
             Assert.isNull(unsafe, BPlus.class.getName() + " already initialized");
             maxsize = (capacity - Caps.METADATA) / Caps.ENTRY;
             Assert.isTrue(maxsize >= Caps.MIN_SIZE, "set capacity >= " + (Caps.METADATA + Caps.ENTRY * Caps.MIN_SIZE) + " and capacity < " + Short.MAX_VALUE);
-            unsafe = UnsafeUtils.getUnsafe();
+            unsafe = US;
             root = allocate(Types.DATA);
         }
 
@@ -225,6 +211,7 @@ public abstract class UnsafeUtils {
 
         /**
          * 创建当前地址的下一个连表地址
+         *
          * @param address 当前地址
          * @return 创建的连表地址
          */
@@ -266,10 +253,11 @@ public abstract class UnsafeUtils {
 
         /**
          * 在 parent 中添加 child 元素
+         *
          * @param parents child 的路径
-         * @param parent 在 parent 节点添加
-         * @param size parent 节点的 size
-         * @param child 需要添加的 child
+         * @param parent  在 parent 节点添加
+         * @param size    parent 节点的 size
+         * @param child   需要添加的 child
          */
         protected void child(long[] parents, long parent, int size, long child) {
             // 获取 child 的第一个元素
@@ -302,8 +290,9 @@ public abstract class UnsafeUtils {
 
         /**
          * 设置节点的 size
+         *
          * @param address 节点的地址
-         * @param size size 值
+         * @param size    size 值
          */
         protected void size(long address, int size) {
             unsafe.putInt(address + Caps.TYPE, size);
@@ -323,9 +312,10 @@ public abstract class UnsafeUtils {
 
         /**
          * 设置 key
+         *
          * @param address 当前节点的地址
-         * @param i 节点中的第几个 key
-         * @param key key 的值
+         * @param i       节点中的第几个 key
+         * @param key     key 的值
          */
         protected void key(long address, int i, long key) {
             unsafe.putLong(address + Caps.METADATA + i * Caps.ENTRY, key);
@@ -353,9 +343,10 @@ public abstract class UnsafeUtils {
 
         /**
          * 设置 value
+         *
          * @param address 当前节点的地址
-         * @param i 节点中的第几个 value
-         * @param value value 的值
+         * @param i       节点中的第几个 value
+         * @param value   value 的值
          */
         protected void value(long address, int i, long value) {
             unsafe.putLong(address + Caps.METADATA + i * Caps.ENTRY + Caps.KEY, value);

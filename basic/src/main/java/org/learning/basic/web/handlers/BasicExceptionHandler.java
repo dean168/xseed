@@ -1,6 +1,7 @@
 package org.learning.basic.web.handlers;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.learning.basic.core.BasicException;
 import org.learning.basic.utils.JsonUtils.Jackson;
 import org.learning.basic.utils.StatusUtils.Status;
 import org.slf4j.Logger;
@@ -60,6 +61,10 @@ public class BasicExceptionHandler {
             for (ObjectError error : ((WebExchangeBindException) e).getBindingResult().getAllErrors()) {
                 return messageSource.getMessage(error, locale);
             }
+        }
+        if (e instanceof BasicException) {
+            BasicException error = (BasicException) e;
+            return messageSource.getMessage(error.getErrcode(), error.getErrargs(), locale);
         }
         return "server error.";
     }
