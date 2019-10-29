@@ -55,7 +55,7 @@ public class ShiroRealmSupport extends AuthorizingRealm implements IShiroRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         for (ShiroRole role : account.getRoles()) {
             info.addRole(role.getCode());
-            info.addStringPermissions(role.getPermissionCodes());
+            info.addStringPermissions(role.permissions());
         }
         return info;
     }

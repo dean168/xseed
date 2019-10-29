@@ -20,7 +20,7 @@ public class ShiroRole {
     @JsonProperty("perms")
 	private Set<ShiroPermission> perms = new HashSet<>();
 
-	public Set<String> getPermissionCodes() {
+	public Set<String> permissions() {
 		Set<String> codes = new HashSet<>();
 		for (ShiroPermission permission : perms) {
 			codes.add(permission.getCode());
