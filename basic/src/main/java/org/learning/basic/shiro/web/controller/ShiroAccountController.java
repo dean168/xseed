@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -54,9 +54,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
      * @param form
      * @throws IOException
      */
-    @RequestMapping(method = POST, value = "/register",
-            consumes = {APPLICATION_JSON_UTF8_VALUE},
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(method = POST, value = "/register", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
     public synchronized Status<?> register(@RequestBody RegisterForm form) {
         if (StringUtils.isEmpty(form.getEmail())) {
             return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.EMAIL.NULL"));
@@ -112,8 +110,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     /**
      * 当前用户的session
      */
-    @RequestMapping(method = GET, value = "locale",
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(method = GET, value = "locale", produces = {APPLICATION_JSON_VALUE})
     public Status<?> locale() {
         return new Status<>(true, null, String.valueOf(I18nUtils.current()));
     }
@@ -121,8 +118,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     /**
      * 当前用户的session
      */
-    @RequestMapping(method = GET, value = "session",
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(method = GET, value = "session", produces = {APPLICATION_JSON_VALUE})
     public Status<?> session() {
         String accountId = (String) SecurityUtils.getSubject().getPrincipal();
         A account = null;
@@ -154,9 +150,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
      *
      * @param user
      */
-    @RequestMapping(method = POST, value = "/login",
-            consumes = {APPLICATION_JSON_UTF8_VALUE},
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(method = POST, value = "/login", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
     public Status<?> login(@RequestBody LoginForm user) {
         return doLogin(user);
     }
@@ -164,9 +158,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     /**
      * 更新当前用户密码
      */
-    @RequestMapping(method = POST, value = "upasswd",
-            consumes = {APPLICATION_JSON_UTF8_VALUE},
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(method = POST, value = "upasswd", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
     public Status<?> upasswd(@RequestBody UPasswdForm form) {
         SessionContext context = SessionContext.get();
         A user = context.account();
@@ -183,8 +175,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         }
     }
 
-    @RequestMapping(method = GET, value = "logout",
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(method = GET, value = "logout", produces = {APPLICATION_JSON_VALUE})
     public Status<?> logout() throws IOException {
         try {
             SecurityUtils.getSubject().logout();

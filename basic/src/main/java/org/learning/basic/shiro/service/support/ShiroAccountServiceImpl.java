@@ -3,10 +3,10 @@ package org.learning.basic.shiro.service.support;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.learning.basic.core.domain.Account;
 import org.learning.basic.core.SessionContext;
+import org.learning.basic.core.domain.Account;
 import org.learning.basic.dao.IHibernateOperations;
-import org.learning.basic.dao.support.SQLSupport;
+import org.learning.basic.dao.support.SQLSupport.SQL;
 import org.learning.basic.shiro.domain.ShiroAccount;
 import org.learning.basic.shiro.domain.ShiroRole;
 import org.learning.basic.shiro.service.IShiroAccountService;
@@ -59,7 +59,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
     @SuppressWarnings("unchecked")
     @Override
     public <U extends Account> U getAccountByEmail(String email) {
-        SQLSupport.SQL sql = new SQLSupport.SQL();
+        SQL sql = new SQL();
         sql.append("from ").append(ShiroAccount.class);
         sql.append(" where email = ?", email);
         List<?> list = hibernateOperations.find(sql);
@@ -141,7 +141,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
 
     @Override
     public ShiroRole getRoleByCode(String code) {
-        SQLSupport.SQL sql = new SQLSupport.SQL();
+        SQL sql = new SQL();
         sql.append("from ").append(ShiroRole.class);
         sql.append(" where code = ?", code);
         List<?> list = hibernateOperations.find(sql);
