@@ -20,6 +20,8 @@ import org.springframework.util.Assert;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
+import static org.springframework.util.Assert.hasText;
+
 @Service(IShiroAccountService.SERVICE_ID)
 public class ShiroAccountServiceImpl implements IShiroAccountService {
 
@@ -141,6 +143,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
 
     @Override
     public ShiroRole getRoleByCode(String code) {
+        hasText(code, "code must not be null");
         SQL sql = new SQL();
         sql.append("from ").append(ShiroRole.class);
         sql.append(" where code = ?", code);
