@@ -56,13 +56,13 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
      */
     @RequestMapping(method = POST, value = "/register", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
     public synchronized Status<?> register(@RequestBody RegisterForm form) {
-        if (StringUtils.isEmpty(form.getEmail())) {
-            return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.EMAIL.NULL"));
+        if (StringUtils.isEmpty(form.getNumber())) {
+            return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.NUMBER.NULL"));
         } else if (StringUtils.isEmpty(form.getPassword())) {
             return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.PASSWORD.NULL"));
         } else if (!StringUtils.equals(form.getPassword(), form.getConfirmPassword())) {
             return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.CONFIRMPASSWORD.ERROR"));
-        } else if (unique(null, form.getEmail())) {
+        } else if (unique(null, form.getNumber())) {
             return new Status<>(false, I18nUtils.message("ACCOUNT.REGISTER.USER.EXIST"));
         } else {
             ShiroAccount accountToUse = BeanUtils.instantiate(accountClass());
@@ -73,16 +73,16 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         }
     }
 
-    protected boolean unique(String id, String email) {
+    protected boolean unique(String id, String number) {
         SQL sql = new SQL();
         sql.append("select count(*) from ").append(accountClass());
-        sql.append(" where email = ?", email);
+        sql.append(" where number = ?", number);
         sql.appendIfExist(" and id <> ?", id);
         return hibernateOperations.count(sql.getSQL(), sql.getParams()) > 0;
     }
 
     protected Status<?> doLogin(LoginForm account) {
-        UsernamePasswordToken token = new UsernamePasswordToken(account.getEmail(), account.getPassword(), account.isRme());
+        UsernamePasswordToken token = new UsernamePasswordToken(account.getNumber(), account.getPassword(), account.isRme());
         try {
             // 登录操作
             SecurityUtils.getSubject().login(token);
@@ -95,7 +95,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
                 return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
             }
             if (logger.isDebugEnabled()) {
-                logger.debug("login#" + userToUse.getId() + "(" + userToUse.getEmail() + ")");
+                logger.debug("login#" + userToUse.getId() + "(" + userToUse.getNumber() + ")");
             }
             // 初始化当前 session
             return session();
@@ -135,7 +135,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
             return new Status<>(HttpStatus.UNAUTHORIZED, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
         } else {
             if (logger.isDebugEnabled()) {
-                logger.debug("csession#" + account.getId() + "(" + account.getEmail() + ")");
+                logger.debug("csession#" + account.getId() + "(" + account.getNumber() + ")");
             }
             SessionStatus status = new SessionStatus(true, "current session");
             // 写当前用户信息
@@ -166,10 +166,10 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
             return new Status<>(false, I18nUtils.message("ACCOUNT.UPASSWD.OLDPASSWORD.NULL"));
         } else if (StringUtils.isEmpty(form.getNewpasswd())) {
             return new Status<>(false, I18nUtils.message("ACCOUNT.UPASSWD.NEWPASSWORD.NULL"));
-        } else if (!StringUtils.equals(user.getPassword(), new Sha256Hash(form.getOldpasswd(), user.getEmail()).toBase64())) {
+        } else if (!StringUtils.equals(user.getPassword(), new Sha256Hash(form.getOldpasswd(), user.getNumber()).toBase64())) {
             return new Status<>(false, I18nUtils.message("ACCOUNT.UPASSWD.OLDPASSWORD.ERROR"));
         } else {
-            user.setPassword(new Sha256Hash(form.getNewpasswd(), user.getEmail()).toBase64());
+            user.setPassword(new Sha256Hash(form.getNewpasswd(), user.getNumber()).toBase64());
             hibernateOperations.xupdate(user);
             return new Status<>(true, I18nUtils.message("ACCOUNT.UPASSWD.SUCCESS"));
         }
@@ -182,7 +182,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
             SessionContext context = SessionContext.get();
             A account = context.account();
             if (account != null && logger.isDebugEnabled()) {
-                logger.debug("User#" + account.getEmail() + " exit success");
+                logger.debug("User#" + account.getNumber() + " exit success");
             }
         } catch (Exception e) {
             logger.error(null, e);
@@ -197,8 +197,8 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         private String id;
         @JsonProperty("name")
         private String name;
-        @JsonProperty("email")
-        private String email;
+        @JsonProperty("number")
+        private String number;
         @JsonProperty("avatar")
         private String avatar;
         @JsonProperty("post")
@@ -226,12 +226,12 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
             this.name = name;
         }
 
-        public String getEmail() {
-            return email;
+        public String getNumber() {
+            return number;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public void setNumber(String number) {
+            this.number = number;
         }
 
         public String getAvatar() {
@@ -262,19 +262,19 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
     public static class LoginForm {
 
-        @JsonProperty("email")
-        private String email;
+        @JsonProperty("number")
+        private String number;
         @JsonProperty("password")
         private String password;
         @JsonProperty("rme")
         private boolean rme;
 
-        public String getEmail() {
-            return email;
+        public String getNumber() {
+            return number;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public void setNumber(String number) {
+            this.number = number;
         }
 
         public String getPassword() {

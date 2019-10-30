@@ -33,10 +33,10 @@ public class ShiroRealmSupport extends AuthorizingRealm implements IShiroRealm {
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        ShiroAccount user = accountService.getAccountByEmail(token.getUsername());
+        ShiroAccount user = accountService.getAccountByNumber(token.getUsername());
         if (user != null) {
             return new SimpleAuthenticationInfo(user.getId(), user.getPassword(),
-                    ByteSource.Util.bytes(user.getEmail()), getName());
+                    ByteSource.Util.bytes(user.getNumber()), getName());
         } else {
             return null;
         }

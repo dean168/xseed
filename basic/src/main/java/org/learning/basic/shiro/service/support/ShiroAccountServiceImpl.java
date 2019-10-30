@@ -60,10 +60,10 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <U extends Account> U getAccountByEmail(String email) {
+    public <U extends Account> U getAccountByNumber(String number) {
         SQL sql = new SQL();
         sql.append("from ").append(ShiroAccount.class);
-        sql.append(" where email = ?", email);
+        sql.append(" where number = ?", number);
         List<?> list = hibernateOperations.find(sql);
         return !list.isEmpty() ? (U) list.get(0) : null;
     }
@@ -72,7 +72,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
     @Transactional
     public void register(ShiroAccount account, String... roles) {
         if (StringUtils.isEmpty(account.getName())) {
-            account.setName(account.getEmail());
+            account.setName(account.getNumber());
         }
         store(account, roles);
     }
@@ -90,7 +90,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
             BeanUtils.copyProperties(account, accountToUse, "roles");
             // 如果密码修改了，设置新密码
             if (needep) {
-                accountToUse.setPassword(new Sha256Hash(account.getPassword(), account.getEmail()).toBase64());
+                accountToUse.setPassword(new Sha256Hash(account.getPassword(), account.getNumber()).toBase64());
             }
             // 添加角色
             for (int i = 0; i < ArrayUtils.getLength(codes); i++) {
@@ -105,7 +105,7 @@ public class ShiroAccountServiceImpl implements IShiroAccountService {
             if (context != null) {
                 accountToUse.setCreatedBy(context.accountId());
             }
-            accountToUse.setPassword(new Sha256Hash(account.getPassword(), account.getEmail()).toBase64());
+            accountToUse.setPassword(new Sha256Hash(account.getPassword(), account.getNumber()).toBase64());
             if (ArrayUtils.isNotEmpty(codes)) {
                 ShiroRole[] roles = new ShiroRole[codes.length];
                 for (int i = 0; i < roles.length; i++) {

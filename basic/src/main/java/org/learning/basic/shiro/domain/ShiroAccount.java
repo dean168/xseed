@@ -13,13 +13,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 public class ShiroAccount extends Account {
 
 	/**
-	 * 用户的邮箱地址
+	 * 用户的登陆账号
 	 */
-	@JsonProperty("email")
-	private String email;
+	@JsonProperty("number")
+	private String number;
 	/**
 	 * 用户密码
-	 * 不输出json
+	 * 不输出 json
 	 */
 //	@JsonProperty("password")
 	private String password;
@@ -34,12 +34,12 @@ public class ShiroAccount extends Account {
 	@JsonProperty("roles")
 	private Set<ShiroRole> roles = new HashSet<>();
 
-	public String getEmail() {
-		return email;
+	public String getNumber() {
+		return number;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	public String getPassword() {

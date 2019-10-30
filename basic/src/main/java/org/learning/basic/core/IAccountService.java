@@ -8,5 +8,5 @@ public interface IAccountService {
 
     <U extends Account> U getAccountById(String id);
 
-    <U extends Account> U getAccountByEmail(String email);
+    <U extends Account> U getAccountByNumber(String number);
 }
