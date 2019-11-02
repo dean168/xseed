@@ -1,5 +1,8 @@
 package org.learning.basic.shiro.service.support;
 
+import org.learning.basic.dao.support.SQLSupport.SQL;
+import org.learning.basic.shiro.domain.AccountRole;
+import org.learning.basic.shiro.domain.RolePermission;
 import org.learning.basic.shiro.domain.ShiroRole;
 import org.learning.basic.shiro.service.IShiroRoleService;
 import org.springframework.beans.BeanUtils;
@@ -29,9 +32,17 @@ public class ShiroRoleServiceImpl extends ShiroBasicServiceImpl implements IShir
     @Override
     @Transactional
     public void delete(String id) {
-        ShiroRole role = hibernateOperations.get(ShiroRole.class, id);
-        if (role != null) {
-            hibernateOperations.delete(role);
-        }
+        SQL sql = new SQL();
+        sql.append("delete from ").append(RolePermission.class);
+        sql.append(" where role.id = ?", id);
+        hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
+        sql = new SQL();
+        sql.append("delete from ").append(AccountRole.class);
+        sql.append(" where role.id = ?", id);
+        hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
+        sql = new SQL();
+        sql.append("delete from ").append(ShiroRole.class);
+        sql.append(" where id = ?", id);
+        hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
     }
 }

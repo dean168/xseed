@@ -2,6 +2,8 @@ package org.learning.basic.shiro.service.support;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.learning.basic.dao.support.SQLSupport.SQL;
+import org.learning.basic.shiro.domain.AccountRole;
 import org.learning.basic.shiro.domain.ShiroAccount;
 import org.learning.basic.shiro.service.IShiroAccountService;
 import org.springframework.beans.BeanUtils;
@@ -45,9 +47,13 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
     @Override
     @Transactional
     public void delete(String id) {
-        ShiroAccount account = hibernateOperations.get(ShiroAccount.class, id);
-        if (account != null) {
-            hibernateOperations.delete(account);
-        }
+        SQL sql = new SQL();
+        sql.append("delete from ").append(AccountRole.class);
+        sql.append(" where account.id = ?", id);
+        hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
+        sql = new SQL();
+        sql.append("delete from ").append(ShiroAccount.class);
+        sql.append(" where id = ?", id);
+        hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
     }
 }
