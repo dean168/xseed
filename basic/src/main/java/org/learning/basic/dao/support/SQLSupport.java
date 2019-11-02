@@ -2,12 +2,13 @@ package org.learning.basic.dao.support;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.learning.basic.core.BasicException;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import static org.learning.basic.core.Errors.Patterns.handler;
 
 public class SQLSupport {
 
@@ -45,7 +46,7 @@ public class SQLSupport {
             } else if (type == SQL) {
                 text.append(content);
             } else {
-                throw new BasicException("undefined type: " + type);
+                return handler("undefined type: " + type);
             }
             for (int i = 0; args != null && i < args.length; i++) {
                 params.add(args[i]);

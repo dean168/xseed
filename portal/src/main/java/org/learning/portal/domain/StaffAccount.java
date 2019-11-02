@@ -7,7 +7,7 @@ import org.learning.basic.shiro.domain.ShiroAccount;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
-public class Staff extends ShiroAccount {
+public class StaffAccount extends ShiroAccount {
 
     @JsonProperty("name")
     private String name;

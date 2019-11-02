@@ -1,15 +1,17 @@
 package org.learning.basic.dao.support;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.crypto.AesCipherService;
-
 import org.learning.basic.dao.IJdbcPasswordDecoder;
 import org.learning.basic.dao.IJdbcPasswordEncoder;
 import org.learning.basic.utils.ByteUtils;
 import org.springframework.util.Assert;
+
+import javax.annotation.PostConstruct;
+
+import static org.learning.basic.core.Asserts.Patterns.hasText;
+import static org.learning.basic.core.Asserts.Patterns.isTrue;
 
 public class DefaultJdbcPasswordDecoderImpl implements IJdbcPasswordEncoder, IJdbcPasswordDecoder {
 
@@ -18,7 +20,7 @@ public class DefaultJdbcPasswordDecoderImpl implements IJdbcPasswordEncoder, IJd
 
     @PostConstruct
     public void init() {
-        Assert.isTrue(key != null && key.length > 0, "key must not be null.");
+        isTrue(key != null && key.length > 0, "key must not be null.");
         cipherService = new AesCipherService();
         cipherService.setModeName("ECB");
     }
@@ -35,7 +37,7 @@ public class DefaultJdbcPasswordDecoderImpl implements IJdbcPasswordEncoder, IJd
     public String decode(String password) {
         if (StringUtils.isNotEmpty(password)) {
             password = ByteUtils.strings(cipherService.decrypt(Base64.decode(password), key).getBytes());
-            Assert.hasText(password, "decoded password must have text; it must not be null, empty, or blank");
+            hasText(password, "decoded password must have text; it must not be null, empty, or blank");
         }
         return password;
     }

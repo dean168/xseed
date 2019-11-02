@@ -33,10 +33,10 @@ public class ShiroRealmSupport extends AuthorizingRealm implements IShiroRealm {
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        ShiroAccount user = accountService.getAccountByNumber(token.getUsername());
-        if (user != null) {
-            return new SimpleAuthenticationInfo(user.getId(), user.getPassword(),
-                    ByteSource.Util.bytes(user.getNumber()), getName());
+        ShiroAccount account = accountService.get(token.getUsername());
+        if (account != null) {
+            return new SimpleAuthenticationInfo(account.getId(), account.getPassword(),
+                    ByteSource.Util.bytes(account.getId()), getName());
         } else {
             return null;
         }
@@ -48,13 +48,13 @@ public class ShiroRealmSupport extends AuthorizingRealm implements IShiroRealm {
             return null;
         }
         String accountId = (String) accounts.iterator().next();
-        ShiroAccount account = accountService.getAccountById(accountId);
+        ShiroAccount account = accountService.get(accountId);
         if (account == null) {
             return null;
         }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         for (ShiroRole role : account.getRoles()) {
-            info.addRole(role.getCode());
+            info.addRole(role.getId());
             info.addStringPermissions(role.permissions());
         }
         return info;

@@ -12,6 +12,8 @@ import org.learning.basic.utils.UUIDUtils;
 import java.io.Serializable;
 import java.util.Properties;
 
+import static org.learning.basic.core.Errors.Patterns.handler;
+
 public class AssignedUUIDGenerator implements IdentifierGenerator, Configurable {
 
     private String name;
@@ -20,7 +22,7 @@ public class AssignedUUIDGenerator implements IdentifierGenerator, Configurable 
     public void configure(Type type, Properties params, ServiceRegistry serviceRegistry) throws MappingException {
         name = params.getProperty(ENTITY_NAME);
         if (name == null) {
-            throw new MappingException("no entity name");
+            handler("no entity name");
         }
     }
 

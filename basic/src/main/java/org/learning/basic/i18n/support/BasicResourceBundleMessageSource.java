@@ -13,13 +13,16 @@ import org.springframework.util.ResourceUtils;
 
 import org.learning.basic.utils.StringUtils;
 
+import static org.learning.basic.core.Asserts.Patterns.hasText;
+import static org.learning.basic.core.Errors.Patterns.handler;
+
 public class BasicResourceBundleMessageSource extends ResourceBundleMessageSource {
 
-	private static final String META_INF = "META-INF/";
-	private static final String WEB_INF_CLASSES = "/WEB-INF/classes/";
-	private static final String SEPARATOR_ = "_";
+    private static final String META_INF = "META-INF/";
+    private static final String WEB_INF_CLASSES = "/WEB-INF/classes/";
+    private static final String SEPARATOR_ = "_";
 
-	public void setBaseresources(Resource... baseresources) throws IOException {
+    public void setBaseresources(Resource... baseresources) throws IOException {
         Set<String> fsrs = new LinkedHashSet<>();
         Set<String> urs = new LinkedHashSet<>();
         for (Resource bs : baseresources) {
@@ -30,19 +33,19 @@ public class BasicResourceBundleMessageSource extends ResourceBundleMessageSourc
                 if (StringUtils.isEmpty(pathToUse)) {
                     pathToUse = StringUtils.substringAfterLast(path, META_INF);
                     if (StringUtils.isNotEmpty(pathToUse)) {
-                    	pathToUse = META_INF + pathToUse;
+                        pathToUse = META_INF + pathToUse;
                     }
                 }
-                Assert.hasText(pathToUse, fsr.getFile() + " not have '/WEB-INF/classes/' or '/META-INF/'");
+                hasText(pathToUse, "{0} not have '/WEB-INF/classes/' or '/META-INF/'", fsr.getFile());
                 put(fsrs, pathToUse);
             } else if (bs instanceof UrlResource) {
                 UrlResource ur = (UrlResource) bs;
                 String path = String.valueOf(ur.getURL());
                 path = StringUtils.substringAfterLast(path, ResourceUtils.JAR_URL_SEPARATOR);
-                Assert.hasText(path, ur + " must be JAR URL");
+                hasText(path, "{0} must be JAR URL", ur);
                 put(urs, path);
             } else {
-                throw new IllegalArgumentException("not support basename resource " + bs.getClass().getName() + " -> " + bs);
+                handler("not support basename resource " + bs.getClass().getName() + " -> " + bs);
             }
         }
         // 文件的在前面，jar包的在后面
@@ -51,11 +54,11 @@ public class BasicResourceBundleMessageSource extends ResourceBundleMessageSourc
         this.setBasenames(fsrs.stream().toArray(String[]::new));
     }
 
-	private void put(Set<String> paths, String path) {
-		path = StringUtils.substringBeforeLast(path, SEPARATOR_);
-		if (StringUtils.contains(path, SEPARATOR_)) {
-		    path = StringUtils.substringBeforeLast(path, SEPARATOR_);
-		}
-		paths.add(path);
-	}
+    private void put(Set<String> paths, String path) {
+        path = StringUtils.substringBeforeLast(path, SEPARATOR_);
+        if (StringUtils.contains(path, SEPARATOR_)) {
+            path = StringUtils.substringBeforeLast(path, SEPARATOR_);
+        }
+        paths.add(path);
+    }
 }

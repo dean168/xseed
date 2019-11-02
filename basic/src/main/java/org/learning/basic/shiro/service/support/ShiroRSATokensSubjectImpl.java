@@ -38,13 +38,13 @@ public class ShiroRSATokensSubjectImpl implements IShiroSubject {
         if (StringUtils.isNotEmpty(token)) {
             if (subject.getPrincipal() == null) {
                 String accountId = RSAUtils.decrypt(secretKey, token);
-                ShiroAccount account = accountService.getAccountById(accountId);
+                ShiroAccount account = accountService.get(accountId);
                 if (account.getStatus() == null || ShiroStatus.ACTIVE.equals(account.getStatus())) {
-                    UsernameHashSaltedPasswordToken tokenToUse = new UsernameHashSaltedPasswordToken(account.getNumber(), account.getPassword(), false);
+                    UsernameHashSaltedPasswordToken tokenToUse = new UsernameHashSaltedPasswordToken(account.getId(), account.getPassword(), false);
                     try {
                         subject.login(tokenToUse);
                         if (logger.isDebugEnabled()) {
-                            logger.debug("login#" + account.getId() + "(" + account.getNumber() + ")");
+                            logger.debug("login#" + account.getId() + "(" + account.getId() + ")");
                         }
                     } catch (AuthenticationException e) {
                         if (logger.isDebugEnabled()) {
@@ -52,7 +52,7 @@ public class ShiroRSATokensSubjectImpl implements IShiroSubject {
                         }
                     }
                 } else if (logger.isDebugEnabled()) {
-                    logger.debug("invalid account#" + account.getNumber() + ", status must be active.");
+                    logger.debug("invalid account#" + account.getId() + ", status must be active.");
                 }
             }
         }

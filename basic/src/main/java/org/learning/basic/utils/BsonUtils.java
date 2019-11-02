@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import de.undercouch.bson4jackson.BsonFactory;
-import org.learning.basic.core.BasicException;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.ServletResponse;
@@ -21,6 +20,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static org.learning.basic.core.Errors.Patterns.handler;
 
 public abstract class BsonUtils extends StatusUtils {
 
@@ -71,7 +72,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return JF.createGenerator(content, JsonEncoding.UTF8);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -79,7 +80,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return JF.createGenerator(os, JsonEncoding.UTF8);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -87,7 +88,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return JF.createParser(in);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -95,7 +96,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return JF.createParser(content);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -103,7 +104,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 OM.writeValue(os, value);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                handler(null, e);
             }
         }
 
@@ -111,7 +112,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return OM.readValue(content, typeReference);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -119,7 +120,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return OM.readValue(content, valueType);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -135,7 +136,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return OM.readValue(src, typeReference);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -143,7 +144,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return OM.readValue(src, valueType);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -151,7 +152,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return OM.readValue(is, typeReference);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -159,7 +160,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return OM.readValue(is, valueType);
             } catch (IOException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -175,7 +176,7 @@ public abstract class BsonUtils extends StatusUtils {
             try {
                 return OM.writeValueAsBytes(value);
             } catch (JsonProcessingException e) {
-                throw new BasicException(null, e);
+                return handler(null, e);
             }
         }
 
@@ -184,7 +185,7 @@ public abstract class BsonUtils extends StatusUtils {
                 try {
                     jg.writeStringField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, e);
+                    handler(null, e);
                 }
             }
         }
@@ -194,7 +195,7 @@ public abstract class BsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, e);
+                    handler(null, e);
                 }
             }
         }
@@ -204,7 +205,7 @@ public abstract class BsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, e);
+                    handler(null, e);
                 }
             }
         }
@@ -214,7 +215,7 @@ public abstract class BsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, e);
+                    handler(null, e);
                 }
             }
         }
@@ -224,7 +225,7 @@ public abstract class BsonUtils extends StatusUtils {
                 try {
                     jg.writeNumberField(name, value);
                 } catch (IOException e) {
-                    throw new BasicException(null, e);
+                    handler(null, e);
                 }
             }
         }
@@ -234,7 +235,7 @@ public abstract class BsonUtils extends StatusUtils {
                 try {
                     jg.writeStringField(name, new SimpleDateFormat(pattern).format(value));
                 } catch (IOException e) {
-                    throw new BasicException(null, e);
+                    handler(null, e);
                 }
             }
         }

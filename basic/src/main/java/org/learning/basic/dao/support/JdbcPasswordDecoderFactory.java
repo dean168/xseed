@@ -7,6 +7,8 @@ import org.springframework.util.Assert;
 
 import org.learning.basic.dao.IJdbcPasswordDecoder;
 
+import static org.learning.basic.core.Asserts.Patterns.notNull;
+
 public class JdbcPasswordDecoderFactory implements FactoryBean<String> {
 
 	private IJdbcPasswordDecoder jdbcPasswordDecoder;
@@ -14,7 +16,7 @@ public class JdbcPasswordDecoderFactory implements FactoryBean<String> {
 
 	@PostConstruct
 	public void init() {
-		Assert.notNull(jdbcPasswordDecoder, "jdbcPasswordDecoder must not be null");
+		notNull(jdbcPasswordDecoder, "jdbcPasswordDecoder must not be null");
 	}
 
 	@Override

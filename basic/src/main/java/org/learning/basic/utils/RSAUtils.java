@@ -1,7 +1,6 @@
 package org.learning.basic.utils;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.learning.basic.core.BasicException;
 import org.springframework.util.Base64Utils;
 
 import javax.crypto.BadPaddingException;
@@ -12,6 +11,8 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+
+import static org.learning.basic.core.Errors.Patterns.handler;
 
 public abstract class RSAUtils {
 
@@ -25,7 +26,7 @@ public abstract class RSAUtils {
             generator.initialize(keysize);
             return generator.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
-            throw new BasicException("can not gen RSA keys.", e);
+            return handler("can not gen RSA keys.", e);
         }
     }
 
@@ -44,17 +45,17 @@ public abstract class RSAUtils {
             byte[] bytesToUse = segment(cipher, bytes, MAX_ENCRYPT_BLOCK);
             return Base64Utils.encodeToString(bytesToUse);
         } catch (NoSuchAlgorithmException e) {
-            throw new BasicException("encrypt failed.", e);
+            return handler("encrypt failed.", e);
         } catch (InvalidKeyException e) {
-            throw new BasicException("encrypt failed.", e);
+            return handler("encrypt failed.", e);
         } catch (NoSuchPaddingException e) {
-            throw new BasicException("encrypt failed.", e);
+            return handler("encrypt failed.", e);
         } catch (BadPaddingException e) {
-            throw new BasicException("encrypt failed.", e);
+            return handler("encrypt failed.", e);
         } catch (InvalidKeySpecException e) {
-            throw new BasicException("encrypt failed.", e);
+            return handler("encrypt failed.", e);
         } catch (IllegalBlockSizeException e) {
-            throw new BasicException("encrypt failed.", e);
+            return handler("encrypt failed.", e);
         }
     }
 
@@ -69,17 +70,17 @@ public abstract class RSAUtils {
             byte[] bytesToUse = segment(cipher, bytes, MAX_DECRYPT_BLOCK);
             return ByteUtils.strings(bytesToUse);
         } catch (NoSuchAlgorithmException e) {
-            throw new BasicException("decrypt failed.", e);
+            return handler("decrypt failed.", e);
         } catch (InvalidKeyException e) {
-            throw new BasicException("decrypt failed.", e);
+            return handler("decrypt failed.", e);
         } catch (NoSuchPaddingException e) {
-            throw new BasicException("decrypt failed.", e);
+            return handler("decrypt failed.", e);
         } catch (BadPaddingException e) {
-            throw new BasicException("decrypt failed.", e);
+            return handler("decrypt failed.", e);
         } catch (InvalidKeySpecException e) {
-            throw new BasicException("decrypt failed.", e);
+            return handler("decrypt failed.", e);
         } catch (IllegalBlockSizeException e) {
-            throw new BasicException("decrypt failed.", e);
+            return handler("decrypt failed.", e);
         }
     }
 

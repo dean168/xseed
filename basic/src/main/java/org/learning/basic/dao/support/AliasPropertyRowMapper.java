@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.learning.basic.core.Asserts.Patterns.isTrue;
+
 public class AliasPropertyRowMapper<T> extends BeanPropertyRowMapper<T> {
 
     private String[] names;
@@ -23,7 +25,7 @@ public class AliasPropertyRowMapper<T> extends BeanPropertyRowMapper<T> {
     private Map<String, Integer> labels;
 
     public AliasPropertyRowMapper(String[] names, String[] alias) {
-        Assert.isTrue(ArrayUtils.getLength(names) == ArrayUtils.getLength(alias), "names.length must equals alias.length");
+        isTrue(ArrayUtils.getLength(names) == ArrayUtils.getLength(alias), "names.length must equals alias.length");
         this.names = names;
         this.alias = alias;
     }

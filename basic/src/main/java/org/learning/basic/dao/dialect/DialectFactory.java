@@ -8,6 +8,8 @@ import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
 
+import static org.learning.basic.core.Asserts.Patterns.hasText;
+
 public class DialectFactory<D extends Dialect> implements FactoryBean<D> {
 
     private String dialect;
@@ -17,7 +19,7 @@ public class DialectFactory<D extends Dialect> implements FactoryBean<D> {
     @SuppressWarnings("unchecked")
     @PostConstruct
     public void init() throws ClassNotFoundException {
-        Assert.hasText(dialect, "dialect must not be null");
+        hasText(dialect, "dialect must not be null");
         dialectClass = (Class<D>) ClassUtils.forName(dialect, ClassUtils.getDefaultClassLoader());
         dialectToUse = BeanUtils.instantiateClass(dialectClass);
     }

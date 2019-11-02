@@ -2,7 +2,6 @@ package org.learning.basic.core.support;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.learning.basic.core.BasicException;
 import org.learning.basic.core.IDictService;
 import org.learning.basic.core.domain.Dict;
 import org.learning.basic.core.domain.Pagination;
@@ -16,6 +15,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import static org.learning.basic.core.Errors.Patterns.handler;
+
 public class DictServiceImpl implements IDictService {
 
     private IHibernateOperations hibernateOperations;
@@ -27,7 +28,7 @@ public class DictServiceImpl implements IDictService {
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public <D extends Dict> D name(Class<D> type, String name) {
         name = StringUtils.trim(name);
         if (StringUtils.isEmpty(name)) {
@@ -160,7 +161,7 @@ public class DictServiceImpl implements IDictService {
         try {
             return (Class<D>) ClassUtils.forName(type, ClassUtils.getDefaultClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new BasicException(null, null, e);
+            return handler(null, e);
         }
     }
 

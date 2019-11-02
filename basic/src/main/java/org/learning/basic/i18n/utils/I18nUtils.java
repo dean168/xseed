@@ -6,25 +6,23 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
-import org.springframework.util.Assert;
 import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
-public abstract class I18nUtils {
+import static org.learning.basic.core.Asserts.Patterns.notNull;
 
-    private static final String NOT_NULL_SC = "current context must not be null";
-    private static final String NOT_NULL_SC_REQ = "current context request must not be null";
+public abstract class I18nUtils {
 
     private static MessageSource MS;
     private static LocaleResolver LR;
 
     public static Locale current() {
         SessionContext context = SessionContext.get();
-        Assert.notNull(context, NOT_NULL_SC);
+        notNull(context, "current context must not be null");
         HttpServletRequest request = context.request();
-        Assert.notNull(request, NOT_NULL_SC_REQ);
+        notNull(request, "current context request must not be null");
         return LR.resolveLocale(request);
     }
 

@@ -6,8 +6,10 @@ import org.hibernate.dialect.Dialect;
 import org.learning.basic.dao.support.SQLSupport.SQL;
 import org.learning.basic.utils.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+
+import static org.learning.basic.core.Asserts.Patterns.isTrue;
+import static org.learning.basic.core.Asserts.Patterns.notNull;
 
 public class DialectSupport implements InitializingBean {
 
@@ -26,7 +28,7 @@ public class DialectSupport implements InitializingBean {
     }
 
     public void afterPropertiesSet() {
-        Assert.notNull(dialect, "dialect is required.");
+        notNull(dialect, "dialect is required.");
     }
 
     public SQL getLimitString(String query, int offset, int limit) {
@@ -82,7 +84,7 @@ public class DialectSupport implements InitializingBean {
 
     public void setDialectClass(String dialectClass) throws ClassNotFoundException {
         Object dialectToUse = BeanUtils.instantiateClass(ClassUtils.forName(dialectClass, ClassUtils.getDefaultClassLoader()));
-        Assert.isTrue(dialectToUse instanceof Dialect, "Class [" + dialectClass + "] not instanceof " + Dialect.class.getName());
+        isTrue(dialectToUse instanceof Dialect, "Class [{0}] not instanceof {1}", dialectClass, Dialect.class);
         this.dialect = (Dialect) dialectToUse;
     }
 }

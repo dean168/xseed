@@ -97,7 +97,6 @@ project(':basic') {
 		compile("org.apache.shiro:shiro-spring:$shiroVersion")
 		compile("com.alibaba:fastjson:1.2.62")
 		compile("com.alibaba:druid:1.1.20")
-		compile("org.freemarker:freemarker:2.3.28")
 	}
 }
 

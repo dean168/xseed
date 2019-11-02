@@ -64,7 +64,7 @@ public class BasicExceptionHandler {
         }
         if (e instanceof BasicException) {
             BasicException error = (BasicException) e;
-            return messageSource.getMessage(error.getErrcode(), error.getErrargs(), locale);
+            return messageSource.getMessage(error.getErrcode(), error.getErrargs(), error.getMessage(), locale);
         }
         return "server error.";
     }

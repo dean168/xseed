@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+import static org.learning.basic.core.Asserts.Patterns.notNull;
+
 public abstract class ServiceUtils {
 
     private static BeanFactory current;
 
     public static BeanFactory get() {
-        Assert.notNull(current, "beanFactory must not be null");
+        notNull(current, "beanFactory must not be null");
         return current;
     }
 

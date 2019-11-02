@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.util.Assert;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledFuture;
+
+import static org.learning.basic.core.Asserts.Patterns.notNull;
+import static org.learning.basic.core.Errors.Patterns.handler;
 
 public class TempServiceImpl implements InitializingBean, DisposableBean, ITempService {
 
@@ -28,8 +30,8 @@ public class TempServiceImpl implements InitializingBean, DisposableBean, ITempS
     @Override
     public void afterPropertiesSet() {
 
-        Assert.notNull(scheduler, "scheduler must not be null");
-        Assert.notNull(root, "temp root must not be null");
+        notNull(scheduler, "scheduler must not be null");
+        notNull(root, "temp root must not be null");
 
         future = scheduler.scheduleWithFixedDelay(() -> {
             long now = System.currentTimeMillis();
@@ -81,7 +83,7 @@ public class TempServiceImpl implements InitializingBean, DisposableBean, ITempS
         try {
             FileUtils.writeByteArrayToFile(temp, content);
         } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+            return handler(null, e);
         }
         return temp;
     }
@@ -92,7 +94,7 @@ public class TempServiceImpl implements InitializingBean, DisposableBean, ITempS
         try (OutputStream os = new FileOutputStream(temp)) {
             IOUtils.copy(is, os);
         } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+            return handler(null, e);
         }
         return temp;
     }

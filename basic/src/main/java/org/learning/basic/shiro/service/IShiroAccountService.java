@@ -2,21 +2,15 @@ package org.learning.basic.shiro.service;
 
 import org.learning.basic.core.IAccountService;
 import org.learning.basic.shiro.domain.ShiroAccount;
-import org.learning.basic.shiro.domain.ShiroRole;
 
 public interface IShiroAccountService extends IAccountService {
 
     String SERVICE_ID = "basic.shiroAccountService";
 
-    String ACCOUNT_ROLE_CODE = "account";
+    <A extends ShiroAccount> A create(A account);
 
-    String ADMIN_ROLE_CODE = "admin";
-
-    void register(ShiroAccount account, String... roles);
-
-    ShiroAccount store(ShiroAccount account, String... roles);
+    <A extends ShiroAccount> A update(A account);
 
     void delete(String id);
 
-    ShiroRole getRoleByCode(String code);
 }

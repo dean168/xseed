@@ -1,11 +1,11 @@
 package org.learning.basic.core;
 
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.apache.commons.lang3.ArrayUtils.remove;
+import static org.learning.basic.core.Errors.args;
+import static org.learning.basic.core.Errors.cause;
 
 public class BasicException extends RuntimeException {
 
-    private static final long serialVersionUID = 3239595764164918907L;
+    private static final long serialVersionUID = 0L;
 
     private String errcode;
     private Object[] errargs;
@@ -17,21 +17,10 @@ public class BasicException extends RuntimeException {
         this(errcode, null);
     }
 
-    public BasicException(String errcode, Object... errargs) {
-        super(errcode, cause(errargs));
+    public BasicException(String errcode, Object... args) {
+        super(errcode, cause(args));
         this.errcode = errcode;
-        this.errargs = args(errargs);
-    }
-
-    static Throwable cause(Object... args) {
-        return isNotEmpty(args) && args[0] instanceof Throwable ? (Throwable) args[0] : null;
-    }
-
-    static Object[] args(Object... args) {
-        if (isNotEmpty(args) && args[0] instanceof Throwable) {
-            return remove(args, 0);
-        }
-        return args;
+        this.errargs = args(args);
     }
 
     public String getErrcode() {

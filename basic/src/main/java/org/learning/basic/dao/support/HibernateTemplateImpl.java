@@ -20,6 +20,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static org.learning.basic.core.Asserts.Patterns.isTrue;
+import static org.learning.basic.core.Errors.Patterns.handler;
+
 public class HibernateTemplateImpl extends HibernateTemplate implements IHibernateOperations {
 
     private Dialect dialect;
@@ -34,7 +37,7 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
 
     @SuppressWarnings("unchecked")
     public Date currentTimestamp() {
-        Assert.isTrue(dialect.supportsCurrentTimestampSelection(), "dialect.supportsCurrentTimestampSelection() must be true.");
+        isTrue(dialect.supportsCurrentTimestampSelection(), "dialect.supportsCurrentTimestampSelection() must be true.");
         return execute(session -> {
             NativeQuery<Date> query = session.createNativeQuery(dialect.getCurrentTimestampSelectString());
             return query.getResultList().get(0);
@@ -46,9 +49,7 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         try {
             return extractor.extract();
         } catch (Exception e) {
-            throw new DataAccessException(null, e) {
-                private static final long serialVersionUID = 1845491745123712093L;
-            };
+            return handler(null, e);
         }
     }
 
@@ -57,9 +58,7 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         try {
             return extractor.extract(this);
         } catch (Exception e) {
-            throw new DataAccessException(null, e) {
-                private static final long serialVersionUID = 1845491745123712093L;
-            };
+            return handler(null, e);
         }
     }
 
@@ -68,9 +67,7 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         try {
             handler.process();
         } catch (Exception e) {
-            throw new DataAccessException(null, e) {
-                private static final long serialVersionUID = 1845491745123712093L;
-            };
+             handler(null, e);
         }
     }
 
@@ -79,9 +76,7 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         try {
             handler.process(this);
         } catch (Exception e) {
-            throw new DataAccessException(null, e) {
-                private static final long serialVersionUID = 1845491745123712093L;
-            };
+            handler(null, e);
         }
     }
 

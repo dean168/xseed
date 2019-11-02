@@ -1,7 +1,10 @@
 package org.learning.basic.utils;
 
-import org.springframework.util.Assert;
 import sun.misc.Unsafe;
+
+import static org.learning.basic.core.Asserts.Patterns.isNull;
+import static org.learning.basic.core.Asserts.Patterns.isTrue;
+import static org.learning.basic.core.Errors.Patterns.handler;
 
 public abstract class UnsafeUtils {
 
@@ -15,9 +18,9 @@ public abstract class UnsafeUtils {
         private long root;
 
         public void init() {
-            Assert.isNull(unsafe, BPlus.class.getName() + " already initialized");
+            isNull(unsafe, "{0} already initialized", BPlus.class);
             maxsize = (capacity - Caps.METADATA) / Caps.ENTRY;
-            Assert.isTrue(maxsize >= Caps.MIN_SIZE, "set capacity >= " + (Caps.METADATA + Caps.ENTRY * Caps.MIN_SIZE) + " and capacity < " + Short.MAX_VALUE);
+            isTrue(maxsize >= Caps.MIN_SIZE, "set capacity >= {0} and capacity < {1}", Caps.METADATA + Caps.ENTRY * Caps.MIN_SIZE, Short.MAX_VALUE);
             unsafe = US;
             root = allocate(Types.DATA);
         }
@@ -52,7 +55,7 @@ public abstract class UnsafeUtils {
                 } else if (type == Types.NODE) {
                     address = value(address, low > 0 ? --low : 0);
                 } else {
-                    throw new IllegalArgumentException("undefined type#" + type);
+                    handler("undefined type#" + type);
                 }
             }
         }
@@ -94,7 +97,7 @@ public abstract class UnsafeUtils {
                     // 从最接近的节点再找
                     address = value(address, low > 0 ? --low : 0);
                 } else {
-                    throw new IllegalArgumentException("undefined type#" + type);
+                    handler("undefined type#" + type);
                 }
             }
         }
@@ -236,7 +239,7 @@ public abstract class UnsafeUtils {
                 } else if (current > key) {
                     high = mid - 1;
                 } else {
-                    throw new IllegalArgumentException("hit " + key + " in block#" + address + " at " + mid);
+                    handler("hit " + key + " in block#" + address + " at " + mid);
                 }
             }
             return low;
@@ -338,7 +341,7 @@ public abstract class UnsafeUtils {
                     return mid;
                 }
             }
-            throw new IllegalArgumentException("key#" + key + " not found at " + address);
+            return handler("key#" + key + " not found at " + address);
         }
 
         /**

@@ -2,10 +2,8 @@ package org.learning.basic.web.controls;
 
 import org.apache.commons.io.FileUtils;
 import org.learning.basic.core.ITempService;
-import org.learning.basic.core.SessionContext;
 import org.learning.basic.i18n.utils.I18nUtils;
 import org.learning.basic.utils.ByteUtils;
-import org.learning.basic.utils.FreemarkerUtils;
 import org.learning.basic.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import static org.learning.basic.core.Errors.Patterns.handler;
 import static org.learning.basic.utils.JsonUtils.MediaStatus;
 import static org.learning.basic.utils.JsonUtils.Status;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 //@RestController
 //@RequestMapping("basic")
@@ -37,7 +38,7 @@ public class BasicController {
 //	@Value("${basic.media.root}")
 //	protected String mediaRoot;
 
-//    @RequestMapping(method = POST, value = "media", produces = {APPLICATION_JSON_UTF8_VALUE})
+    //    @RequestMapping(method = POST, value = "media", produces = {APPLICATION_JSON_VALUE})
     public MediaStatus media(@RequestParam(value = "media") MultipartFile media) throws IOException {
 
         File parent = getTempDirectory();
@@ -111,7 +112,7 @@ public class BasicController {
         }
     }
 
-//    @RequestMapping(method = GET, value = "media")
+    //    @RequestMapping(method = GET, value = "media")
     public void media(@RequestParam(value = "id") String id,
                       @RequestParam(value = "contentType", required = false) String contentType,
                       @RequestParam(value = "attachmentName", required = false) String attachmentName,
@@ -171,7 +172,7 @@ public class BasicController {
      * @return
      */
     protected String mediaRoot() {
-        throw new UnsupportedOperationException(getClass().getName() + " must implements method: mediaRoot()");
+        return handler(getClass().getName() + " must implements method: mediaRoot()");
     }
 
     protected File getTempDirectory() {
@@ -192,22 +193,5 @@ public class BasicController {
             String value = args.get(key);
             return StringUtils.isEmpty(value) ? "{" + key + "}" : value;
         });
-    }
-
-    protected void render(String name, Object root) throws IOException {
-        render(null, name, root, APPLICATION_JSON_UTF8_VALUE);
-    }
-
-    protected void render(Class<?> clazz, String name, Object root) throws IOException {
-        render(clazz, name, root, APPLICATION_JSON_UTF8_VALUE);
-    }
-
-    protected void render(Class<?> clazz, String name, Object root, String contentType) throws IOException {
-        SessionContext context = SessionContext.get();
-        HttpServletResponse response = context.response();
-        response.setContentType(contentType);
-        try (OutputStream os = response.getOutputStream()) {
-            FreemarkerUtils.render(clazz, name, root, os);
-        }
     }
 }

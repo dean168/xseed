@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import static org.learning.basic.core.Errors.Patterns.handler;
+
 public abstract class DateUtils {
 
     public static final String DEFAULT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
@@ -32,7 +34,7 @@ public abstract class DateUtils {
         try {
             return sdf.parse(source);
         } catch (ParseException e) {
-            throw new RuntimeException("can not parse " + source + " pattern " + pattern, e);
+            return handler("can not parse " + source + " pattern " + pattern, e);
         }
     }
 

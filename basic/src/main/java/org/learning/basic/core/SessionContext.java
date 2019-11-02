@@ -70,7 +70,7 @@ public class SessionContext {
         U u = (U) current(ACCOUNT);
         if (u == null) {
             String id = (String) current(ACCOUNT_ID);
-            if (id != null && (u = getAccountService().getAccountById(id)) != null) {
+            if (id != null && (u = getAccountService().get(id)) != null) {
                 account(u);
             }
         }

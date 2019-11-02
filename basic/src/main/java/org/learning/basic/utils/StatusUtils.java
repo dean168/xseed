@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.learning.basic.core.Errors.Patterns.handler;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public abstract class StatusUtils {
 
@@ -24,11 +25,11 @@ public abstract class StatusUtils {
     }
 
     protected void _status(ServletResponse response, int status, String message) {
-        response.setContentType(APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(APPLICATION_JSON_VALUE);
         try (OutputStream os = response.getOutputStream()) {
             _status(os, status, message);
         } catch (IOException e) {
-            throw new BasicException(null, e);
+            handler(null, e);
         }
     }
 
@@ -49,7 +50,7 @@ public abstract class StatusUtils {
             jg.writeEndObject();
             jg.flush();
         } catch (IOException e) {
-            throw new BasicException(null, e);
+            handler(null, e);
         }
     }
 

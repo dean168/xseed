@@ -3,21 +3,20 @@
 	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.learning.basic.shiro.domain.ShiroAccount" table="T_USER" batch-size="30" dynamic-update="true">
+	<class name="org.learning.basic.shiro.domain.ShiroAccount" table="T_USER" batch-size="80" dynamic-update="true">
 		<id name="id" column="ID" length="32">
-			<generator class="uuid.hex" />
+			<generator class="org.learning.basic.dao.support.AssignedUUIDGenerator" />
 		</id>
 		<discriminator column="type" type="string" length="20" />
-		<property name="number" column="NUMBER" length="100" not-null="true" />
+		<property name="name" column="NAME" length="50" not-null="true" />
 		<property name="password" column="PASSWD" length="128" not-null="true" />
 		<set name="roles" table="TR_USER_ROLE">
 	        <key column="USER_ID" />
 	        <many-to-many class="org.learning.basic.shiro.domain.ShiroRole" column="ROLE_ID" />
         </set>
         <!-- Staff -->
-		<subclass name="org.learning.portal.domain.Staff" extends="org.learning.basic.shiro.domain.ShiroAccount" discriminator-value="STAFF">
-			<property name="name" column="NAME" length="50" not-null="true" />
-			<!-- 
+		<subclass name="org.learning.portal.domain.StaffAccount" extends="org.learning.basic.shiro.domain.ShiroAccount" discriminator-value="STAFF">
+			<!--
 			<property name="avatar" column="AVATAR" type="org.springframework.orm.hibernate3.support.BlobByteArrayType" />
 			 -->
 			<property name="avatar" column="AVATAR" length="255" />

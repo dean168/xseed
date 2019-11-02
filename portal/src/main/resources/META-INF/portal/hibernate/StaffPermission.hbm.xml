@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="org.learning.basic.shiro.domain.ShiroPermission" table="T_PERMISSION" batch-size="80" dynamic-update="true">
+		<id name="id" column="ID" length="32">
+			<generator class="org.learning.basic.dao.support.AssignedUUIDGenerator" />
+		</id>
+		<discriminator column="type" type="string" length="20" />
+		<property name="name" column="NAME" length="600" />
+		<property name="desc" column="PERM_DESC" length="600" />
+		<subclass name="org.learning.portal.domain.StaffPermission" extends="org.learning.basic.shiro.domain.ShiroPermission" discriminator-value="STAFF">
+		</subclass>
+	</class>
+
+</hibernate-mapping>

@@ -2,41 +2,32 @@ package org.learning.basic.shiro.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.learning.basic.core.domain.Basic;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @JsonAutoDetect(creatorVisibility = NONE, fieldVisibility = NONE, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
-public class ShiroPermission {
+public class ShiroPermission extends Basic {
 
-	@JsonProperty("id")
-	private String id;
-	@JsonProperty("code")
-	private String code;
-	@JsonProperty("desc")
-	private String desc;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("desc")
+    private String desc;
 
-	public String getId() {
-		return id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getDesc() {
+        return desc;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
 }

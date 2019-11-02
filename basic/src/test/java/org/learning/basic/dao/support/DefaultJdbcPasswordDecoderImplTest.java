@@ -16,6 +16,7 @@ public class DefaultJdbcPasswordDecoderImplTest {
         DefaultJdbcPasswordDecoderImpl decoder = new DefaultJdbcPasswordDecoderImpl();
         decoder.setKey("org.learning.key");
         decoder.init();
+        System.out.println(decoder.encode("todaytalents"));
         assertEquals("XArtGjXpKTfaDBBz0T1sgQ==", decoder.encode("admin@qq.com"));
         assertEquals("TAkJZq2k4ry+zARXB1Vt7Q==", decoder.encode("learning"));
         // 生成 basic.shiro.cookie.rme.cipher.key 配置
