@@ -2,7 +2,7 @@ package org.learning.basic.shiro.service;
 
 import org.learning.basic.shiro.domain.ShiroPermission;
 
-public interface IShiroPermissionService {
+public interface IShiroPermissionService extends IShiroBasicService {
 
     String SERVICE_ID = "basic.shiroPermissionService";
 

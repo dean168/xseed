@@ -1,6 +1,6 @@
 package org.learning.portal.web;
 
-import org.learning.basic.shiro.web.controller.ShiroAccountController;
+import org.learning.basic.shiro.web.controls.ShiroAccountController;
 import org.learning.basic.utils.StatusUtils.Status;
 import org.learning.portal.domain.StaffAccount;
 import org.springframework.web.bind.annotation.PathVariable;

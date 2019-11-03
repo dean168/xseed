@@ -9,8 +9,8 @@
 			<generator class="org.learning.basic.dao.support.AssignedUUIDGenerator" />
 		</id>
 		<discriminator column="type" type="string" length="20" />
-		<property name="name" column="NAME" length="600" />
-		<property name="desc" column="ROLE_DESC" length="600"/>
+		<property name="name" column="NAME" length="800" />
+		<property name="desc" column="ROLE_DESC" length="800"/>
         <set name="perms" table="TR_ROLE_PERMISSION">
 	        <key column="ROLE_ID" />
 	        <many-to-many class="org.learning.basic.shiro.domain.ShiroPermission" column="PERMISSION_ID" />

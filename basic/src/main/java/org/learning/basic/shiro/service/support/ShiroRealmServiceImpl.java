@@ -10,21 +10,21 @@ import org.apache.shiro.util.ByteSource;
 import org.learning.basic.shiro.domain.ShiroAccount;
 import org.learning.basic.shiro.domain.ShiroRole;
 import org.learning.basic.shiro.service.IShiroAccountService;
-import org.learning.basic.shiro.service.IShiroRealm;
+import org.learning.basic.shiro.service.IShiroRealmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-@Service(IShiroRealm.SERVICE_ID)
-public class ShiroRealmSupport extends AuthorizingRealm implements IShiroRealm {
+@Service(IShiroRealmService.SERVICE_ID)
+public class ShiroRealmServiceImpl extends AuthorizingRealm implements IShiroRealmService {
 
     @Autowired
     @Qualifier(IShiroAccountService.SERVICE_ID)
     private IShiroAccountService accountService;
 
-    public ShiroRealmSupport() {
+    public ShiroRealmServiceImpl() {
         setName(SERVICE_ID); //This name must match the name in the User class's getPrincipals() method
         HashedCredentialsMatcher matcher = new ShiroHashedCredentialsMatcher("SHA-256");
         matcher.setStoredCredentialsHexEncoded(false);

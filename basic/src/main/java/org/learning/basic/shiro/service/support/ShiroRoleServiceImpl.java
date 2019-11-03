@@ -16,7 +16,10 @@ public class ShiroRoleServiceImpl extends ShiroBasicServiceImpl implements IShir
     @Override
     @Transactional
     public <R extends ShiroRole> R create(R role) {
-        return create(role, roleToUse -> roleToUse);
+        return create(role, roleToUse -> {
+            cached.add(new ShiroEntry(ClassUtils.getUserClass(roleToUse), roleToUse.getId()));
+            return roleToUse;
+        });
     }
 
     @Override
@@ -25,6 +28,7 @@ public class ShiroRoleServiceImpl extends ShiroBasicServiceImpl implements IShir
         return update(role, roleToUse -> {
             roleToUse = (R) hibernateOperations.load(ClassUtils.getUserClass(role), role.getId());
             BeanUtils.copyProperties(role, roleToUse, "createdAt", "createdBy");
+            cached.add(new ShiroEntry(ClassUtils.getUserClass(roleToUse), roleToUse.getId()));
             return roleToUse;
         });
     }
@@ -44,5 +48,6 @@ public class ShiroRoleServiceImpl extends ShiroBasicServiceImpl implements IShir
         sql.append("delete from ").append(ShiroRole.class);
         sql.append(" where id = ?", id);
         hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
+        cached.add(new ShiroEntry(ShiroRole.class, id));
     }
 }

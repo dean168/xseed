@@ -15,7 +15,10 @@ public class ShiroPermissionServiceImpl extends ShiroBasicServiceImpl implements
     @Override
     @Transactional
     public <P extends ShiroPermission> P create(P permission) {
-        return create(permission, permissionToUse -> permissionToUse);
+        return create(permission, permsToUse -> {
+            cached.add(new ShiroEntry(ClassUtils.getUserClass(permsToUse), permsToUse.getId()));
+            return permsToUse;
+        });
     }
 
     @Override
@@ -24,6 +27,7 @@ public class ShiroPermissionServiceImpl extends ShiroBasicServiceImpl implements
         return update(permission, permsToUse -> {
             permsToUse = (P) hibernateOperations.load(ClassUtils.getUserClass(permission), permission.getId());
             BeanUtils.copyProperties(permission, permsToUse, "createdAt", "createdBy");
+            cached.add(new ShiroEntry(ClassUtils.getUserClass(permsToUse), permsToUse.getId()));
             return permsToUse;
         });
     }
@@ -39,5 +43,6 @@ public class ShiroPermissionServiceImpl extends ShiroBasicServiceImpl implements
         sql.append("delete from ").append(ShiroPermission.class);
         sql.append(" where id = ?", id);
         hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
+        cached.add(new ShiroEntry(ShiroPermission.class, id));
     }
 }

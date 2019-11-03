@@ -1,4 +1,4 @@
-package org.learning.basic.shiro.web.filter;
+package org.learning.basic.shiro.web.filters;
 
 import org.apache.shiro.SecurityUtils;
 import org.learning.basic.core.SessionContext;

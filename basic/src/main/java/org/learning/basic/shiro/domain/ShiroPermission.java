@@ -11,6 +11,8 @@ public class ShiroPermission extends Basic {
 
     @JsonProperty("name")
     private String name;
+    @JsonProperty("urls")
+    private String urls;
     @JsonProperty("desc")
     private String desc;
 
@@ -20,6 +22,14 @@ public class ShiroPermission extends Basic {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String urls) {
+        this.urls = urls;
     }
 
     public String getDesc() {

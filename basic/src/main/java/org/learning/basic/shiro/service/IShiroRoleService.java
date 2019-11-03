@@ -2,7 +2,7 @@ package org.learning.basic.shiro.service;
 
 import org.learning.basic.shiro.domain.ShiroRole;
 
-public interface IShiroRoleService {
+public interface IShiroRoleService extends IShiroBasicService {
 
     String SERVICE_ID = "basic.shiroRoleService";
 

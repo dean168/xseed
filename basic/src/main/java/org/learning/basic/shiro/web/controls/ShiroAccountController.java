@@ -1,4 +1,4 @@
-package org.learning.basic.shiro.web.controller;
+package org.learning.basic.shiro.web.controls;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;

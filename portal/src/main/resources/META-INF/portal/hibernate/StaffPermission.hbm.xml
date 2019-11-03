@@ -9,8 +9,9 @@
 			<generator class="org.learning.basic.dao.support.AssignedUUIDGenerator" />
 		</id>
 		<discriminator column="type" type="string" length="20" />
-		<property name="name" column="NAME" length="600" />
-		<property name="desc" column="PERM_DESC" length="600" />
+		<property name="name" column="NAME" length="800" />
+		<property name="urls" column="URLS" length="800" />
+		<property name="desc" column="PERM_DESC" length="800" />
 		<subclass name="org.learning.portal.domain.StaffPermission" extends="org.learning.basic.shiro.domain.ShiroPermission" discriminator-value="STAFF">
 		</subclass>
 	</class>

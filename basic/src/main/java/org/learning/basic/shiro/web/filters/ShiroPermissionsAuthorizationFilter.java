@@ -1,4 +1,4 @@
-package org.learning.basic.shiro.web.filter;
+package org.learning.basic.shiro.web.filters;
 
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;

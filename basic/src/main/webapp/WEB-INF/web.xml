@@ -71,7 +71,7 @@
 
 	<filter>
 		<filter-name>sessionContextFilter</filter-name>
-		<filter-class>org.learning.basic.shiro.web.filter.ShiroSessionContextFilter</filter-class>
+		<filter-class>org.learning.basic.shiro.web.filters.ShiroSessionContextFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>sessionContextFilter</filter-name>

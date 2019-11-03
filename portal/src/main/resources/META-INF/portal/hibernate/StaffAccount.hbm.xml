@@ -8,7 +8,7 @@
 			<generator class="org.learning.basic.dao.support.AssignedUUIDGenerator" />
 		</id>
 		<discriminator column="type" type="string" length="20" />
-		<property name="name" column="NAME" length="50" not-null="true" />
+		<property name="name" column="NAME" length="100" not-null="true" />
 		<property name="password" column="PASSWD" length="128" not-null="true" />
 		<set name="roles" table="TR_USER_ROLE">
 	        <key column="USER_ID" />

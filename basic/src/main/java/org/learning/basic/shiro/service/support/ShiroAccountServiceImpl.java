@@ -27,6 +27,7 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
             if (StringUtils.isEmpty(accountToUse.getName())) {
                 accountToUse.setName(accountToUse.getId());
             }
+            cached.add(new ShiroEntry(ClassUtils.getUserClass(accountToUse), accountToUse.getId()));
             return accountToUse;
         });
     }
@@ -40,6 +41,7 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
             if (StringUtils.isNotEmpty(account.getPassword())) {
                 accountToUse.setPassword(new Sha256Hash(account.getPassword(), account.getId()).toBase64());
             }
+            cached.add(new ShiroEntry(ClassUtils.getUserClass(accountToUse), accountToUse.getId()));
             return accountToUse;
         });
     }
@@ -55,5 +57,6 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
         sql.append("delete from ").append(ShiroAccount.class);
         sql.append(" where id = ?", id);
         hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
+        cached.add(new ShiroEntry(ShiroAccount.class, id));
     }
 }
