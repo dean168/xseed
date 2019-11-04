@@ -9,7 +9,7 @@
 		       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
 		       default-lazy-init="true">
 
-	<mvc:annotation-driven />
+	<mvc:annotation-driven enable-matrix-variables="true" />
 
 	<import resource="classpath*:/META-INF/basic/service/basic.config.xml" />
 	<import resource="classpath*:/META-INF/basic/servlet/basic.multipart.xml" />
