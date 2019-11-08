@@ -14,7 +14,7 @@ buildscript {
 // 所有工程的设置
 allprojects {
 	group 'org.learning'
-	version '0.1.RELEASE'
+	version '0.2.RELEASE'
 }
 
 // 子工程的设置
