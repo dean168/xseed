@@ -2,6 +2,7 @@ package org.learning.basic.web.controls;
 
 import org.apache.commons.io.FileUtils;
 import org.learning.basic.core.ITempService;
+import org.learning.basic.dao.IHibernateOperations;
 import org.learning.basic.i18n.utils.I18nUtils;
 import org.learning.basic.utils.ByteUtils;
 import org.learning.basic.utils.StringUtils;
@@ -33,12 +34,13 @@ public class BasicController {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
+    @Qualifier(IHibernateOperations.SERVICE_ID)
+    protected IHibernateOperations hibernateOperations;
+    @Autowired
     @Qualifier(ITempService.SERVICE_ID)
     protected ITempService tempService;
-//	@Value("${basic.media.root}")
-//	protected String mediaRoot;
 
-    //    @RequestMapping(method = POST, value = "media", produces = {APPLICATION_JSON_VALUE})
+//    @RequestMapping(method = POST, value = "media", produces = {APPLICATION_JSON_VALUE})
     public MediaStatus media(@RequestParam(value = "media") MultipartFile media) throws IOException {
 
         File parent = getTempDirectory();
@@ -112,7 +114,7 @@ public class BasicController {
         }
     }
 
-    //    @RequestMapping(method = GET, value = "media")
+//    @RequestMapping(method = GET, value = "media")
     public void media(@RequestParam(value = "id") String id,
                       @RequestParam(value = "contentType", required = false) String contentType,
                       @RequestParam(value = "attachmentName", required = false) String attachmentName,

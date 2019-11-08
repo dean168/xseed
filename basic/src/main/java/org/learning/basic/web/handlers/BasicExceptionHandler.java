@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Locale;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestControllerAdvice
 public class BasicExceptionHandler {
@@ -32,7 +32,7 @@ public class BasicExceptionHandler {
 
     @ExceptionHandler({Throwable.class})
     public void onThrowable(Locale locale, Throwable e, HttpServletResponse response) throws IOException {
-        response.setContentType(APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(APPLICATION_JSON_VALUE);
         try (OutputStream os = response.getOutputStream()) {
             try (JsonGenerator jg = Jackson.createGenerator(os)) {
                 jg.writeStartObject();

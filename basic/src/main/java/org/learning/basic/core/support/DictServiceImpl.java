@@ -11,7 +11,6 @@ import org.learning.basic.utils.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class DictServiceImpl implements IDictService {
         if (StringUtils.isEmpty(name)) {
             return null;
         }
-        D dict = BeanUtils.instantiate(type);
+        D dict = BeanUtils.instantiateClass(type);
         SQL sql = new SQL();
         sql.append("from ").append(type);
         sql.append(" where name = ?", name);
@@ -53,10 +52,10 @@ public class DictServiceImpl implements IDictService {
     public <D extends Dict> Pagination<D> search(Dict dict, int offset, int limit) {
         SQL sql = new SQL();
         sql.append("from ").append(dict.getType()).append(" where 1 = 1");
-        if ("null".equals(dict.getPid())) {
-            sql.append(" and pid is null");
+        if ("null".equals(dict.getParent())) {
+            sql.append(" and parent is null");
         } else {
-            sql.appendIfExist(" and pid = ?", dict.getPid());
+            sql.appendIfExist(" and parent = ?", dict.getParent());
         }
         sql.appendIfExist(" and id = ?", dict.getId());
         if (StringUtils.isNotEmpty(dict.getName())) {
@@ -74,10 +73,10 @@ public class DictServiceImpl implements IDictService {
     public <D extends Dict> Pagination<D> list(Dict dict, int offset, int limit) {
         SQL sql = new SQL();
         sql.append("from ").append(dict.getType()).append(" where 1 = 1");
-        if ("null".equals(dict.getPid())) {
-            sql.append(" and pid is null");
+        if ("null".equals(dict.getParent())) {
+            sql.append(" and parent is null");
         } else {
-            sql.appendIfExist(" and pid = ?", dict.getPid());
+            sql.appendIfExist(" and parent = ?", dict.getParent());
         }
         sql.appendIfExist(" and id = ?", dict.getId());
         if (StringUtils.isNotEmpty(dict.getName())) {
@@ -108,7 +107,7 @@ public class DictServiceImpl implements IDictService {
             list.forEach(d -> {
                 SQL sql = new SQL();
                 sql.append("select count(*) from ").append(dict.getType());
-                sql.append(" where pid = ?");
+                sql.append(" where parent = ?");
                 d.setCcount(hibernateOperations.count(sql.getSQL(), d.getId()));
             });
         }
@@ -127,7 +126,7 @@ public class DictServiceImpl implements IDictService {
             if (dict.getCcount() != null && dict.getCcount() != 0) {
                 SQL sql = new SQL();
                 sql.append("select count(*) from ").append(dict.getType());
-                sql.append(" where pid = ?");
+                sql.append(" where parent = ?");
                 target.setCcount(hibernateOperations.count(sql.getSQL(), target.getId()));
             }
             if (StringUtils.isNotEmpty(dict.getXpath())) {
@@ -142,12 +141,12 @@ public class DictServiceImpl implements IDictService {
 
     @SuppressWarnings("unchecked")
     private <D extends Dict> String xpath(D dict) {
-        return StringUtils.isNotEmpty(dict.getPid()) ? xpath((D) hibernateOperations.load(ClassUtils.getUserClass(dict), dict.getPid())) + "/" + dict.getId() : "/" + dict.getId();
+        return StringUtils.isNotEmpty(dict.getParent()) ? xpath((D) hibernateOperations.load(ClassUtils.getUserClass(dict), dict.getParent())) + "/" + dict.getId() : "/" + dict.getId();
     }
 
     @SuppressWarnings("unchecked")
     private <D extends Dict> String uname(D dict) {
-        return StringUtils.isNotEmpty(dict.getPid()) ? uname((D) hibernateOperations.load(ClassUtils.getUserClass(dict), dict.getPid())) + "/" + dict.getName() : "/" + dict.getName();
+        return StringUtils.isNotEmpty(dict.getParent()) ? uname((D) hibernateOperations.load(ClassUtils.getUserClass(dict), dict.getParent())) + "/" + dict.getName() : "/" + dict.getName();
     }
 
     @Override
@@ -166,7 +165,7 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Transactional
-    public void delete(Class<?> clazz, Serializable... ids) {
+    public void delete(Class<?> clazz, String... ids) {
         hibernateOperations.delete(clazz, ids);
     }
 

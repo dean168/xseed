@@ -2,8 +2,11 @@ package org.learning.basic.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.learning.basic.utils.BeanUtils;
+import org.springframework.util.ClassUtils;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * 字典父类
@@ -29,8 +32,8 @@ public class Dict extends Ordered {
     /**
      * 字典父ID
      */
-    @JsonProperty("pid")
-    private String pid;
+    @JsonProperty("parent")
+    private String parent;
     /**
      * 子字典数量
      */
@@ -48,6 +51,7 @@ public class Dict extends Ordered {
     private String uname;
     /**
      * 别名
+     *
      * @see #delimiters()
      * 为了方便数据 like 查询, 别名前面和后面都加上分隔符, 如: |aaa|bbb|ccc|
      * 如要更改分隔符, 子类重写 delimiters() 方法
@@ -58,8 +62,10 @@ public class Dict extends Ordered {
     public Dict() {
     }
 
-    public <D extends Dict> Dict(Class<D> clazz) {
-        this.type = clazz.getName();
+    public static <D extends Dict> D create(Class<D> clazz) {
+        D dict = BeanUtils.instantiateClass(clazz);
+        dict.setType(clazz.getName());
+        return dict;
     }
 
     public String delimiters() {
@@ -67,7 +73,7 @@ public class Dict extends Ordered {
     }
 
     public String getType() {
-        return type;
+        return isNotEmpty(type) ? type : ClassUtils.getUserClass(this).getName();
     }
 
     public void setType(String type) {
@@ -90,12 +96,12 @@ public class Dict extends Ordered {
         this.desc = desc;
     }
 
-    public String getPid() {
-        return pid;
+    public String getParent() {
+        return parent;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 
     public Integer getCcount() {

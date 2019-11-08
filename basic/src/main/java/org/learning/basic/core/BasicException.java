@@ -1,5 +1,6 @@
 package org.learning.basic.core;
 
+import static org.apache.commons.lang3.ArrayUtils.EMPTY_OBJECT_ARRAY;
 import static org.learning.basic.core.Errors.args;
 import static org.learning.basic.core.Errors.cause;
 
@@ -14,7 +15,7 @@ public class BasicException extends RuntimeException {
     }
 
     public BasicException(String errcode) {
-        this(errcode, null);
+        this(errcode, EMPTY_OBJECT_ARRAY);
     }
 
     public BasicException(String errcode, Object... args) {

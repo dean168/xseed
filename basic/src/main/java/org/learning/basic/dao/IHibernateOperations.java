@@ -33,9 +33,9 @@ public interface IHibernateOperations extends HibernateOperations {
 
     <T> T findOne(Class<T> type, String sql, Object... args);
 
-    void delete(Class<?> clazz, Serializable... ids);
+    void delete(Class<?> clazz, String... ids);
 
-    void xdelete(Class<?> clazz, Serializable... ids);
+    void xdelete(Class<?> clazz, String... ids);
 
     int count(String sql, Object... args);
 

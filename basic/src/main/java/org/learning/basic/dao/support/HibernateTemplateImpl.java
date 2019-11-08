@@ -13,7 +13,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -67,7 +66,7 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
         try {
             handler.process();
         } catch (Exception e) {
-             handler(null, e);
+            handler(null, e);
         }
     }
 
@@ -122,15 +121,15 @@ public class HibernateTemplateImpl extends HibernateTemplate implements IHiberna
     }
 
     @Override
-    public void delete(Class<?> type, Serializable... ids) {
+    public void delete(Class<?> type, String... ids) {
         SQL sql = new SQL();
         sql.append("delete from ").append(type);
-        sql.append(" where id in (").addInParams((Object[]) ids).append(")");
+        sql.append(" where id in (").addInParams(ids).append(")");
         bulkUpdate(sql.getSQL(), sql.getParams());
     }
 
     @Transactional
-    public void xdelete(Class<?> type, Serializable... ids) {
+    public void xdelete(Class<?> type, String... ids) {
         delete(type, ids);
     }
 

@@ -3,7 +3,6 @@ package org.learning.basic.core;
 import org.learning.basic.core.domain.Dict;
 import org.learning.basic.core.domain.Pagination;
 
-import java.io.Serializable;
 import java.util.List;
 
 public interface IDictService {
@@ -24,5 +23,5 @@ public interface IDictService {
 
     <D extends Dict> D store(D dict);
 
-    void delete(Class<?> clazz, Serializable... ids);
+    void delete(Class<?> clazz, String... ids);
 }
