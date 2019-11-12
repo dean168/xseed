@@ -13,7 +13,7 @@ import org.learning.basic.dao.support.SQLSupport.SQL;
 
 public interface IJdbcOperations extends JdbcOperations {
 
-	String BASIC_SERVICE_ID = "basic.jdbcOperations";
+	String SERVICE_ID = "basic.jdbcOperations";
 
 	<T> T query(SQL sql, int offset, int limit, ResultSetExtractor<T> rse);
 
