@@ -22,7 +22,11 @@
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="basic.shiroRealmService" />
+        <property name="realm">
+            <bean class="org.learning.basic.core.support.ExtensionsFactoryBean">
+                <property name="interfaces" value="org.learning.basic.shiro.service.IShiroRealmService" />
+            </bean>
+        </property>
         <property name="cacheManager">
         	<bean class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
         </property>

@@ -23,7 +23,7 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
     @Transactional
     public <A extends ShiroAccount> A create(A account) {
         return create(account, accountToUse -> {
-            accountToUse.setPassword(new Sha256Hash(accountToUse.getPassword(), accountToUse.getId()).toBase64());
+            accountToUse.setPassword(createPassword(accountToUse));
             if (StringUtils.isEmpty(accountToUse.getName())) {
                 accountToUse.setName(accountToUse.getId());
             }
@@ -39,7 +39,7 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
             accountToUse = (A) hibernateOperations.load(ClassUtils.getUserClass(account), account.getId());
             BeanUtils.copyProperties(account, accountToUse, "password", "createdAt", "createdBy");
             if (StringUtils.isNotEmpty(account.getPassword())) {
-                accountToUse.setPassword(new Sha256Hash(account.getPassword(), account.getId()).toBase64());
+                accountToUse.setPassword(createPassword(account));
             }
             cached.add(new ShiroEntry(ClassUtils.getUserClass(accountToUse), accountToUse.getId()));
             return accountToUse;
@@ -58,5 +58,9 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
         sql.append(" where id = ?", id);
         hibernateOperations.bulkUpdate(sql.getSQL(), sql.getParams());
         cached.add(new ShiroEntry(ShiroAccount.class, id));
+    }
+
+    protected <A extends ShiroAccount> String createPassword(A account) {
+        return new Sha256Hash(account.getPassword(), account.getId()).toBase64();
     }
 }

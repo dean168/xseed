@@ -1,6 +1,8 @@
 package org.learning.basic.shiro.service;
 
-public interface IShiroRealmService {
+import org.springframework.core.Ordered;
 
-	String SERVICE_ID = "basic.shiroRealmService";
+public interface IShiroRealmService extends Ordered {
+
+    String SERVICE_ID = "basic.shiroRealmService";
 }

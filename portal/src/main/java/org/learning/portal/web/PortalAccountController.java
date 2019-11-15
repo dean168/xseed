@@ -16,11 +16,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class PortalAccountController extends ShiroAccountController<StaffAccount> {
 
     @Override
-    protected Class<StaffAccount> accountClass() {
-        return StaffAccount.class;
-    }
-
-    @Override
     @RequestMapping(method = POST, value = "/login", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
     public Status<StaffAccount> login(@RequestBody LoginForm user) {
         return super.login(user);

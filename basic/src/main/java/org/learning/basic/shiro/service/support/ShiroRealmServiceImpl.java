@@ -33,10 +33,9 @@ public class ShiroRealmServiceImpl extends AuthorizingRealm implements IShiroRea
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        ShiroAccount account = accountService.get(token.getUsername());
+        ShiroAccount account = getAccount(token.getUsername());
         if (account != null) {
-            return new SimpleAuthenticationInfo(account.getId(), account.getPassword(),
-                    ByteSource.Util.bytes(account.getId()), getName());
+            return new SimpleAuthenticationInfo(account.getId(), account.getPassword(), ByteSource.Util.bytes(account.getId()), getName());
         } else {
             return null;
         }
@@ -48,7 +47,7 @@ public class ShiroRealmServiceImpl extends AuthorizingRealm implements IShiroRea
             return null;
         }
         String accountId = (String) accounts.iterator().next();
-        ShiroAccount account = accountService.get(accountId);
+        ShiroAccount account = getAccount(accountId);
         if (account == null) {
             return null;
         }
@@ -60,4 +59,12 @@ public class ShiroRealmServiceImpl extends AuthorizingRealm implements IShiroRea
         return info;
     }
 
+    protected ShiroAccount getAccount(String id) {
+        return accountService.get(id);
+    }
+
+    @Override
+    public int getOrder() {
+        return Integer.MAX_VALUE;
+    }
 }

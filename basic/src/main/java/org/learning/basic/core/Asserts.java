@@ -1,7 +1,10 @@
 package org.learning.basic.core;
 
 import org.learning.basic.utils.ArrayUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
 
@@ -17,6 +20,12 @@ public abstract class Asserts extends org.springframework.util.Assert {
 
         public static void notNull(Object object, String message, Object... args) {
             if (object == null) {
+                throw new BasicException(ArrayUtils.isNotEmpty(args) ? format(message, args) : message);
+            }
+        }
+
+        public static void notEmpty(Map<?, ?> map, String message, Object... args) {
+            if (CollectionUtils.isEmpty(map)) {
                 throw new BasicException(ArrayUtils.isNotEmpty(args) ? format(message, args) : message);
             }
         }
@@ -44,6 +53,12 @@ public abstract class Asserts extends org.springframework.util.Assert {
 
         public static void notNull(Object object, String message, Object... args) {
             if (object == null) {
+                throw new BasicException(message, args);
+            }
+        }
+
+        public static void notEmpty(Map<?, ?> map, String message, Object... args) {
+            if (CollectionUtils.isEmpty(map)) {
                 throw new BasicException(message, args);
             }
         }

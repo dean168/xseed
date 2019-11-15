@@ -35,8 +35,6 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     @Qualifier(IShiroAccountService.SERVICE_ID)
     protected IShiroAccountService accountService;
 
-    protected abstract Class<A> accountClass();
-
     /**
      * 创建用户
      *
@@ -64,32 +62,6 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         return new Status<>(true, null, accountService.create(account));
     }
 
-    protected Status<A> doLogin(LoginForm account) {
-        UsernamePasswordToken token = new UsernamePasswordToken(account.getId(), account.getPassword(), account.isRme());
-        try {
-            // 登录操作
-            SecurityUtils.getSubject().login(token);
-            A userToUse = hibernateOperations.load(accountClass(), (String) SecurityUtils.getSubject().getPrincipal());
-            if (userToUse.getStatus() != null && !ShiroStatus.ACTIVE.equals(userToUse.getStatus())) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("not active account#" + SecurityUtils.getSubject().getPrincipal() + " can not login");
-                }
-                SecurityUtils.getSubject().logout();
-                return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
-            }
-            if (logger.isDebugEnabled()) {
-                logger.debug("login#" + userToUse.getId() + "(" + userToUse.getId() + ")");
-            }
-            // 初始化当前 session
-            return session();
-        } catch (AuthenticationException e) {
-            if (logger.isDebugEnabled()) {
-                logger.debug(e.getMessage());
-            }
-            return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
-        }
-    }
-
     /**
      * 当前用户的 locale
      */
@@ -110,7 +82,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
                 logger.debug("Not logged in");
             }
             return new Status<>(HttpStatus.UNAUTHORIZED, I18nUtils.message("ACCOUNT.SESSION.FAIL"));
-        } else if ((account = accountService.get(accountId)) == null) {
+        } else if ((account = getAccount(accountId)) == null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Not exist account");
             }
@@ -125,14 +97,38 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         }
     }
 
-    /**
-     * 登录
-     *
-     * @param user
-     */
 //    @RequestMapping(method = POST, value = "/login", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
-    public Status<A> login(LoginForm user) {
-        return doLogin(user);
+    public Status<A> login(LoginForm account) {
+        return login(new UsernamePasswordToken(account.getId(), account.getPassword(), account.isRme()));
+    }
+
+    protected Status<A> login(UsernamePasswordToken token) {
+        try {
+            // 登录操作
+            SecurityUtils.getSubject().login(token);
+            A userToUse = getAccount((String) SecurityUtils.getSubject().getPrincipal());
+            if (userToUse.getStatus() != null && !ShiroStatus.ACTIVE.equals(userToUse.getStatus())) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("not active account#" + SecurityUtils.getSubject().getPrincipal() + " can not login");
+                }
+                SecurityUtils.getSubject().logout();
+                return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug("login#" + userToUse.getId() + "(" + userToUse.getId() + ")");
+            }
+            // 初始化当前 session
+            return session();
+        } catch (AuthenticationException e) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(e.getMessage());
+            }
+            return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
+        }
+    }
+
+    protected A getAccount(String id) {
+        return accountService.get(id);
     }
 
 //    @RequestMapping(method = GET, value = "logout", produces = {APPLICATION_JSON_VALUE})
