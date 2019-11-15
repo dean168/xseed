@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+import static org.apache.shiro.util.ByteSource.*;
+
 @Service(IShiroRealmService.SERVICE_ID)
 public class ShiroRealmServiceImpl extends AuthorizingRealm implements IShiroRealmService {
 
@@ -34,11 +36,11 @@ public class ShiroRealmServiceImpl extends AuthorizingRealm implements IShiroRea
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         ShiroAccount account = getAccount(token.getUsername());
-        if (account != null) {
-            return new SimpleAuthenticationInfo(account.getId(), account.getPassword(), ByteSource.Util.bytes(account.getId()), getName());
-        } else {
-            return null;
-        }
+        return account != null ? createAuthenticationInfo(account) : null;
+    }
+
+    protected AuthenticationInfo createAuthenticationInfo(ShiroAccount account) {
+        return new SimpleAuthenticationInfo(account.getId(), account.getPassword(), Util.bytes(account.getId()), getName());
     }
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
