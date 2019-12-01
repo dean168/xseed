@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.learning.basic.core.Asserts.Patterns.notEmpty;
+
 public class SessionContext {
 
     public static final String ACCOUNT_ID = "accountId";
@@ -30,7 +32,8 @@ public class SessionContext {
 
     private synchronized static IAccountService getAccountService() {
         if (AS == null) {
-            AS = ServiceUtils.get(IAccountService.class);
+            Map<String, IAccountService> beans = ServiceUtils.list(IAccountService.class);
+            beans.values().stream().min((o1, o2) -> Math.min(o1.getOrder(), o2.getOrder())).ifPresent(bean -> AS = bean);
         }
         return AS;
     }

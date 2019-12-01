@@ -63,4 +63,9 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
     protected <A extends ShiroAccount> String createPassword(A account) {
         return new Sha256Hash(account.getPassword(), account.getId()).toBase64();
     }
+
+    @Override
+    public int getOrder() {
+        return 100;
+    }
 }
