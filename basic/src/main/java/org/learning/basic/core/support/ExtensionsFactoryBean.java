@@ -18,7 +18,9 @@ public class ExtensionsFactoryBean<T extends Ordered> implements FactoryBean<T> 
     public void init() {
         Map<String, T> beans = ServiceUtils.list(interfaces);
         notEmpty(beans, "beans not found by {0}", interfaces);
-        beans.values().stream().min((o1, o2) -> Math.min(o1.getOrder(), o2.getOrder())).ifPresent(bean -> extensions = bean);
+        for (T bean : beans.values()) {
+            extensions = extensions == null || bean.getOrder() < extensions.getOrder() ? bean : extensions;
+        }
     }
 
     @Override
