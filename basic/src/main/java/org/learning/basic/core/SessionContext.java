@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.learning.basic.core.Asserts.Patterns.notEmpty;
 
 public class SessionContext {
 
@@ -32,8 +31,7 @@ public class SessionContext {
 
     private synchronized static IAccountService getAccountService() {
         if (AS == null) {
-            Map<String, IAccountService> beans = ServiceUtils.list(IAccountService.class);
-            beans.values().stream().min((o1, o2) -> Math.min(o1.getOrder(), o2.getOrder())).ifPresent(bean -> AS = bean);
+            AS = ServiceUtils.get(IAccountService.SERVICE_ID, IAccountService.class);
         }
         return AS;
     }

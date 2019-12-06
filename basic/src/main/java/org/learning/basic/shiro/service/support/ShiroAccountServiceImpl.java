@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 
-@Service(IShiroAccountService.SERVICE_ID)
+@Service(IShiroAccountService.SERVICE_ID + ".default")
 public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IShiroAccountService {
 
     @Override
@@ -66,6 +66,6 @@ public class ShiroAccountServiceImpl extends ShiroBasicServiceImpl implements IS
 
     @Override
     public int getOrder() {
-        return 100;
+        return Integer.MAX_VALUE;
     }
 }

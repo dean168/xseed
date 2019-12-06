@@ -3,10 +3,11 @@ buildscript {
     repositories {
 		// jcenter()
 		maven { url 'http://jcenter.bintray.com' }
+		maven { url 'http://plugins.gradle.org/m2' }
 		maven { url 'http://repo.spring.io/plugins-release' }
 	}
     dependencies {
-		classpath 'org.gretty:gretty:2.3.1'
+		classpath 'gradle.plugin.org.gretty:gretty:3.0.1'
 		classpath 'io.spring.gradle:propdeps-plugin:0.0.10.RELEASE'
 	}
 }

@@ -16,7 +16,12 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
     </context:component-scan>
 
-	<alias name="basic.shiroAccountService" alias="basic.accountService" />
+    <bean id="basic.accountService" class="org.learning.basic.core.support.ExtensionsFactoryBean">
+        <property name="interfaces" value="org.learning.basic.core.IAccountService" />
+    </bean>
+    <bean id="basic.shiroAccountService" class="org.learning.basic.core.support.ExtensionsFactoryBean">
+        <property name="interfaces" value="org.learning.basic.shiro.service.IShiroAccountService" />
+    </bean>
 
     <!-- Spring AOP auto-proxy creation (required to support Shiro annotations) -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
