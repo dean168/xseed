@@ -35,6 +35,17 @@
         <property name="cacheManager">
         	<bean class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
         </property>
+        <property name="sessionManager">
+            <bean class="org.apache.shiro.web.session.mgt.ServletContainerSessionManager">
+                <property name="sessionIdCookie">
+                    <bean class="org.apache.shiro.web.servlet.SimpleCookie">
+                        <property name="name" value="JSESSIONID" />
+                        <property name="httpOnly" value="true" />
+                        <property name="secure" value="true" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
         <property name="rememberMeManager">
             <bean class="org.apache.shiro.web.mgt.CookieRememberMeManager">
                 <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('${basic.shiro.cookie.rme.cipher.key}')}" />

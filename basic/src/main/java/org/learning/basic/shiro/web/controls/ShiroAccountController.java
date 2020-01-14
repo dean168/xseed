@@ -104,6 +104,8 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
 
     protected Status<A> login(UsernamePasswordToken token) {
         try {
+            // 登录前先退出一下，避免问题：会话标识未更新
+            SecurityUtils.getSubject().logout();
             // 登录操作
             SecurityUtils.getSubject().login(token);
             A userToUse = getAccount((String) SecurityUtils.getSubject().getPrincipal());
