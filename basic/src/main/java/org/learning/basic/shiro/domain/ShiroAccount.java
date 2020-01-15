@@ -23,6 +23,13 @@ public class ShiroAccount extends Account {
      */
     @JsonProperty("status")
     private ShiroStatus status;
+
+    /**
+     * 登录失败次数
+     * 不输出 json
+     */
+    private int failureCount;
+
     /**
      * 用户的权限
      */
@@ -51,5 +58,14 @@ public class ShiroAccount extends Account {
 
     public void setRoles(Set<ShiroRole> roles) {
         this.roles = roles;
+    }
+
+
+    public int getFailureCount() {
+        return failureCount;
+    }
+
+    public void setFailureCount(int failureCount) {
+        this.failureCount = failureCount;
     }
 }

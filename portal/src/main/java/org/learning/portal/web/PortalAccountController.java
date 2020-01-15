@@ -1,6 +1,10 @@
 package org.learning.portal.web;
 
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.learning.basic.shiro.domain.ShiroAccount;
+import org.learning.basic.shiro.domain.ShiroStatus;
 import org.learning.basic.shiro.web.controls.ShiroAccountController;
+import org.learning.basic.utils.BeanUtils;
 import org.learning.basic.utils.StatusUtils.Status;
 import org.learning.portal.domain.StaffAccount;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +19,37 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("account")
 public class PortalAccountController extends ShiroAccountController<StaffAccount> {
 
-    @Override
     @RequestMapping(method = POST, value = "/login", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
-    public Status<StaffAccount> login(@RequestBody LoginForm user) {
-        return super.login(user);
+    public Status<StaffAccount> login(@RequestBody LoginForm form) {
+        try {
+            Status status = super.login(new UsernamePasswordToken(form.getId(), form.getPassword(), form.isRme()));
+            if (status.getCode() == Status.TRUE) {
+                StaffAccount account = (StaffAccount)status.getData();
+                if(account.getFailureCount() > 0) {
+                    StaffAccount accountToUse = new StaffAccount();
+                    BeanUtils.copyProperties(account, accountToUse);
+                    accountToUse.setFailureCount(0);
+                    accountToUse.setPassword(null); // 不修改密码
+                    this.update(accountToUse);
+                }
+            } else {
+                ShiroAccount acc = this.getAccount(form.getId());
+                if(acc != null) {
+                    StaffAccount accountToUse = new StaffAccount();
+                    BeanUtils.copyProperties(acc, accountToUse);
+                    accountToUse.setFailureCount(acc.getFailureCount() + 1);
+                    if(accountToUse.getFailureCount() >= this.maxFailureCount) {
+                        accountToUse.setStatus(ShiroStatus.DISABLED);
+                    }
+                    accountToUse.setPassword(null); // 不修改密码
+                    this.update(accountToUse);
+                }
+            }
+            return status;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Status(false, "登录失败");
+        }
     }
 
     @Override

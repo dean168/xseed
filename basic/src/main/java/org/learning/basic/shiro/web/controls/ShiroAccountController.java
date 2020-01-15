@@ -12,12 +12,14 @@ import org.learning.basic.i18n.utils.I18nUtils;
 import org.learning.basic.shiro.domain.ShiroAccount;
 import org.learning.basic.shiro.domain.ShiroStatus;
 import org.learning.basic.shiro.service.IShiroAccountService;
+import org.learning.basic.utils.BeanUtils;
 import org.learning.basic.utils.StatusUtils.Status;
 import org.learning.basic.web.controls.BasicController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
@@ -34,6 +36,9 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
     @Autowired
     @Qualifier(IShiroAccountService.SERVICE_ID)
     protected IShiroAccountService accountService;
+
+    @Value("${basic.shiro.login.maxFailureCount}")
+    protected int maxFailureCount;
 
     /**
      * 创建用户
@@ -59,7 +64,7 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
      */
 //    @RequestMapping(method = POST, value = "/update", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
     public Status<A> update(A account) {
-        return new Status<>(true, null, accountService.create(account));
+        return new Status<>(true, null, accountService.update(account));
     }
 
     /**
@@ -97,25 +102,23 @@ public abstract class ShiroAccountController<A extends ShiroAccount> extends Bas
         }
     }
 
-//    @RequestMapping(method = POST, value = "/login", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
-    public Status<A> login(LoginForm account) {
-        return login(new UsernamePasswordToken(account.getId(), account.getPassword(), account.isRme()));
-    }
-
     protected Status<A> login(UsernamePasswordToken token) {
         try {
             // 登录前先退出一下，避免问题：会话标识未更新
             SecurityUtils.getSubject().logout();
-            // 登录操作
-            SecurityUtils.getSubject().login(token);
-            A userToUse = getAccount((String) SecurityUtils.getSubject().getPrincipal());
+            // 如果用户被禁用则直接返回
+            A userToUse = getAccount(token.getUsername());
+            if (userToUse == null){
+                return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
+            }
             if (userToUse.getStatus() != null && !ShiroStatus.ACTIVE.equals(userToUse.getStatus())) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("not active account#" + SecurityUtils.getSubject().getPrincipal() + " can not login");
                 }
-                SecurityUtils.getSubject().logout();
-                return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.ERROR"));
+                return new Status<>(false, I18nUtils.message("ACCOUNT.LOGIN.USER.DISABLED"));
             }
+            // 登录操作
+            SecurityUtils.getSubject().login(token);
             if (logger.isDebugEnabled()) {
                 logger.debug("login#" + userToUse.getId() + "(" + userToUse.getId() + ")");
             }
