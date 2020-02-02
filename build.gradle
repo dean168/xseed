@@ -1,10 +1,8 @@
 // 构建脚本及依赖
 buildscript {
     repositories {
-		// jcenter()
-		maven { url 'http://jcenter.bintray.com' }
-		maven { url 'http://plugins.gradle.org/m2' }
-		maven { url 'http://repo.spring.io/plugins-release' }
+		maven { url 'https://plugins.gradle.org/m2' }
+		maven { url 'https://repo.spring.io/plugins-release' }
 	}
     dependencies {
 		classpath 'gradle.plugin.org.gretty:gretty:3.0.1'
@@ -42,8 +40,6 @@ subprojects {
 		mavenLocal()
 		// mavenCentral()
 		maven { url 'http://maven.aliyun.com/nexus/content/repositories/central' }
-		// jcenter()
-		maven { url 'http://jcenter.bintray.com' }
 	}
 
     ext {
