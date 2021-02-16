@@ -30,8 +30,8 @@ subprojects {
     // 所有子项目都是 java 项目
     apply plugin: 'java'
 	// java 源文件和编译使用版本
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
@@ -43,9 +43,9 @@ subprojects {
 	}
 
     ext {
-		springVersion = '5.2.0.RELEASE'
-		jacksonVersion = '2.10.0'
-		slf4jVersion = '1.7.28'
+		springVersion = '5.3.3'
+		jacksonVersion = '2.11.4'
+		slf4jVersion = '1.7.30'
 		hcVersion = '4.5.10'
 		shiroVersion = '1.4.1'
     	psqlVersion = '42.2.2'
@@ -77,23 +77,23 @@ project(':basic') {
 		compile("org.springframework:spring-tx:$springVersion")
 		compile("org.springframework:spring-web:$springVersion")
 		compile("org.springframework:spring-webmvc:$springVersion")
-		compile("org.hibernate:hibernate-core:5.4.2.Final")
+		compile("org.hibernate:hibernate-core:5.4.28.Final")
 		compile("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 		compile("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
 		compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 		compile("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:$jacksonVersion")
-		compile("de.undercouch:bson4jackson:2.9.2")
+		compile("de.undercouch:bson4jackson:2.12.0")
 		compile("commons-codec:commons-codec:1.13")
 		compile("commons-fileupload:commons-fileupload:1.4")
 		compile("commons-io:commons-io:2.6")
-		compile("org.apache.commons:commons-lang3:3.9")
+		compile("org.apache.commons:commons-lang3:3.11")
 		compile("org.apache.httpcomponents:httpclient:$hcVersion")
 		compile("org.apache.shiro:shiro-core:$shiroVersion")
 		compile("org.apache.shiro:shiro-web:$shiroVersion")
 //		compile("org.apache.shiro:shiro-ehcache:$shiroVersion")
 		compile("org.apache.shiro:shiro-spring:$shiroVersion")
-		compile("com.alibaba:fastjson:1.2.62")
-		compile("com.alibaba:druid:1.1.20")
+		compile("com.alibaba:fastjson:1.2.75")
+		compile("com.alibaba:druid:1.2.4")
 		provided("javax.annotation:javax.annotation-api:1.3.2")
 	}
 }

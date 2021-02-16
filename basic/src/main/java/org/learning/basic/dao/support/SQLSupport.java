@@ -3,10 +3,7 @@ package org.learning.basic.dao.support;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.learning.basic.core.Errors.Patterns.handler;
 
@@ -19,8 +16,8 @@ public class SQLSupport {
         public static final int SQL = 2;
 
         private int type = HQL;
-        private StringBuffer text = new StringBuffer();
-        private List<Object> params = new ArrayList<>();
+        private final StringBuffer text = new StringBuffer();
+        private final List<Object> params = new ArrayList<>();
         private int offset;
 
         public SQL() {
@@ -55,9 +52,7 @@ public class SQLSupport {
         }
 
         public SQL addParams(String... args) {
-            for (int i = 0; i < args.length; i++) {
-                params.add(args[i]);
-            }
+            Collections.addAll(params, args);
             return this;
         }
 
@@ -67,9 +62,7 @@ public class SQLSupport {
         }
 
         public SQL addParams(Object... args) {
-            for (int i = 0; i < args.length; i++) {
-                params.add(args[i]);
-            }
+            Collections.addAll(params, args);
             return this;
         }
 
@@ -173,7 +166,7 @@ public class SQLSupport {
         }
 
         public Object[] getParams() {
-            return params.toArray(new Object[params.size()]);
+            return params.toArray(ArrayUtils.EMPTY_OBJECT_ARRAY);
         }
     }
 }
